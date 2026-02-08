@@ -1,6 +1,5 @@
 import { useEffect, useState, useRef } from "react";
 import { motion } from "framer-motion";
-import MagicSparkles from "./MagicSparkles";
 import type { QuizData } from "./BeautyQuiz";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -125,7 +124,6 @@ const AnalysisScreen = ({ name, quizData, onComplete }: AnalysisScreenProps) => 
   if (error) {
     return (
       <div className="relative flex min-h-screen flex-col items-center justify-center bg-background px-4">
-        <MagicSparkles count={10} />
         <div className="flex flex-col items-center gap-6 text-center">
           <h2 className="font-display text-2xl font-semibold text-foreground">
             Oops, qualcosa è andato storto 😔
@@ -144,7 +142,7 @@ const AnalysisScreen = ({ name, quizData, onComplete }: AnalysisScreenProps) => 
 
   return (
     <div className="relative flex min-h-screen flex-col items-center justify-center bg-background px-4">
-      <MagicSparkles count={30} />
+      
 
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}

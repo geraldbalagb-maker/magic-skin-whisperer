@@ -1,7 +1,6 @@
 import { motion } from "framer-motion";
-import { Sparkles, ArrowRight, Star, Camera, Clock, Zap, ShieldCheck, Truck, CreditCard } from "lucide-react";
+import { ArrowRight, Star, Camera, Clock, Zap, ShieldCheck, Truck, CreditCard, Wand2 } from "lucide-react";
 import heroImage from "@/assets/hero-beauty.jpg";
-import MagicSparkles from "./MagicSparkles";
 import { products } from "@/data/products";
 
 // Curated featured products
@@ -46,7 +45,7 @@ const LandingPage = ({ onStartQuiz }: LandingPageProps) => {
           <div className="absolute inset-0 bg-gradient-to-r from-background/60 to-transparent" />
         </div>
 
-        <MagicSparkles count={15} />
+        
 
         <div className="relative z-10 mx-auto flex w-full max-w-6xl flex-col items-start gap-8 px-6 md:px-12">
           <motion.div
@@ -59,9 +58,8 @@ const LandingPage = ({ onStartQuiz }: LandingPageProps) => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2 }}
-              className="mb-6 flex items-center gap-2"
+              className="mb-6"
             >
-              <Sparkles className="h-4 w-4 text-primary" />
               <span className="font-body text-xs font-semibold uppercase tracking-[0.3em] text-primary">
                 Luxury Perfumes
               </span>
@@ -96,9 +94,8 @@ const LandingPage = ({ onStartQuiz }: LandingPageProps) => {
             >
               <button
                 onClick={onStartQuiz}
-                className="group flex items-center justify-center gap-2 rounded-full bg-gradient-gold px-8 py-4 font-body text-sm font-semibold text-primary-foreground shadow-gold-lg transition-all hover:shadow-gold animate-pulse-glow"
+              className="group flex items-center justify-center gap-2 rounded-full bg-gradient-gold px-8 py-4 font-body text-sm font-semibold text-primary-foreground shadow-gold-lg transition-all hover:shadow-gold animate-pulse-glow"
               >
-                <Sparkles className="h-4 w-4" />
                 Scopri la tua routine
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </button>
@@ -312,7 +309,7 @@ const LandingPage = ({ onStartQuiz }: LandingPageProps) => {
       {/* ─── CTA Banner ─── */}
       <section className="relative overflow-hidden border-t border-border">
         <div className="bg-gradient-dark px-6 py-20 md:py-28">
-          <MagicSparkles count={10} />
+          
           <motion.div
             initial="hidden"
             whileInView="visible"
@@ -321,7 +318,7 @@ const LandingPage = ({ onStartQuiz }: LandingPageProps) => {
             custom={0}
             className="relative z-10 mx-auto max-w-2xl text-center"
           >
-            <Sparkles className="mx-auto mb-4 h-8 w-8 text-primary" />
+            
             <h2 className="font-display text-3xl font-bold text-background md:text-4xl">
               Pronta a scoprire la tua{" "}
               <span className="text-gradient-gold">routine perfetta</span>?
@@ -333,9 +330,8 @@ const LandingPage = ({ onStartQuiz }: LandingPageProps) => {
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.96 }}
               onClick={onStartQuiz}
-              className="mt-8 inline-flex items-center gap-2 rounded-full bg-gradient-gold px-10 py-4 font-body text-sm font-semibold text-primary-foreground shadow-gold-lg"
+               className="mt-8 inline-flex items-center gap-2 rounded-full bg-gradient-gold px-10 py-4 font-body text-sm font-semibold text-primary-foreground shadow-gold-lg"
             >
-              <Sparkles className="h-4 w-4" />
               Inizia il quiz
               <ArrowRight className="h-4 w-4" />
             </motion.button>
@@ -350,7 +346,7 @@ const LandingPage = ({ onStartQuiz }: LandingPageProps) => {
             { icon: Truck, label: "Spedizione gratuita" },
             { icon: ShieldCheck, label: "Prodotti certificati" },
             { icon: CreditCard, label: "Pagamenti sicuri" },
-            { icon: Sparkles, label: "Routine AI personalizzata" },
+            { icon: Wand2, label: "Routine AI personalizzata" },
           ].map((item) => (
             <div key={item.label} className="flex items-center gap-2.5">
               <item.icon className="h-5 w-5 text-primary" />
@@ -364,7 +360,6 @@ const LandingPage = ({ onStartQuiz }: LandingPageProps) => {
       <footer className="border-t border-border bg-secondary/30 px-6 py-10">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 md:flex-row">
           <div className="flex items-center gap-2">
-            <Sparkles className="h-4 w-4 text-primary" />
             <span className="font-display text-sm font-semibold text-foreground">Luxury Perfumes</span>
           </div>
           <p className="font-body text-[11px] text-muted-foreground">

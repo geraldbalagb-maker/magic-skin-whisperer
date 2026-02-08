@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Camera, Clock, Sparkles, ChevronRight, SkipForward } from "lucide-react";
-import MagicSparkles from "./MagicSparkles";
+import { Camera, Clock, ChevronRight, SkipForward } from "lucide-react";
 import stepNameImg from "@/assets/steps/step-name.jpg";
 import stepSelfieImg from "@/assets/steps/step-selfie.jpg";
 import stepAgeImg from "@/assets/steps/step-age.jpg";
@@ -69,9 +68,7 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
       case 0:
         return (
           <motion.div key="name" variants={stepVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.5 }} className="flex flex-col items-center gap-6 text-center">
-            <MagicSparkles count={15} />
             <div className="relative">
-              <Sparkles className="mx-auto mb-4 h-8 w-8 text-gold" />
               <h2 className="font-display text-3xl font-semibold text-foreground md:text-4xl">
                 Come ti chiami?
               </h2>
@@ -103,7 +100,6 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
       case 1:
         return (
           <motion.div key="selfie" variants={stepVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.5 }} className="flex flex-col items-center gap-6 text-center">
-            <MagicSparkles count={12} />
             <Camera className="mx-auto h-8 w-8 text-gold" />
             <h2 className="font-display text-3xl font-semibold text-foreground md:text-4xl">
               {data.name}, fatti un selfie! 📸
@@ -138,7 +134,6 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
       case 2:
         return (
           <motion.div key="age" variants={stepVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.5 }} className="flex flex-col items-center gap-6 text-center">
-            <MagicSparkles count={10} />
             <h2 className="font-display text-3xl font-semibold text-foreground md:text-4xl">
               {data.name}, quanti anni hai? 🌸
             </h2>
@@ -171,7 +166,6 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
       case 3:
         return (
           <motion.div key="time" variants={stepVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.5 }} className="flex flex-col items-center gap-6 text-center">
-            <MagicSparkles count={10} />
             <Clock className="mx-auto h-8 w-8 text-gold" />
             <h2 className="font-display text-2xl font-semibold text-foreground md:text-3xl">
               Sappiamo che hai mille impegni, {data.name}
@@ -205,7 +199,6 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
       case 4:
         return (
           <motion.div key="skin" variants={stepVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.5 }} className="flex flex-col items-center gap-6 text-center">
-            <MagicSparkles count={15} />
             <h2 className="font-display text-2xl font-semibold text-foreground md:text-3xl">
               Raccontaci di più, {data.name} 💫
             </h2>
