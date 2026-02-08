@@ -3,11 +3,11 @@ import { motion } from "framer-motion";
 import { ShoppingBag, Download, Star, Check } from "lucide-react";
 import type { Product, RoutineStep } from "@/data/products";
 import { products } from "@/data/products";
-import routineCleansingImg from "@/assets/steps/routine-cleansing.jpg";
-import routineTonerImg from "@/assets/steps/routine-toner.jpg";
-import routineTreatmentImg from "@/assets/steps/routine-treatment.jpg";
-import routineMoisturizerImg from "@/assets/steps/routine-moisturizer.jpg";
-import routineExfoliationImg from "@/assets/steps/routine-exfoliation.jpg";
+import routineCleansingImg from "@/assets/steps/routine-step-cleansing.png";
+import routineTonerImg from "@/assets/steps/routine-step-toner.png";
+import routineTreatmentImg from "@/assets/steps/routine-step-treatment.png";
+import routineMoisturizerImg from "@/assets/steps/routine-step-cream.png";
+import routineExfoliationImg from "@/assets/steps/routine-step-mask.png";
 import MagicSparkles from "./MagicSparkles";
 
 interface ResultsPageProps {
