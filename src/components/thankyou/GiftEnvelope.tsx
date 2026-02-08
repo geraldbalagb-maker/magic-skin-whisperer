@@ -1,213 +1,330 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Gift, Sparkles } from "lucide-react";
+import { Gift } from "lucide-react";
 
 interface GiftEnvelopeProps {
   onOpen: () => void;
 }
 
 const GiftEnvelope = ({ onOpen }: GiftEnvelopeProps) => {
-  const [isOpening, setIsOpening] = useState(false);
+  const [phase, setPhase] = useState<"sealed" | "opening" | "revealed">("sealed");
 
   const handleClick = () => {
-    if (isOpening) return;
-    setIsOpening(true);
-    // Delay the callback to let animation play
-    setTimeout(onOpen, 1800);
+    if (phase !== "sealed") return;
+    setPhase("opening");
+    // After flap opens, reveal the card
+    setTimeout(() => setPhase("revealed"), 800);
+    // Callback after full animation
+    setTimeout(onOpen, 2400);
   };
 
   return (
     <div className="relative flex flex-col items-center">
-      {/* Floating particles behind envelope */}
+      {/* Ambient glow */}
+      <motion.div
+        className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full"
+        style={{
+          width: 300,
+          height: 300,
+          background: "radial-gradient(circle, hsl(var(--gold) / 0.12), transparent 70%)",
+        }}
+        animate={
+          phase === "sealed"
+            ? { scale: [1, 1.15, 1], opacity: [0.3, 0.5, 0.3] }
+            : { scale: 2.5, opacity: 0 }
+        }
+        transition={
+          phase === "sealed"
+            ? { duration: 3, repeat: Infinity, ease: "easeInOut" }
+            : { duration: 1.2 }
+        }
+      />
+
+      {/* Floating gold particles */}
       <div className="pointer-events-none absolute inset-0">
-        {Array.from({ length: 12 }).map((_, i) => (
+        {Array.from({ length: 8 }).map((_, i) => (
           <motion.div
             key={i}
-            className="absolute left-1/2 top-1/2 h-1.5 w-1.5 rounded-full"
+            className="absolute rounded-full"
             style={{
-              background: i % 2 === 0 ? "hsl(38 55% 55%)" : "hsl(40 60% 75%)",
+              width: 3 + (i % 3) * 2,
+              height: 3 + (i % 3) * 2,
+              background: `hsl(var(--gold-light))`,
+              left: `${20 + (i * 60) / 8}%`,
+              top: `${30 + Math.sin(i) * 30}%`,
             }}
             animate={{
-              x: [0, Math.cos((i * Math.PI * 2) / 12) * 80],
-              y: [0, Math.sin((i * Math.PI * 2) / 12) * 80],
+              y: [-10, -30, -10],
               opacity: [0, 0.6, 0],
-              scale: [0, 1.2, 0],
             }}
             transition={{
-              duration: 2.5,
-              delay: i * 0.15,
+              duration: 2 + i * 0.3,
+              delay: i * 0.4,
               repeat: Infinity,
-              ease: "easeOut",
+              ease: "easeInOut",
             }}
           />
         ))}
       </div>
 
-      {/* Glow effect */}
-      <motion.div
-        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full"
-        style={{
-          width: 260,
-          height: 260,
-          background: "radial-gradient(circle, hsl(38 55% 55% / 0.15), transparent 70%)",
-        }}
-        animate={
-          isOpening
-            ? { scale: [1, 3], opacity: [0.3, 0] }
-            : { scale: [1, 1.15, 1], opacity: [0.2, 0.35, 0.2] }
-        }
-        transition={
-          isOpening
-            ? { duration: 1.2, ease: "easeOut" }
-            : { duration: 3, repeat: Infinity, ease: "easeInOut" }
-        }
-      />
-
-      {/* The Envelope */}
+      {/* Envelope container with 3D perspective */}
       <motion.div
         onClick={handleClick}
         className="relative z-10 cursor-pointer select-none"
-        animate={isOpening ? {} : { y: [0, -6, 0] }}
-        transition={isOpening ? {} : { duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-        whileHover={isOpening ? {} : { scale: 1.06 }}
-        whileTap={isOpening ? {} : { scale: 0.96 }}
+        style={{ perspective: 800 }}
+        animate={phase === "sealed" ? { y: [0, -6, 0] } : {}}
+        transition={phase === "sealed" ? { duration: 2.5, repeat: Infinity, ease: "easeInOut" } : {}}
+        whileHover={phase === "sealed" ? { scale: 1.04 } : {}}
+        whileTap={phase === "sealed" ? { scale: 0.97 } : {}}
       >
-        <svg
-          viewBox="0 0 240 180"
-          className="w-56 md:w-64 drop-shadow-2xl"
-          style={{ filter: "drop-shadow(0 8px 32px hsl(38 55% 55% / 0.3))" }}
+        {/* Envelope structure */}
+        <div
+          className="relative"
+          style={{
+            width: 260,
+            height: 180,
+          }}
         >
-          {/* Envelope body */}
-          <defs>
-            <linearGradient id="env-body" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stopColor="hsl(38 40% 88%)" />
-              <stop offset="50%" stopColor="hsl(40 45% 82%)" />
-              <stop offset="100%" stopColor="hsl(38 35% 75%)" />
-            </linearGradient>
-            <linearGradient id="env-flap" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="hsl(38 50% 70%)" />
-              <stop offset="100%" stopColor="hsl(40 45% 82%)" />
-            </linearGradient>
-            <linearGradient id="env-inner" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="hsl(38 55% 55%)" />
-              <stop offset="100%" stopColor="hsl(40 50% 65%)" />
-            </linearGradient>
-            <linearGradient id="env-seal" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stopColor="hsl(38 60% 50%)" />
-              <stop offset="100%" stopColor="hsl(35 55% 40%)" />
-            </linearGradient>
-          </defs>
+          {/* === BACK of envelope (visible behind flap) === */}
+          <div
+            className="absolute inset-x-0 top-0 rounded-t-lg"
+            style={{
+              height: 90,
+              background: "linear-gradient(180deg, hsl(var(--gold-dark)), hsl(var(--gold)))",
+              borderRadius: "8px 8px 0 0",
+            }}
+          />
 
-          {/* Inner triangle visible when flap opens */}
-          <polygon points="10,60 120,130 230,60" fill="url(#env-inner)" opacity="0.5" />
-
-          {/* Body rect */}
-          <rect x="10" y="60" width="220" height="110" rx="6" fill="url(#env-body)" stroke="hsl(38 30% 70%)" strokeWidth="1" />
-
-          {/* Bottom fold lines */}
-          <line x1="10" y1="60" x2="120" y2="130" stroke="hsl(38 30% 70%)" strokeWidth="0.5" opacity="0.5" />
-          <line x1="230" y1="60" x2="120" y2="130" stroke="hsl(38 30% 70%)" strokeWidth="0.5" opacity="0.5" />
-
-          {/* Flap (animated) */}
-          <motion.g
-            style={{ transformOrigin: "120px 60px" }}
-            animate={isOpening ? { rotateX: 180 } : {}}
-            transition={{ duration: 0.6, ease: "easeInOut" }}
-          >
-            <polygon
-              points="10,60 120,6 230,60"
-              fill="url(#env-flap)"
-              stroke="hsl(38 30% 70%)"
-              strokeWidth="1"
-            />
-            {/* Subtle line on flap */}
-            <line x1="60" y1="40" x2="180" y2="40" stroke="hsl(38 30% 65%)" strokeWidth="0.3" opacity="0.6" />
-          </motion.g>
-
-          {/* Wax seal */}
+          {/* === Card that rises out === */}
           <AnimatePresence>
-            {!isOpening && (
-              <motion.g
-                exit={{ scale: 0, opacity: 0 }}
-                transition={{ duration: 0.3 }}
+            {phase === "revealed" && (
+              <motion.div
+                initial={{ y: 60, opacity: 0 }}
+                animate={{ y: -90, opacity: 1 }}
+                transition={{ duration: 0.9, type: "spring", bounce: 0.35 }}
+                className="absolute left-1/2 z-20 -translate-x-1/2"
+                style={{ top: 20, width: 200 }}
               >
-                <circle cx="120" cy="60" r="16" fill="url(#env-seal)" />
-                <circle cx="120" cy="60" r="13" fill="none" stroke="hsl(35 45% 35%)" strokeWidth="0.5" />
-                {/* LP monogram */}
-                <text
-                  x="120"
-                  y="65"
-                  textAnchor="middle"
-                  fontFamily="'Cormorant Garamond', serif"
-                  fontSize="13"
-                  fontWeight="700"
-                  fill="hsl(40 60% 85%)"
+                <div
+                  className="flex flex-col items-center justify-center rounded-xl border px-6 py-5"
+                  style={{
+                    background: "linear-gradient(135deg, hsl(var(--card)), hsl(var(--cream-dark)))",
+                    borderColor: "hsl(var(--gold-light) / 0.4)",
+                    boxShadow: "0 12px 40px hsl(var(--gold) / 0.25), 0 2px 8px hsl(var(--gold) / 0.1)",
+                  }}
                 >
-                  LP
-                </text>
-              </motion.g>
+                  <motion.div
+                    initial={{ scale: 0, rotate: -20 }}
+                    animate={{ scale: 1, rotate: 0 }}
+                    transition={{ delay: 0.3, type: "spring", bounce: 0.5 }}
+                  >
+                    <Gift className="mb-2 h-8 w-8 text-primary" />
+                  </motion.div>
+                  <motion.p
+                    initial={{ opacity: 0, y: 5 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.5 }}
+                    className="font-display text-sm font-bold text-foreground"
+                  >
+                    Hai un regalo!
+                  </motion.p>
+                  <motion.p
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.7 }}
+                    className="mt-1 font-body text-[10px] text-muted-foreground"
+                  >
+                    Un prodotto esclusivo ti aspetta
+                  </motion.p>
+                </div>
+              </motion.div>
             )}
           </AnimatePresence>
-        </svg>
 
-        {/* Card rising out of envelope on open */}
-        <AnimatePresence>
-          {isOpening && (
-            <motion.div
-              initial={{ y: 20, opacity: 0, scale: 0.8 }}
-              animate={{ y: -80, opacity: 1, scale: 1 }}
-              transition={{ delay: 0.5, duration: 0.8, type: "spring", bounce: 0.3 }}
-              className="absolute left-1/2 top-0 -translate-x-1/2"
+          {/* === BODY of envelope (front face) === */}
+          <div
+            className="absolute inset-0 overflow-hidden"
+            style={{
+              borderRadius: 8,
+              background: "linear-gradient(145deg, hsl(40 45% 90%), hsl(38 40% 84%), hsl(36 35% 78%))",
+              boxShadow: "0 8px 32px hsl(var(--gold) / 0.25), inset 0 1px 0 hsl(40 50% 95%)",
+              border: "1px solid hsl(var(--gold-light) / 0.3)",
+            }}
+          >
+            {/* Inner V-fold decorative lines */}
+            <svg
+              viewBox="0 0 260 180"
+              className="absolute inset-0 h-full w-full"
+              preserveAspectRatio="none"
             >
-              <div className="flex h-28 w-44 flex-col items-center justify-center rounded-xl border border-primary/20 bg-card shadow-elevated md:h-32 md:w-52">
-                <motion.div
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ delay: 0.9, type: "spring" }}
+              {/* Left fold line */}
+              <line
+                x1="0" y1="0" x2="130" y2="110"
+                stroke="hsl(38 30% 70%)"
+                strokeWidth="0.6"
+                opacity="0.4"
+              />
+              {/* Right fold line */}
+              <line
+                x1="260" y1="0" x2="130" y2="110"
+                stroke="hsl(38 30% 70%)"
+                strokeWidth="0.6"
+                opacity="0.4"
+              />
+            </svg>
+
+            {/* Subtle texture overlay */}
+            <div
+              className="absolute inset-0 opacity-[0.03]"
+              style={{
+                backgroundImage: `repeating-linear-gradient(
+                  45deg,
+                  transparent,
+                  transparent 2px,
+                  hsl(var(--gold-dark)) 2px,
+                  hsl(var(--gold-dark)) 3px
+                )`,
+              }}
+            />
+          </div>
+
+          {/* === FLAP (triangular lid) with real 3D rotation === */}
+          <motion.div
+            className="absolute inset-x-0 top-0 z-30"
+            style={{
+              height: 100,
+              transformOrigin: "top center",
+              transformStyle: "preserve-3d",
+            }}
+            animate={
+              phase !== "sealed"
+                ? { rotateX: 180 }
+                : { rotateX: 0 }
+            }
+            transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
+          >
+            {/* Front side of flap (visible when closed) */}
+            <div
+              className="absolute inset-0"
+              style={{
+                clipPath: "polygon(0 0, 50% 100%, 100% 0)",
+                background: "linear-gradient(180deg, hsl(38 42% 82%), hsl(40 45% 86%), hsl(38 40% 80%))",
+                backfaceVisibility: "hidden",
+                border: "none",
+              }}
+            >
+              {/* Flap edge highlight */}
+              <svg viewBox="0 0 260 100" className="absolute inset-0 h-full w-full" preserveAspectRatio="none">
+                <line x1="0" y1="0" x2="130" y2="100" stroke="hsl(38 30% 72%)" strokeWidth="0.8" opacity="0.5" />
+                <line x1="260" y1="0" x2="130" y2="100" stroke="hsl(38 30% 72%)" strokeWidth="0.8" opacity="0.5" />
+              </svg>
+            </div>
+
+            {/* Back side of flap (visible when opened = flipped 180°) */}
+            <div
+              className="absolute inset-0"
+              style={{
+                clipPath: "polygon(0 0, 50% 100%, 100% 0)",
+                background: "linear-gradient(180deg, hsl(var(--gold)), hsl(var(--gold-dark)))",
+                backfaceVisibility: "hidden",
+                transform: "rotateX(180deg)",
+              }}
+            />
+          </motion.div>
+
+          {/* === WAX SEAL === */}
+          <AnimatePresence>
+            {phase === "sealed" && (
+              <motion.div
+                className="absolute left-1/2 z-40 -translate-x-1/2"
+                style={{ top: 55 }}
+                exit={{
+                  scale: [1, 1.3, 0],
+                  opacity: [1, 1, 0],
+                  rotate: [0, 10, -20],
+                }}
+                transition={{ duration: 0.4, ease: "easeIn" }}
+              >
+                {/* Seal outer */}
+                <div
+                  className="relative flex items-center justify-center"
+                  style={{
+                    width: 44,
+                    height: 44,
+                    borderRadius: "50%",
+                    background: "radial-gradient(circle at 35% 35%, hsl(var(--gold)), hsl(var(--gold-dark)) 70%)",
+                    boxShadow: "0 3px 12px hsl(var(--gold-dark) / 0.5), inset 0 1px 2px hsl(40 60% 75% / 0.4)",
+                  }}
                 >
-                  <Gift className="mb-2 h-8 w-8 text-primary" />
-                </motion.div>
-                <motion.p
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 1.1 }}
-                  className="font-display text-sm font-bold text-foreground"
-                >
-                  Hai un regalo!
-                </motion.p>
-                <motion.p
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 1.3 }}
-                  className="font-body text-[10px] text-muted-foreground"
-                >
-                  Clicca per scoprirlo
-                </motion.p>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+                  {/* Seal edge bumps */}
+                  <div
+                    className="absolute inset-0 rounded-full"
+                    style={{
+                      background: `conic-gradient(
+                        from 0deg,
+                        hsl(var(--gold)) 0deg,
+                        hsl(var(--gold-dark)) 15deg,
+                        hsl(var(--gold)) 30deg,
+                        hsl(var(--gold-dark)) 45deg,
+                        hsl(var(--gold)) 60deg,
+                        hsl(var(--gold-dark)) 75deg,
+                        hsl(var(--gold)) 90deg,
+                        hsl(var(--gold-dark)) 105deg,
+                        hsl(var(--gold)) 120deg,
+                        hsl(var(--gold-dark)) 135deg,
+                        hsl(var(--gold)) 150deg,
+                        hsl(var(--gold-dark)) 165deg,
+                        hsl(var(--gold)) 180deg,
+                        hsl(var(--gold-dark)) 195deg,
+                        hsl(var(--gold)) 210deg,
+                        hsl(var(--gold-dark)) 225deg,
+                        hsl(var(--gold)) 240deg,
+                        hsl(var(--gold-dark)) 255deg,
+                        hsl(var(--gold)) 270deg,
+                        hsl(var(--gold-dark)) 285deg,
+                        hsl(var(--gold)) 300deg,
+                        hsl(var(--gold-dark)) 315deg,
+                        hsl(var(--gold)) 330deg,
+                        hsl(var(--gold-dark)) 345deg,
+                        hsl(var(--gold)) 360deg
+                      )`,
+                      mask: "radial-gradient(circle, transparent 60%, black 61%, black 100%)",
+                      WebkitMask: "radial-gradient(circle, transparent 60%, black 61%, black 100%)",
+                    }}
+                  />
+                  {/* Inner circle */}
+                  <div
+                    className="flex items-center justify-center rounded-full"
+                    style={{
+                      width: 30,
+                      height: 30,
+                      background: "radial-gradient(circle at 40% 40%, hsl(var(--gold)), hsl(var(--gold-dark)))",
+                      border: "1px solid hsl(var(--gold-light) / 0.3)",
+                    }}
+                  >
+                    <span
+                      className="font-display text-xs font-bold"
+                      style={{ color: "hsl(40 60% 88%)", letterSpacing: "0.05em" }}
+                    >
+                      LP
+                    </span>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
       </motion.div>
 
-      {/* Sparkle icon */}
-      {!isOpening && (
-        <motion.div
-          className="absolute -right-4 -top-4 z-20 text-primary"
-          animate={{ rotate: [0, 15, -15, 0], scale: [1, 1.2, 1] }}
-          transition={{ duration: 2, repeat: Infinity }}
-        >
-          <Sparkles className="h-6 w-6" />
-        </motion.div>
-      )}
-
-      {/* Screen-wide flash on open */}
+      {/* Full-screen flash on open */}
       <AnimatePresence>
-        {isOpening && (
+        {phase !== "sealed" && (
           <motion.div
             initial={{ opacity: 0 }}
-            animate={{ opacity: [0, 0.6, 0] }}
-            transition={{ delay: 0.4, duration: 0.8 }}
-            className="fixed inset-0 z-50 bg-primary/10 pointer-events-none"
+            animate={{ opacity: [0, 0.4, 0] }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="pointer-events-none fixed inset-0 z-50"
+            style={{ background: "radial-gradient(circle at 50% 60%, hsl(var(--gold) / 0.3), transparent 70%)" }}
           />
         )}
       </AnimatePresence>
