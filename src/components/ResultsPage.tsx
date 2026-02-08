@@ -5,6 +5,7 @@ import type { Product, RoutineStep } from "@/data/products";
 import { products } from "@/data/products";
 import type { QuizData } from "./BeautyQuiz";
 import type { AIRoutineResult } from "./AnalysisScreen";
+import BeforeAfterSection from "./BeforeAfterSection";
 import routineCleansingImg from "@/assets/steps/routine-step-cleansing.png";
 import routineTonerImg from "@/assets/steps/routine-step-toner.png";
 import routineTreatmentImg from "@/assets/steps/routine-step-treatment.png";
@@ -16,6 +17,8 @@ interface ResultsPageProps {
   name: string;
   quizData: QuizData;
   aiResult: AIRoutineResult;
+  selfie: string | null;
+  enhancedSelfie: string | null;
   onCheckout: (cart: Product[]) => void;
 }
 
@@ -23,7 +26,7 @@ const stepImages = [routineCleansingImg, routineTonerImg, routineTreatmentImg, r
 
 const productsMap = new Map(products.map(p => [p.id, p]));
 
-const ResultsPage = ({ name, quizData, aiResult, onCheckout }: ResultsPageProps) => {
+const ResultsPage = ({ name, quizData, aiResult, selfie, enhancedSelfie, onCheckout }: ResultsPageProps) => {
   // Build routine from AI result
   const routine: RoutineStep[] = useMemo(() => {
     return aiResult.steps.map((step, idx) => ({
@@ -183,6 +186,15 @@ const ResultsPage = ({ name, quizData, aiResult, onCheckout }: ResultsPageProps)
           </motion.section>
         ))}
       </div>
+
+      {/* Before/After Section */}
+      {selfie && enhancedSelfie && (
+        <BeforeAfterSection
+          beforeImage={selfie}
+          afterImage={enhancedSelfie}
+          name={name}
+        />
+      )}
 
       {/* Recap Bundle */}
       <div className="bg-gradient-cream px-4 py-12">
