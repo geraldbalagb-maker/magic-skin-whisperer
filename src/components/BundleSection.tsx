@@ -44,7 +44,7 @@ const BundleSection = ({
               transition={{ duration: 0.7 }}
             >
               {/* Badge */}
-              <span className="inline-block rounded-full bg-gradient-gold px-4 py-1.5 font-body text-[11px] font-bold uppercase tracking-[0.2em] text-primary-foreground shadow-gold">
+              <span className="inline-block rounded-sm bg-foreground px-4 py-1.5 font-body text-[11px] font-bold uppercase tracking-[0.2em] text-background">
                 Exclusive Beauty Set
               </span>
 
@@ -87,7 +87,7 @@ const BundleSection = ({
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.3 }}
-                className="mt-10 inline-flex items-end gap-4 rounded-2xl border border-border bg-card p-6 shadow-sm"
+                className="mt-10 inline-flex items-end gap-4 rounded-sm border border-border bg-card p-6"
               >
                 <div>
                   <p className="font-body text-xs text-muted-foreground line-through">
@@ -97,7 +97,7 @@ const BundleSection = ({
                     {bundlePrice.toFixed(2)}€
                   </p>
                 </div>
-                <span className="mb-1 rounded-md bg-destructive/10 px-2.5 py-1 font-body text-xs font-bold uppercase tracking-wider text-destructive">
+                <span className="mb-1 rounded-sm bg-cta/10 px-2.5 py-1 font-body text-xs font-bold uppercase tracking-wider text-cta">
                   -20% OFF
                 </span>
               </motion.div>
@@ -111,7 +111,7 @@ const BundleSection = ({
                     onAddAll();
                     onCheckout(products);
                   }}
-                  className="flex items-center justify-center gap-2.5 rounded-none bg-foreground px-10 py-4 font-body text-xs font-bold uppercase tracking-[0.15em] text-background transition-opacity hover:opacity-90"
+                  className="flex items-center justify-center gap-2.5 rounded-sm bg-gradient-cta px-10 py-4 font-body text-xs font-bold uppercase tracking-[0.15em] text-cta-foreground shadow-cta transition-opacity hover:opacity-90"
                 >
                   <ShoppingBag className="h-4 w-4" />
                   Aggiungi al Carrello
@@ -148,7 +148,7 @@ const BundleSection = ({
               className="relative"
             >
               {/* Decorative background */}
-              <div className="absolute inset-0 -rotate-2 scale-[1.02] rounded-3xl bg-gradient-cream" />
+              <div className="absolute inset-0 -rotate-2 scale-[1.02] rounded-sm bg-gradient-cream" />
 
               <div className="relative grid grid-cols-2 gap-4 p-4">
                 {products.slice(0, 6).map((p, i) => (
@@ -160,20 +160,20 @@ const BundleSection = ({
                     transition={{ delay: 0.1 * i, duration: 0.5 }}
                     whileHover={{ y: -4, rotate: i % 2 === 0 ? 1 : -1 }}
                     onClick={() => onToggleCart(p.id)}
-                    className={`group relative cursor-pointer overflow-hidden rounded-2xl border-2 bg-card p-3 shadow-elevated transition-all duration-300 ${
+                    className={`group relative cursor-pointer overflow-hidden rounded-sm border-2 bg-card p-3 shadow-sm transition-all duration-300 ${
                       cart.has(p.id)
-                        ? "border-primary shadow-gold"
-                        : "border-transparent hover:border-primary/20"
+                        ? "border-foreground"
+                        : "border-transparent hover:border-border"
                     }`}
                   >
                     {/* Check mark */}
                     {cart.has(p.id) && (
-                      <div className="absolute top-2 right-2 z-10 flex h-6 w-6 items-center justify-center rounded-full bg-gradient-gold shadow-sm">
-                        <Check className="h-3.5 w-3.5 text-primary-foreground" />
+                      <div className="absolute top-2 right-2 z-10 flex h-6 w-6 items-center justify-center rounded-full bg-foreground">
+                        <Check className="h-3.5 w-3.5 text-background" />
                       </div>
                     )}
 
-                    <div className="aspect-square overflow-hidden rounded-xl bg-background p-2">
+                    <div className="aspect-square overflow-hidden rounded-sm bg-background p-2">
                       <img
                         src={p.image}
                         alt={p.name}

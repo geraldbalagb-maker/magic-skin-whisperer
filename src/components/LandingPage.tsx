@@ -94,7 +94,7 @@ const LandingPage = ({ onStartQuiz }: LandingPageProps) => {
             >
               <button
                 onClick={onStartQuiz}
-              className="group flex items-center justify-center gap-2 rounded-full bg-gradient-gold px-8 py-4 font-body text-sm font-semibold text-primary-foreground shadow-gold-lg transition-all hover:shadow-gold animate-pulse-glow"
+                className="group flex items-center justify-center gap-2 rounded-sm bg-gradient-cta px-8 py-4 font-body text-xs font-semibold uppercase tracking-widest text-cta-foreground shadow-cta transition-all hover:opacity-90"
               >
                 Scopri la tua routine
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -202,8 +202,8 @@ const LandingPage = ({ onStartQuiz }: LandingPageProps) => {
                 viewport={{ once: true }}
                 variants={fadeUp}
                 custom={i + 1}
-                whileHover={{ y: -6 }}
-                className="group cursor-pointer overflow-hidden rounded-2xl border border-border bg-card shadow-elegant transition-shadow hover:shadow-elevated"
+                whileHover={{ y: -4 }}
+                className="group cursor-pointer overflow-hidden rounded-sm border border-border bg-card transition-shadow hover:shadow-elevated"
               >
                 <div className="relative aspect-[4/3] overflow-hidden">
                   <img
@@ -220,7 +220,7 @@ const LandingPage = ({ onStartQuiz }: LandingPageProps) => {
                   <p className="font-body text-sm text-muted-foreground">{cat.description}</p>
                   <button
                     onClick={onStartQuiz}
-                    className="mt-3 flex items-center gap-1 font-body text-xs font-semibold uppercase tracking-wider text-primary transition-colors hover:text-accent"
+                    className="mt-3 flex items-center gap-1 font-body text-xs font-semibold uppercase tracking-wider text-foreground transition-colors hover:text-cta"
                   >
                     Scopri i prodotti
                     <ArrowRight className="h-3 w-3" />
@@ -253,7 +253,7 @@ const LandingPage = ({ onStartQuiz }: LandingPageProps) => {
             </div>
             <button
               onClick={onStartQuiz}
-              className="flex items-center gap-2 rounded-full border border-border px-6 py-2.5 font-body text-xs font-semibold uppercase tracking-wider text-foreground transition-all hover:border-primary/30 hover:bg-primary/5"
+              className="flex items-center gap-2 rounded-sm border border-foreground/20 px-6 py-2.5 font-body text-xs font-semibold uppercase tracking-wider text-foreground transition-all hover:border-foreground hover:bg-foreground hover:text-background"
             >
               Vedi tutti
               <ArrowRight className="h-3 w-3" />
@@ -275,7 +275,7 @@ const LandingPage = ({ onStartQuiz }: LandingPageProps) => {
                 whileHover={{ y: -4 }}
                 className="group block"
               >
-                <div className="relative aspect-square overflow-hidden rounded-2xl border border-border bg-secondary/30 p-4 transition-all group-hover:border-primary/20 group-hover:shadow-elegant">
+                <div className="relative aspect-square overflow-hidden rounded-sm border border-border bg-secondary/30 p-4 transition-all group-hover:border-foreground/20 group-hover:shadow-elegant">
                   <img
                     src={product.image}
                     alt={product.name}
@@ -330,7 +330,7 @@ const LandingPage = ({ onStartQuiz }: LandingPageProps) => {
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.96 }}
               onClick={onStartQuiz}
-               className="mt-8 inline-flex items-center gap-2 rounded-full bg-gradient-gold px-10 py-4 font-body text-sm font-semibold text-primary-foreground shadow-gold-lg"
+              className="mt-8 inline-flex items-center gap-2 rounded-sm bg-gradient-cta px-10 py-4 font-body text-xs font-semibold uppercase tracking-widest text-cta-foreground shadow-cta"
             >
               Inizia il quiz
               <ArrowRight className="h-4 w-4" />
