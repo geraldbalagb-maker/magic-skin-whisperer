@@ -6,6 +6,9 @@ import { products } from "@/data/products";
 import type { QuizData } from "./BeautyQuiz";
 import type { AIRoutineResult } from "./AnalysisScreen";
 import BeforeAfterSection from "./BeforeAfterSection";
+import BundleSection from "./BundleSection";
+import ReviewsSection from "./ReviewsSection";
+import FAQSection from "./FAQSection";
 import routineCleansingImg from "@/assets/steps/routine-step-cleansing.png";
 import routineTonerImg from "@/assets/steps/routine-step-toner.png";
 import routineTreatmentImg from "@/assets/steps/routine-step-treatment.png";
@@ -306,136 +309,32 @@ const ResultsPage = ({ name, quizData, aiResult, selfie, enhancedSelfie, onCheck
       )}
 
       {/* ─── Bundle CTA ─── */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        className="border-t border-border bg-gradient-cream"
-      >
-        <div className="mx-auto max-w-3xl px-4 py-16">
-          <div className="text-center">
-            
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-            >
-              <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-gold shadow-gold">
-                <Gift className="h-6 w-6 text-primary-foreground" />
-              </div>
-              <h2 className="font-display text-2xl font-bold text-foreground md:text-3xl">
-                Il tuo kit completo
-              </h2>
-              <p className="mt-2 font-body text-sm text-muted-foreground">
-                Tutti i prodotti della tua routine in un unico ordine con uno sconto esclusivo
-              </p>
-            </motion.div>
-          </div>
+      <BundleSection
+        products={uniqueProducts}
+        cart={cart}
+        totalPrice={totalPrice}
+        bundlePrice={bundlePrice}
+        onToggleCart={toggleCart}
+        onAddAll={addAllToCart}
+        onCheckout={onCheckout}
+      />
 
-          {/* Product grid */}
-          <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-            {uniqueProducts.map((p, i) => (
-              <motion.div
-                key={p.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.05 }}
-                whileHover={{ y: -4 }}
-                className={`group cursor-pointer rounded-2xl border bg-card p-4 text-center transition-all duration-200 ${
-                  cart.has(p.id) 
-                    ? "border-primary/30 shadow-gold" 
-                    : "border-border hover:border-primary/15 hover:shadow-sm"
-                }`}
-                onClick={() => toggleCart(p.id)}
-              >
-                <div className="relative mx-auto mb-3 flex h-20 w-20 items-center justify-center rounded-xl bg-background p-2 transition-transform group-hover:scale-105">
-                  <img src={p.image} alt={p.name} className="h-full w-full object-contain" />
-                  {cart.has(p.id) && (
-                    <div className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-gradient-gold shadow-sm">
-                      <Check className="h-3 w-3 text-primary-foreground" />
-                    </div>
-                  )}
-                </div>
-                <p className="font-body text-[10px] font-medium uppercase tracking-wider text-muted-foreground/60">
-                  {p.brand}
-                </p>
-                <p className="mt-0.5 truncate font-body text-xs font-medium text-foreground">{p.name}</p>
-                <p className="mt-1.5 font-display text-sm font-bold text-primary">{p.price.toFixed(2)}€</p>
-              </motion.div>
-            ))}
-          </div>
+      {/* ─── Reviews Section ─── */}
+      <ReviewsSection />
 
-          {/* Pricing card */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="mt-10"
-          >
-            <div className="overflow-hidden rounded-3xl border border-primary/15 bg-card shadow-sm">
-              {/* Savings banner */}
-              <div className="bg-gradient-gold px-6 py-3 text-center">
-                <p className="font-body text-xs font-semibold text-primary-foreground">
-                  🎉 Risparmi {(totalPrice - bundlePrice).toFixed(2)}€ con il bundle completo
-                </p>
-              </div>
+      {/* ─── FAQ & Trust Sections ─── */}
+      <FAQSection />
 
-              <div className="p-6">
-                <div className="flex items-end justify-between">
-                  <div>
-                    <p className="font-body text-xs text-muted-foreground">Prezzo pieno</p>
-                    <p className="font-display text-lg text-muted-foreground/60 line-through">
-                      {totalPrice.toFixed(2)}€
-                    </p>
-                  </div>
-                  <div className="text-right">
-                    <p className="font-body text-xs font-medium text-primary">Bundle -20%</p>
-                    <p className="font-display text-3xl font-bold text-foreground">
-                      {bundlePrice.toFixed(2)}€
-                    </p>
-                  </div>
-                </div>
-
-                <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-                  <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.97 }}
-                    onClick={() => {
-                      addAllToCart();
-                      onCheckout(uniqueProducts);
-                    }}
-                    className="flex flex-1 items-center justify-center gap-2 rounded-full bg-gradient-gold px-8 py-4 font-body text-sm font-semibold text-primary-foreground shadow-gold-lg transition-shadow hover:shadow-gold"
-                  >
-                    <ShoppingBag className="h-4 w-4" />
-                    Acquista il bundle
-                    <ChevronRight className="h-4 w-4" />
-                  </motion.button>
-
-                  <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.97 }}
-                    onClick={() => onCheckout(uniqueProducts.filter((p) => cart.has(p.id)))}
-                    disabled={cart.size === 0}
-                    className="flex flex-1 items-center justify-center gap-2 rounded-full border border-border px-8 py-4 font-body text-sm font-medium text-foreground transition-all hover:border-primary/20 hover:bg-primary/5 disabled:opacity-40"
-                  >
-                    Acquista selezionati ({cart.size})
-                  </motion.button>
-                </div>
-              </div>
-            </div>
-
-            {/* PDF download */}
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              className="mx-auto mt-6 flex items-center justify-center gap-2 font-body text-xs text-muted-foreground transition-colors hover:text-foreground"
-            >
-              <Download className="h-3.5 w-3.5" />
-              Scarica il PDF della tua routine
-            </motion.button>
-          </motion.div>
-        </div>
-      </motion.div>
+      {/* ─── PDF Download ─── */}
+      <div className="border-t border-border bg-background py-8 text-center">
+        <motion.button
+          whileHover={{ scale: 1.02 }}
+          className="mx-auto flex items-center justify-center gap-2 font-body text-xs text-muted-foreground transition-colors hover:text-foreground"
+        >
+          <Download className="h-3.5 w-3.5" />
+          Scarica il PDF della tua routine
+        </motion.button>
+      </div>
     </div>
   );
 };
