@@ -16,34 +16,41 @@ export interface AIRoutineResult {
   }[];
 }
 
+export interface AnalysisResult {
+  routine: AIRoutineResult;
+  enhancedSelfie: string | null;
+}
+
 interface AnalysisScreenProps {
   name: string;
   quizData: QuizData;
-  onComplete: (result: AIRoutineResult) => void;
+  onComplete: (result: AnalysisResult) => void;
 }
 
 const loadingSteps = [
   "Analizzo il tuo tipo di pelle...",
   "Cerco i prodotti più adatti a te...",
   "Creo la tua routine personalizzata...",
-  "Aggiungo un tocco di magia... ✨",
+  "Simulo i risultati sulla tua pelle... ✨",
+  "Aggiungo un tocco di magia... 💫",
 ];
 
 const AnalysisScreen = ({ name, quizData, onComplete }: AnalysisScreenProps) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [progress, setProgress] = useState(0);
   const [error, setError] = useState<string | null>(null);
-  const aiResultRef = useRef<AIRoutineResult | null>(null);
+  const resultRef = useRef<AnalysisResult | null>(null);
   const hasCalledAI = useRef(false);
 
-  // Call AI edge function
+  // Call AI edge functions in parallel
   useEffect(() => {
     if (hasCalledAI.current) return;
     hasCalledAI.current = true;
 
     const callAI = async () => {
       try {
-        const { data, error: fnError } = await supabase.functions.invoke("analyze-skin", {
+        // Launch both requests in parallel
+        const routinePromise = supabase.functions.invoke("analyze-skin", {
           body: {
             name: quizData.name,
             age: quizData.age,
@@ -53,10 +60,28 @@ const AnalysisScreen = ({ name, quizData, onComplete }: AnalysisScreenProps) => 
           },
         });
 
-        if (fnError) throw new Error(fnError.message);
-        if (!data?.success) throw new Error(data?.error || "Errore nell'analisi");
+        const selfiePromise = quizData.selfie
+          ? supabase.functions.invoke("enhance-selfie", {
+              body: { selfieBase64: quizData.selfie },
+            })
+          : Promise.resolve({ data: null, error: null });
 
-        aiResultRef.current = data.routine;
+        const [routineRes, selfieRes] = await Promise.all([routinePromise, selfiePromise]);
+
+        if (routineRes.error) throw new Error(routineRes.error.message);
+        if (!routineRes.data?.success) throw new Error(routineRes.data?.error || "Errore nell'analisi");
+
+        let enhancedSelfie: string | null = null;
+        if (selfieRes.data?.success && selfieRes.data?.enhancedImage) {
+          enhancedSelfie = selfieRes.data.enhancedImage;
+        } else if (selfieRes.error) {
+          console.warn("Selfie enhancement failed (non-blocking):", selfieRes.error);
+        }
+
+        resultRef.current = {
+          routine: routineRes.data.routine,
+          enhancedSelfie,
+        };
       } catch (err) {
         console.error("AI analysis error:", err);
         setError(err instanceof Error ? err.message : "Errore nell'analisi");
@@ -70,17 +95,15 @@ const AnalysisScreen = ({ name, quizData, onComplete }: AnalysisScreenProps) => 
   useEffect(() => {
     const interval = setInterval(() => {
       setProgress((p) => {
-        // If AI is done, speed up to 100
-        if (aiResultRef.current && p >= 80) {
+        if (resultRef.current && p >= 80) {
           if (p >= 100) {
             clearInterval(interval);
-            setTimeout(() => onComplete(aiResultRef.current!), 300);
+            setTimeout(() => onComplete(resultRef.current!), 300);
             return 100;
           }
           return p + 3;
         }
-        // If AI not done yet, slow down at 85%
-        if (p >= 85 && !aiResultRef.current) return p;
+        if (p >= 85 && !resultRef.current) return p;
         if (p >= 100) {
           clearInterval(interval);
           return 100;
@@ -164,6 +187,25 @@ const AnalysisScreen = ({ name, quizData, onComplete }: AnalysisScreenProps) => 
             {loadingSteps[currentStep]}
           </motion.p>
         </div>
+
+        {/* Show selfie thumbnail during analysis */}
+        {quizData.selfie && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.5 }}
+            className="relative"
+          >
+            <img
+              src={quizData.selfie}
+              alt="Il tuo selfie"
+              className="h-20 w-20 rounded-full border-2 border-gold/30 object-cover shadow-gold"
+            />
+            <div className="absolute -bottom-1 -right-1 rounded-full bg-gradient-gold p-1">
+              <span className="text-xs">✨</span>
+            </div>
+          </motion.div>
+        )}
       </motion.div>
     </div>
   );
