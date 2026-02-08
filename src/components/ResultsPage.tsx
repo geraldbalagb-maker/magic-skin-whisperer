@@ -124,11 +124,11 @@ const ResultsPage = ({ name, onCheckout }: ResultsPageProps) => {
 
             <div className="grid gap-4 md:grid-cols-2">
               {/* Step illustration */}
-              <div className="overflow-hidden rounded-2xl">
+              <div className="aspect-square overflow-hidden rounded-2xl">
                 <img
                   src={stepImages[idx % stepImages.length]}
                   alt={step.name}
-                  className="h-48 w-full object-cover md:h-64"
+                  className="h-full w-full object-contain"
                 />
               </div>
 
