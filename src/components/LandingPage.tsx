@@ -34,7 +34,7 @@ const LandingPage = ({ onStartQuiz }: LandingPageProps) => {
   return (
     <div className="min-h-screen bg-background">
       {/* ─── Hero ─── */}
-      <section className="relative flex min-h-[100dvh] flex-col items-center justify-center overflow-hidden">
+      <section className="relative flex min-h-[100dvh] flex-col items-end justify-end overflow-hidden pb-24">
         {/* Background image — more visible */}
         <div className="absolute inset-0">
           <img
