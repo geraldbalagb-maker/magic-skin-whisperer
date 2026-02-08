@@ -584,7 +584,7 @@ const ThankYouPage = ({ name }: ThankYouPageProps) => {
                 whileTap={{ scale: canSubmit ? 0.95 : 1 }}
                 onClick={handleSubmit}
                 disabled={!canSubmit}
-                className="mt-6 w-full rounded-full bg-gradient-gold px-8 py-4 font-body text-sm font-medium text-primary-foreground shadow-gold transition-all disabled:opacity-40"
+                className="mt-6 w-full rounded-sm bg-gradient-cta px-8 py-4 font-body text-xs font-semibold uppercase tracking-widest text-cta-foreground shadow-cta transition-all disabled:opacity-40"
               >
                 <Send className="mr-2 inline h-4 w-4" /> Invia gli inviti e ricevi il regalo
               </motion.button>

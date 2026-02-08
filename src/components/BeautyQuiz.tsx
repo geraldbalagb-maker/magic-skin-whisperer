@@ -81,7 +81,7 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
               value={data.name}
               onChange={(e) => setData({ ...data, name: e.target.value })}
               placeholder="Il tuo nome..."
-              className="w-full max-w-xs rounded-xl border border-gold/30 bg-card px-6 py-4 text-center font-display text-lg text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-gold/50 transition-all"
+              className="w-full max-w-xs rounded-sm border border-border bg-card px-6 py-4 text-center font-display text-lg text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all"
               autoFocus
               onKeyDown={(e) => e.key === "Enter" && data.name && nextStep()}
             />
@@ -90,7 +90,7 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
               whileTap={{ scale: 0.95 }}
               onClick={nextStep}
               disabled={!data.name}
-              className="bg-gradient-gold rounded-full px-8 py-3 font-body text-sm font-medium text-primary-foreground shadow-gold transition-all disabled:opacity-40"
+              className="bg-gradient-cta rounded-sm px-8 py-3 font-body text-xs font-semibold uppercase tracking-widest text-cta-foreground shadow-cta transition-all disabled:opacity-40"
             >
               Continua <ChevronRight className="ml-1 inline h-4 w-4" />
             </motion.button>
@@ -100,7 +100,7 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
       case 1:
         return (
           <motion.div key="selfie" variants={stepVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.5 }} className="flex flex-col items-center gap-6 text-center">
-            <Camera className="mx-auto h-8 w-8 text-gold" />
+            <Camera className="mx-auto h-8 w-8 text-foreground" />
             <h2 className="font-display text-3xl font-semibold text-foreground md:text-4xl">
               {data.name}, fatti un selfie! 📸
             </h2>
@@ -110,14 +110,14 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
             <label className="group cursor-pointer">
               <motion.div
                 whileHover={{ scale: 1.05 }}
-                className="flex flex-col items-center gap-3 rounded-2xl border-2 border-dashed border-gold/30 bg-card p-8 transition-colors group-hover:border-gold/60"
+                className="flex flex-col items-center gap-3 rounded-sm border-2 border-dashed border-border bg-card p-8 transition-colors group-hover:border-foreground/40"
               >
                 {data.selfie ? (
-                  <img src={data.selfie} alt="Selfie" className="h-32 w-32 rounded-full object-cover shadow-gold" />
+                  <img src={data.selfie} alt="Selfie" className="h-32 w-32 rounded-full object-cover shadow-elegant" />
                 ) : (
                   <>
-                    <div className="rounded-full bg-gradient-gold p-4">
-                      <Camera className="h-6 w-6 text-primary-foreground" />
+                    <div className="rounded-full bg-foreground p-4">
+                      <Camera className="h-6 w-6 text-background" />
                     </div>
                     <span className="font-body text-sm text-muted-foreground">Tocca per scattare o caricare</span>
                   </>
@@ -150,10 +150,10 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
                     setData({ ...data, age });
                     setTimeout(() => setStep(3), 400);
                   }}
-                  className={`rounded-full border px-6 py-3 font-body text-sm transition-all ${
+                  className={`rounded-sm border px-6 py-3 font-body text-sm transition-all ${
                     data.age === age
-                      ? "border-gold bg-gradient-gold text-primary-foreground shadow-gold"
-                      : "border-gold/20 bg-card text-foreground hover:border-gold/50"
+                      ? "border-foreground bg-foreground text-background"
+                      : "border-border bg-card text-foreground hover:border-foreground/40"
                   }`}
                 >
                   {age}
@@ -166,7 +166,7 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
       case 3:
         return (
           <motion.div key="time" variants={stepVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.5 }} className="flex flex-col items-center gap-6 text-center">
-            <Clock className="mx-auto h-8 w-8 text-gold" />
+            <Clock className="mx-auto h-8 w-8 text-foreground" />
             <h2 className="font-display text-2xl font-semibold text-foreground md:text-3xl">
               Sappiamo che hai mille impegni, {data.name}
             </h2>
@@ -183,10 +183,10 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
                     setData({ ...data, time: opt.label });
                     setTimeout(() => setStep(4), 400);
                   }}
-                  className={`flex items-center gap-2 rounded-xl border px-5 py-4 font-body text-sm transition-all ${
+                  className={`flex items-center gap-2 rounded-sm border px-5 py-4 font-body text-sm transition-all ${
                     data.time === opt.label
-                      ? "border-gold bg-gradient-gold text-primary-foreground shadow-gold"
-                      : "border-gold/20 bg-card text-foreground hover:border-gold/50"
+                      ? "border-foreground bg-foreground text-background"
+                      : "border-border bg-card text-foreground hover:border-foreground/40"
                   }`}
                 >
                   <span className="text-lg">{opt.emoji}</span> {opt.label}
@@ -209,7 +209,7 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
               value={data.skinDescription}
               onChange={(e) => setData({ ...data, skinDescription: e.target.value })}
               placeholder="Es: Ho la pelle mista, con qualche imperfezione sulla zona T. Vorrei un effetto glow naturale..."
-              className="h-32 w-full max-w-md resize-none rounded-xl border border-gold/30 bg-card px-5 py-4 font-body text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-gold/50"
+              className="h-32 w-full max-w-md resize-none rounded-sm border border-border bg-card px-5 py-4 font-body text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/40"
               autoFocus
             />
             <motion.button
@@ -217,9 +217,9 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
               whileTap={{ scale: 0.95 }}
               onClick={nextStep}
               disabled={!data.skinDescription}
-              className="bg-gradient-gold rounded-full px-8 py-3 font-body text-sm font-medium text-primary-foreground shadow-gold transition-all disabled:opacity-40"
+              className="bg-gradient-cta rounded-sm px-8 py-3 font-body text-xs font-semibold uppercase tracking-widest text-cta-foreground shadow-cta transition-all disabled:opacity-40"
             >
-              Scopri la tua routine ✨
+              Scopri la tua routine
             </motion.button>
           </motion.div>
         );
@@ -272,8 +272,8 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
         {[0, 1, 2, 3, 4].map((i) => (
           <div
             key={i}
-            className={`h-2 rounded-full transition-all duration-300 ${
-              i === step ? "w-8 bg-gradient-gold" : i < step ? "w-2 bg-gold/50" : "w-2 bg-muted"
+            className={`h-1.5 rounded-full transition-all duration-300 ${
+              i === step ? "w-8 bg-foreground" : i < step ? "w-2 bg-foreground/40" : "w-2 bg-muted"
             }`}
           />
         ))}
