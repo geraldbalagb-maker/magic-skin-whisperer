@@ -3,8 +3,11 @@ import { motion } from "framer-motion";
 import { ShoppingBag, Download, Star, Check } from "lucide-react";
 import type { Product, RoutineStep } from "@/data/products";
 import { products } from "@/data/products";
-import stepCreamImg from "@/assets/step-cream.png";
-import stepMaskImg from "@/assets/step-mask.png";
+import routineCleansingImg from "@/assets/steps/routine-cleansing.jpg";
+import routineTonerImg from "@/assets/steps/routine-toner.jpg";
+import routineTreatmentImg from "@/assets/steps/routine-treatment.jpg";
+import routineMoisturizerImg from "@/assets/steps/routine-moisturizer.jpg";
+import routineExfoliationImg from "@/assets/steps/routine-exfoliation.jpg";
 import MagicSparkles from "./MagicSparkles";
 
 interface ResultsPageProps {
@@ -57,7 +60,7 @@ const generateRoutine = (): RoutineStep[] => {
   ];
 };
 
-const stepImages = [stepCreamImg, stepMaskImg, stepCreamImg, stepMaskImg, stepCreamImg];
+const stepImages = [routineCleansingImg, routineTonerImg, routineTreatmentImg, routineMoisturizerImg, routineExfoliationImg];
 
 const ResultsPage = ({ name, onCheckout }: ResultsPageProps) => {
   const [routine] = useState(generateRoutine);
