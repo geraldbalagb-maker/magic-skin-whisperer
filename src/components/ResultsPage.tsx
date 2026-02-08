@@ -61,122 +61,193 @@ const ResultsPage = ({ name, quizData, aiResult, selfie, enhancedSelfie, onCheck
     setCart(new Set(uniqueProducts.map((p) => p.id)));
   };
 
+  const tipIcons = ["🧴", "🌙", "☀️", "💧", "🍃", "✨"];
+
   return (
     <div className="min-h-screen bg-background">
-      {/* ─── Hero Header ─── */}
+      {/* ─── Immersive Hero ─── */}
       <motion.header
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 0.8 }}
-        className="relative overflow-hidden bg-gradient-cream"
+        transition={{ duration: 1 }}
+        className="relative overflow-hidden bg-gradient-dark"
       >
-        
-        {/* Decorative circles */}
-        <div className="pointer-events-none absolute -top-20 -right-20 h-64 w-64 rounded-full bg-primary/5" />
-        <div className="pointer-events-none absolute -bottom-32 -left-16 h-80 w-80 rounded-full bg-primary/3" />
-
-        <div className="relative z-10 mx-auto max-w-3xl px-4 py-16 text-center md:py-20">
+        {/* Animated background mesh */}
+        <div className="pointer-events-none absolute inset-0">
           <motion.div
-            initial={{ opacity: 0, y: -10 }}
+            animate={{ rotate: 360 }}
+            transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
+            className="absolute -top-1/2 -left-1/2 h-[200%] w-[200%] opacity-[0.04]"
+            style={{
+              background: "conic-gradient(from 0deg, hsl(38 55% 55%), transparent, hsl(40 60% 75%), transparent, hsl(38 55% 55%))",
+            }}
+          />
+        </div>
+
+        <div className="relative z-10 mx-auto max-w-5xl px-4 py-16 md:py-24">
+          {/* Top label */}
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="mx-auto mb-4 flex items-center justify-center gap-2"
+            transition={{ delay: 0.3 }}
+            className="mb-8 flex justify-center"
           >
-            <div className="h-px w-8 bg-primary/30" />
-            <span className="font-body text-[11px] font-medium uppercase tracking-[0.25em] text-muted-foreground">
-              La tua routine personalizzata
+            <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-5 py-2 font-body text-[11px] font-medium uppercase tracking-[0.3em] text-primary">
+              <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse-glow" />
+              Analisi completata
             </span>
-            <div className="h-px w-8 bg-primary/30" />
           </motion.div>
 
+          {/* Main heading */}
           <motion.h1
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 0.7 }}
-            className="font-display text-3xl font-bold text-foreground md:text-5xl"
+            transition={{ delay: 0.4, duration: 0.8 }}
+            className="text-center font-display text-4xl font-bold leading-tight text-primary-foreground md:text-6xl lg:text-7xl"
           >
-            Ecco il tuo rituale,{" "}
-            <span className="text-gradient-gold">{name}</span> ✨
+            Il tuo rituale,
+            <br />
+            <span className="sparkle-text">{name}</span>
           </motion.h1>
 
-          <motion.p
+          {/* Skin analysis — editorial quote style */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6, duration: 0.7 }}
+            className="mx-auto mt-10 max-w-2xl"
+          >
+            <div className="relative rounded-2xl border border-primary/15 bg-primary/5 px-8 py-6 backdrop-blur-sm md:px-10 md:py-8">
+              <div className="absolute -top-3 left-8 flex h-6 items-center gap-1.5 rounded-full bg-gradient-gold px-3">
+                <span className="font-body text-[10px] font-semibold uppercase tracking-widest text-primary-foreground">
+                  Analisi AI
+                </span>
+              </div>
+              <p className="font-body text-sm leading-relaxed text-primary-foreground/80 md:text-base">
+                {aiResult.skin_analysis}
+              </p>
+            </div>
+          </motion.div>
+
+          {/* Quiz recap — glass morphism chips */}
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
-            className="mx-auto mt-4 max-w-lg font-body text-sm leading-relaxed text-muted-foreground md:text-base"
+            transition={{ delay: 0.8 }}
+            className="mx-auto mt-8 flex max-w-lg flex-wrap justify-center gap-3"
           >
-            {aiResult.skin_analysis}
-          </motion.p>
+            {[
+              { icon: "🎂", label: `${quizData.age} anni` },
+              { icon: "⏱", label: quizData.time },
+              ...(quizData.skinDescription
+                ? [{ icon: "💬", label: `"${quizData.skinDescription.slice(0, 40)}…"` }]
+                : []),
+            ].map((chip, i) => (
+              <motion.span
+                key={i}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.9 + i * 0.1 }}
+                className="rounded-full border border-primary/20 bg-primary/10 px-4 py-2 font-body text-xs text-primary-foreground/70 backdrop-blur-md"
+              >
+                {chip.icon} {chip.label}
+              </motion.span>
+            ))}
+          </motion.div>
 
-          {/* Quiz recap chips */}
+          {/* Scroll indicator */}
           <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-            className="mx-auto mt-6 flex max-w-lg flex-wrap justify-center gap-2"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.2 }}
+            className="mt-12 flex justify-center"
           >
-            <span className="rounded-full border border-primary/15 bg-card/80 px-4 py-1.5 font-body text-xs text-muted-foreground backdrop-blur-sm">
-              🎂 {quizData.age} anni
-            </span>
-            <span className="rounded-full border border-primary/15 bg-card/80 px-4 py-1.5 font-body text-xs text-muted-foreground backdrop-blur-sm">
-              ⏱ {quizData.time}
-            </span>
-            {quizData.skinDescription && (
-              <span className="max-w-xs truncate rounded-full border border-primary/15 bg-card/80 px-4 py-1.5 font-body text-xs text-muted-foreground backdrop-blur-sm">
-                💬 "{quizData.skinDescription.slice(0, 50)}..."
+            <motion.div
+              animate={{ y: [0, 8, 0] }}
+              transition={{ duration: 2, repeat: Infinity }}
+              className="flex flex-col items-center gap-2"
+            >
+              <span className="font-body text-[10px] uppercase tracking-widest text-primary-foreground/40">
+                Scopri la tua routine
               </span>
-            )}
+              <ChevronRight className="h-4 w-4 rotate-90 text-primary/50" />
+            </motion.div>
           </motion.div>
         </div>
       </motion.header>
 
-      {/* ─── AI Tips Banner ─── */}
+      {/* ─── AI Tips — Bento Grid ─── */}
       {aiResult.personalized_tips && aiResult.personalized_tips.length > 0 && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="border-b border-border bg-card/50"
-        >
-          <div className="mx-auto max-w-3xl px-4 py-8">
-            <div className="rounded-2xl border border-primary/10 bg-card p-6 shadow-sm">
-              <div className="mb-4 flex items-center gap-2">
-                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-gold">
-                  <span className="text-sm text-primary-foreground">💡</span>
-                </div>
-                <h3 className="font-display text-base font-semibold text-foreground">
-                  I consigli del tuo beauty coach AI
-                </h3>
-              </div>
-              <div className="grid gap-3 md:grid-cols-2">
-                {aiResult.personalized_tips.map((tip, i) => (
-                  <div key={i} className="flex items-start gap-2.5 rounded-xl bg-background/60 p-3">
-                    <span className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-primary/10 text-[10px] font-semibold text-primary">
-                      {i + 1}
-                    </span>
-                    <p className="font-body text-xs leading-relaxed text-muted-foreground">{tip}</p>
+        <div className="border-b border-border bg-gradient-cream">
+          <div className="mx-auto max-w-5xl px-4 py-14 md:py-20">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="mb-10 text-center"
+            >
+              <span className="font-body text-[11px] font-medium uppercase tracking-[0.3em] text-muted-foreground">
+                Consigli personalizzati
+              </span>
+              <h2 className="mt-2 font-display text-2xl font-bold text-foreground md:text-4xl">
+                I segreti per la tua pelle
+              </h2>
+              <div className="mx-auto mt-4 h-0.5 w-16 rounded-full bg-gradient-gold" />
+            </motion.div>
+
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              {aiResult.personalized_tips.map((tip, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-30px" }}
+                  transition={{ delay: i * 0.08 }}
+                  whileHover={{ y: -4 }}
+                  className={`group relative overflow-hidden rounded-2xl border border-border bg-card p-6 shadow-elegant transition-all hover:border-primary/20 hover:shadow-elevated ${
+                    i === 0 ? "md:col-span-2 lg:col-span-1" : ""
+                  }`}
+                >
+                  {/* Shimmer on hover */}
+                  <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 animate-shimmer" />
+
+                  <div className="relative z-10">
+                    <div className="mb-4 flex items-center gap-3">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-gold shadow-gold">
+                        <span className="text-lg">{tipIcons[i % tipIcons.length]}</span>
+                      </div>
+                      <span className="font-body text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
+                        Tip #{i + 1}
+                      </span>
+                    </div>
+                    <p className="font-body text-sm leading-relaxed text-muted-foreground">
+                      {tip}
+                    </p>
                   </div>
-                ))}
-              </div>
+                </motion.div>
+              ))}
             </div>
           </div>
-        </motion.div>
+        </div>
       )}
 
       {/* ─── Steps Section Title ─── */}
-      <div className="mx-auto max-w-4xl px-4 pt-14 pb-4 text-center">
+      <div className="mx-auto max-w-5xl px-4 pt-16 pb-6 text-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <span className="font-body text-[11px] font-medium uppercase tracking-[0.25em] text-muted-foreground">
+          <span className="font-body text-[11px] font-medium uppercase tracking-[0.3em] text-muted-foreground">
             Step by step
           </span>
-          <h2 className="mt-2 font-display text-2xl font-bold text-foreground md:text-3xl">
+          <h2 className="mt-2 font-display text-2xl font-bold text-foreground md:text-4xl">
             La tua routine in {routine.length} passaggi
           </h2>
-          <div className="mx-auto mt-3 h-0.5 w-12 rounded-full bg-gradient-gold" />
+          <p className="mx-auto mt-3 max-w-md font-body text-sm text-muted-foreground">
+            Ogni step è stato selezionato dall'AI per le esigenze uniche della tua pelle
+          </p>
+          <div className="mx-auto mt-4 h-0.5 w-16 rounded-full bg-gradient-gold" />
         </motion.div>
       </div>
 
