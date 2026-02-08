@@ -6,32 +6,32 @@
 
 @layer base {
   :root {
-    --background: 40 33% 96%;
-    --foreground: 30 10% 15%;
+    --background: 0 0% 100%;
+    --foreground: 0 0% 8%;
 
-    --card: 40 30% 98%;
-    --card-foreground: 30 10% 15%;
+    --card: 0 0% 99%;
+    --card-foreground: 0 0% 8%;
 
-    --popover: 40 30% 98%;
-    --popover-foreground: 30 10% 15%;
+    --popover: 0 0% 99%;
+    --popover-foreground: 0 0% 8%;
 
     --primary: 38 55% 55%;
-    --primary-foreground: 40 33% 98%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 35 20% 90%;
-    --secondary-foreground: 30 10% 20%;
+    --secondary: 40 15% 95%;
+    --secondary-foreground: 0 0% 12%;
 
-    --muted: 35 15% 92%;
-    --muted-foreground: 30 8% 50%;
+    --muted: 40 10% 95%;
+    --muted-foreground: 0 0% 45%;
 
-    --accent: 15 40% 65%;
-    --accent-foreground: 40 33% 98%;
+    --accent: 38 45% 50%;
+    --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 35 20% 88%;
-    --input: 35 20% 88%;
+    --border: 0 0% 90%;
+    --input: 0 0% 90%;
     --ring: 38 55% 55%;
 
     --radius: 0.75rem;
@@ -39,9 +39,9 @@
     --gold: 38 55% 55%;
     --gold-light: 40 60% 75%;
     --gold-dark: 36 50% 40%;
-    --cream: 40 33% 96%;
-    --cream-dark: 38 25% 90%;
-    --charcoal: 30 10% 15%;
+    --cream: 40 33% 97%;
+    --cream-dark: 38 20% 93%;
+    --charcoal: 0 0% 8%;
     --rose: 350 40% 70%;
     --rose-light: 350 50% 85%;
 
@@ -87,15 +87,27 @@
   }
 
   .bg-gradient-cream {
-    background: linear-gradient(180deg, hsl(40 33% 96%), hsl(38 25% 90%));
+    background: linear-gradient(180deg, hsl(40 20% 97%), hsl(38 15% 94%));
+  }
+
+  .bg-gradient-dark {
+    background: linear-gradient(135deg, hsl(0 0% 8%), hsl(0 0% 14%));
   }
 
   .shadow-gold {
-    box-shadow: 0 4px 30px -5px hsl(38 55% 55% / 0.3);
+    box-shadow: 0 4px 30px -5px hsl(38 55% 55% / 0.25);
   }
 
   .shadow-gold-lg {
-    box-shadow: 0 10px 50px -10px hsl(38 55% 55% / 0.4);
+    box-shadow: 0 10px 50px -10px hsl(38 55% 55% / 0.35);
+  }
+
+  .shadow-elegant {
+    box-shadow: 0 2px 20px -4px hsl(0 0% 0% / 0.08);
+  }
+
+  .shadow-elevated {
+    box-shadow: 0 8px 40px -10px hsl(0 0% 0% / 0.12);
   }
 
   .border-gold {
@@ -130,11 +142,22 @@
     50% { box-shadow: 0 0 40px hsl(38 55% 55% / 0.5); }
   }
 
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+
   .animate-float {
     animation: float 3s ease-in-out infinite;
   }
 
   .animate-pulse-glow {
     animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  .animate-shimmer {
+    background: linear-gradient(90deg, transparent 0%, hsl(38 55% 55% / 0.08) 50%, transparent 100%);
+    background-size: 200% 100%;
+    animation: shimmer 3s ease-in-out infinite;
   }
 }
