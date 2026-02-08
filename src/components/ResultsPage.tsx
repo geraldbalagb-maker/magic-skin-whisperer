@@ -137,14 +137,16 @@ const ResultsPage = ({ name, onCheckout }: ResultsPageProps) => {
                     whileHover={{ scale: 1.02 }}
                     className="flex items-center gap-4 rounded-xl border border-gold/20 bg-card p-4 transition-all hover:shadow-gold"
                   >
-                    <img
-                      src={product.image}
-                      alt={product.name}
-                      className="h-16 w-16 rounded-lg object-contain"
-                    />
-                    <div className="flex-1">
+                    <div className="flex h-20 w-20 flex-shrink-0 items-center justify-center rounded-xl bg-background p-2">
+                      <img
+                        src={product.image}
+                        alt={product.name}
+                        className="h-full w-full rounded-lg object-contain"
+                      />
+                    </div>
+                    <div className="flex-1 min-w-0">
                       <p className="font-body text-xs text-muted-foreground">{product.brand}</p>
-                      <p className="font-display text-sm font-medium text-foreground">{product.name}</p>
+                      <p className="font-display text-sm font-medium text-foreground truncate">{product.name}</p>
                       <div className="flex items-center gap-1">
                         {Array.from({ length: product.rating }).map((_, i) => (
                           <Star key={i} className="h-3 w-3 fill-gold text-gold" />
@@ -155,7 +157,7 @@ const ResultsPage = ({ name, onCheckout }: ResultsPageProps) => {
                     <motion.button
                       whileTap={{ scale: 0.9 }}
                       onClick={() => toggleCart(product.id)}
-                      className={`rounded-full p-2 transition-all ${
+                      className={`flex-shrink-0 rounded-full p-2 transition-all ${
                         cart.has(product.id)
                           ? "bg-gradient-gold text-primary-foreground"
                           : "border border-gold/30 text-gold hover:bg-gold/10"
@@ -187,14 +189,17 @@ const ResultsPage = ({ name, onCheckout }: ResultsPageProps) => {
               <motion.div
                 key={p.id}
                 whileHover={{ y: -4 }}
-                className={`cursor-pointer rounded-xl border bg-card p-3 text-center transition-all ${
+                className={`cursor-pointer rounded-xl border bg-card p-4 text-center transition-all ${
                   cart.has(p.id) ? "border-gold shadow-gold" : "border-gold/10"
                 }`}
                 onClick={() => toggleCart(p.id)}
               >
-                <img src={p.image} alt={p.name} className="mx-auto mb-2 h-16 w-16 object-contain" />
-                <p className="font-body text-xs text-foreground">{p.name}</p>
-                <p className="font-display text-sm font-semibold text-gold">{p.price.toFixed(2)}€</p>
+                <div className="mx-auto mb-3 flex h-24 w-24 items-center justify-center rounded-xl bg-background p-2">
+                  <img src={p.image} alt={p.name} className="h-full w-full object-contain" />
+                </div>
+                <p className="font-body text-[11px] text-muted-foreground">{p.brand}</p>
+                <p className="font-body text-xs font-medium text-foreground">{p.name}</p>
+                <p className="mt-1 font-display text-sm font-semibold text-gold">{p.price.toFixed(2)}€</p>
                 {cart.has(p.id) && <Check className="mx-auto mt-1 h-4 w-4 text-gold" />}
               </motion.div>
             ))}
