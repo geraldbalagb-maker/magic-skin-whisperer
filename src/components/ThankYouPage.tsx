@@ -2,7 +2,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Heart, Mail, Gift, CheckCircle, Send } from "lucide-react";
 import goldenEnvelopeImg from "@/assets/golden-envelope.jpg";
-import MagicSparkles from "./MagicSparkles";
+
 
 interface ThankYouPageProps {
   name: string;
@@ -78,7 +78,7 @@ const ThankYouPage = ({ name }: ThankYouPageProps) => {
   if (allSent) {
     return (
       <div className="relative flex min-h-screen flex-col items-center justify-center bg-background px-4 text-center">
-        <MagicSparkles count={40} />
+        
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -108,7 +108,7 @@ const ThankYouPage = ({ name }: ThankYouPageProps) => {
 
   return (
     <div className="relative min-h-screen bg-background px-4 py-12">
-      <MagicSparkles count={25} />
+      
 
       {/* Thank you header */}
       <motion.div

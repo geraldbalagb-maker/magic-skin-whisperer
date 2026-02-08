@@ -1,6 +1,6 @@
 import { useState, useRef, useCallback } from "react";
 import { motion } from "framer-motion";
-import { AlertTriangle, Sparkles } from "lucide-react";
+import { AlertTriangle } from "lucide-react";
 
 interface BeforeAfterSectionProps {
   beforeImage: string;
@@ -46,11 +46,9 @@ const BeforeAfterSection = ({ beforeImage, afterImage, name }: BeforeAfterSectio
       {/* Section header */}
       <div className="mb-8 text-center">
         <div className="mb-3 flex items-center justify-center gap-2">
-          <Sparkles className="h-5 w-5 text-gold" />
           <h2 className="font-display text-2xl font-bold text-foreground md:text-3xl">
             Il tuo potenziale, {name}
           </h2>
-          <Sparkles className="h-5 w-5 text-gold" />
         </div>
         <p className="mx-auto max-w-md font-body text-sm text-muted-foreground">
           Trascina il cursore per visualizzare come potrebbe migliorare la tua pelle seguendo la routine personalizzata

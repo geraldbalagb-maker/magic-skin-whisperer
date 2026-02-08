@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
-import { ShoppingBag, Download, Star, Check, Sparkles, ChevronRight, Gift } from "lucide-react";
+import { ShoppingBag, Download, Star, Check, ChevronRight, Gift } from "lucide-react";
 import type { Product, RoutineStep } from "@/data/products";
 import { products } from "@/data/products";
 import type { QuizData } from "./BeautyQuiz";
@@ -11,7 +11,7 @@ import routineTonerImg from "@/assets/steps/routine-step-toner.png";
 import routineTreatmentImg from "@/assets/steps/routine-step-treatment.png";
 import routineMoisturizerImg from "@/assets/steps/routine-step-cream.png";
 import routineExfoliationImg from "@/assets/steps/routine-step-mask.png";
-import MagicSparkles from "./MagicSparkles";
+
 
 interface ResultsPageProps {
   name: string;
@@ -67,7 +67,7 @@ const ResultsPage = ({ name, quizData, aiResult, selfie, enhancedSelfie, onCheck
         transition={{ duration: 0.8 }}
         className="relative overflow-hidden bg-gradient-cream"
       >
-        <MagicSparkles count={20} />
+        
         {/* Decorative circles */}
         <div className="pointer-events-none absolute -top-20 -right-20 h-64 w-64 rounded-full bg-primary/5" />
         <div className="pointer-events-none absolute -bottom-32 -left-16 h-80 w-80 rounded-full bg-primary/3" />
@@ -139,7 +139,7 @@ const ResultsPage = ({ name, quizData, aiResult, selfie, enhancedSelfie, onCheck
             <div className="rounded-2xl border border-primary/10 bg-card p-6 shadow-sm">
               <div className="mb-4 flex items-center gap-2">
                 <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-gold">
-                  <Sparkles className="h-4 w-4 text-primary-foreground" />
+                  <span className="text-sm text-primary-foreground">💡</span>
                 </div>
                 <h3 className="font-display text-base font-semibold text-foreground">
                   I consigli del tuo beauty coach AI
@@ -314,7 +314,7 @@ const ResultsPage = ({ name, quizData, aiResult, selfie, enhancedSelfie, onCheck
       >
         <div className="mx-auto max-w-3xl px-4 py-16">
           <div className="text-center">
-            <MagicSparkles count={12} />
+            
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
