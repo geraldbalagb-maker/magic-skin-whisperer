@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
-import { ShoppingBag, Download, Star, Check, User, Sparkles } from "lucide-react";
+import { ShoppingBag, Download, Star, Check, Sparkles, ChevronRight, Gift } from "lucide-react";
 import type { Product, RoutineStep } from "@/data/products";
 import { products } from "@/data/products";
 import type { QuizData } from "./BeautyQuiz";
@@ -27,7 +27,6 @@ const stepImages = [routineCleansingImg, routineTonerImg, routineTreatmentImg, r
 const productsMap = new Map(products.map(p => [p.id, p]));
 
 const ResultsPage = ({ name, quizData, aiResult, selfie, enhancedSelfie, onCheckout }: ResultsPageProps) => {
-  // Build routine from AI result
   const routine: RoutineStep[] = useMemo(() => {
     return aiResult.steps.map((step, idx) => ({
       id: `step${idx + 1}`,
@@ -61,218 +60,382 @@ const ResultsPage = ({ name, quizData, aiResult, selfie, enhancedSelfie, onCheck
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header with personalized analysis */}
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="relative overflow-hidden bg-gradient-cream px-4 py-12 text-center"
+      {/* ─── Hero Header ─── */}
+      <motion.header
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.8 }}
+        className="relative overflow-hidden bg-gradient-cream"
       >
         <MagicSparkles count={20} />
-        <h1 className="font-display text-3xl font-bold text-foreground md:text-4xl">
-          La tua beauty routine, {name} ✨
-        </h1>
-        <p className="mx-auto mt-3 max-w-md font-body text-sm text-muted-foreground">
-          {aiResult.skin_analysis}
-        </p>
+        {/* Decorative circles */}
+        <div className="pointer-events-none absolute -top-20 -right-20 h-64 w-64 rounded-full bg-primary/5" />
+        <div className="pointer-events-none absolute -bottom-32 -left-16 h-80 w-80 rounded-full bg-primary/3" />
 
-        {/* Quiz data recap */}
-        <div className="mx-auto mt-6 flex max-w-lg flex-wrap justify-center gap-3">
-          <span className="rounded-full border border-gold/30 bg-card px-4 py-1.5 font-body text-xs text-muted-foreground">
-            🎂 {quizData.age} anni
-          </span>
-          <span className="rounded-full border border-gold/30 bg-card px-4 py-1.5 font-body text-xs text-muted-foreground">
-            ⏱ {quizData.time}
-          </span>
-          {quizData.skinDescription && (
-            <span className="rounded-full border border-gold/30 bg-card px-4 py-1.5 font-body text-xs text-muted-foreground max-w-xs truncate">
-              💬 "{quizData.skinDescription.slice(0, 50)}..."
+        <div className="relative z-10 mx-auto max-w-3xl px-4 py-16 text-center md:py-20">
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="mx-auto mb-4 flex items-center justify-center gap-2"
+          >
+            <div className="h-px w-8 bg-primary/30" />
+            <span className="font-body text-[11px] font-medium uppercase tracking-[0.25em] text-muted-foreground">
+              La tua routine personalizzata
             </span>
-          )}
-        </div>
+            <div className="h-px w-8 bg-primary/30" />
+          </motion.div>
 
-        {/* AI personalized tips */}
-        {aiResult.personalized_tips && aiResult.personalized_tips.length > 0 && (
-          <div className="mx-auto mt-6 max-w-lg">
-            <div className="rounded-2xl border border-gold/20 bg-card/80 backdrop-blur-sm p-5">
-              <div className="flex items-center justify-center gap-2 mb-3">
-                <Sparkles className="h-4 w-4 text-gold" />
-                <p className="font-display text-sm font-semibold text-foreground">I consigli del tuo beauty coach AI</p>
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3, duration: 0.7 }}
+            className="font-display text-3xl font-bold text-foreground md:text-5xl"
+          >
+            Ecco il tuo rituale,{" "}
+            <span className="text-gradient-gold">{name}</span> ✨
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5 }}
+            className="mx-auto mt-4 max-w-lg font-body text-sm leading-relaxed text-muted-foreground md:text-base"
+          >
+            {aiResult.skin_analysis}
+          </motion.p>
+
+          {/* Quiz recap chips */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6 }}
+            className="mx-auto mt-6 flex max-w-lg flex-wrap justify-center gap-2"
+          >
+            <span className="rounded-full border border-primary/15 bg-card/80 px-4 py-1.5 font-body text-xs text-muted-foreground backdrop-blur-sm">
+              🎂 {quizData.age} anni
+            </span>
+            <span className="rounded-full border border-primary/15 bg-card/80 px-4 py-1.5 font-body text-xs text-muted-foreground backdrop-blur-sm">
+              ⏱ {quizData.time}
+            </span>
+            {quizData.skinDescription && (
+              <span className="max-w-xs truncate rounded-full border border-primary/15 bg-card/80 px-4 py-1.5 font-body text-xs text-muted-foreground backdrop-blur-sm">
+                💬 "{quizData.skinDescription.slice(0, 50)}..."
+              </span>
+            )}
+          </motion.div>
+        </div>
+      </motion.header>
+
+      {/* ─── AI Tips Banner ─── */}
+      {aiResult.personalized_tips && aiResult.personalized_tips.length > 0 && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="border-b border-border bg-card/50"
+        >
+          <div className="mx-auto max-w-3xl px-4 py-8">
+            <div className="rounded-2xl border border-primary/10 bg-card p-6 shadow-sm">
+              <div className="mb-4 flex items-center gap-2">
+                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-gold">
+                  <Sparkles className="h-4 w-4 text-primary-foreground" />
+                </div>
+                <h3 className="font-display text-base font-semibold text-foreground">
+                  I consigli del tuo beauty coach AI
+                </h3>
               </div>
-              <div className="space-y-2">
+              <div className="grid gap-3 md:grid-cols-2">
                 {aiResult.personalized_tips.map((tip, i) => (
-                  <p key={i} className="font-body text-xs text-muted-foreground text-left">
-                    💡 {tip}
-                  </p>
+                  <div key={i} className="flex items-start gap-2.5 rounded-xl bg-background/60 p-3">
+                    <span className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-primary/10 text-[10px] font-semibold text-primary">
+                      {i + 1}
+                    </span>
+                    <p className="font-body text-xs leading-relaxed text-muted-foreground">{tip}</p>
+                  </div>
                 ))}
               </div>
             </div>
           </div>
-        )}
-      </motion.div>
-
-      {/* Routine Steps */}
-      <div className="mx-auto max-w-4xl px-4 py-8">
-        {routine.map((step, idx) => (
-          <motion.section
-            key={step.id}
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: idx * 0.1 }}
-            className="mb-12"
-          >
-            <div className="mb-6 flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-gold text-lg">
-                {step.icon}
-              </div>
-              <div>
-                <h2 className="font-display text-xl font-semibold text-foreground">
-                  Step {step.order}: {step.name}
-                </h2>
-                <p className="font-body text-sm text-muted-foreground">{step.description}</p>
-              </div>
-            </div>
-
-            <div className="grid gap-4 md:grid-cols-2">
-              {/* Step illustration */}
-              <div className="aspect-square overflow-hidden rounded-2xl">
-                <img
-                  src={stepImages[idx % stepImages.length]}
-                  alt={step.name}
-                  className="h-full w-full object-contain"
-                />
-              </div>
-
-              {/* Products */}
-              <div className="flex flex-col gap-3">
-                {step.products.map((product) => (
-                  <motion.div
-                    key={product.id}
-                    whileHover={{ scale: 1.02 }}
-                    className="flex items-center gap-4 rounded-xl border border-gold/20 bg-card p-4 transition-all hover:shadow-gold"
-                  >
-                    <div className="flex h-20 w-20 flex-shrink-0 items-center justify-center rounded-xl bg-background p-2">
-                      <img
-                        src={product.image}
-                        alt={product.name}
-                        className="h-full w-full rounded-lg object-contain"
-                      />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="font-body text-xs text-muted-foreground">{product.brand}</p>
-                      <p className="font-display text-sm font-medium text-foreground truncate">{product.name}</p>
-                      <div className="flex items-center gap-1">
-                        {Array.from({ length: product.rating }).map((_, i) => (
-                          <Star key={i} className="h-3 w-3 fill-gold text-gold" />
-                        ))}
-                      </div>
-                      <p className="mt-1 font-display text-sm font-semibold text-gold">{product.price.toFixed(2)}€</p>
-                    </div>
-                    <motion.button
-                      whileTap={{ scale: 0.9 }}
-                      onClick={() => toggleCart(product.id)}
-                      className={`flex-shrink-0 rounded-full p-2 transition-all ${
-                        cart.has(product.id)
-                          ? "bg-gradient-gold text-primary-foreground"
-                          : "border border-gold/30 text-gold hover:bg-gold/10"
-                      }`}
-                    >
-                      {cart.has(product.id) ? <Check className="h-4 w-4" /> : <ShoppingBag className="h-4 w-4" />}
-                    </motion.button>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          </motion.section>
-        ))}
-      </div>
-
-      {/* Before/After Section */}
-      {selfie && enhancedSelfie && (
-        <BeforeAfterSection
-          beforeImage={selfie}
-          afterImage={enhancedSelfie}
-          name={name}
-        />
+        </motion.div>
       )}
 
-      {/* Recap Bundle */}
-      <div className="bg-gradient-cream px-4 py-12">
-        <div className="mx-auto max-w-2xl text-center">
-          <MagicSparkles count={15} />
-          <h2 className="font-display text-2xl font-bold text-foreground md:text-3xl">
-            Il tuo kit completo 💎
+      {/* ─── Steps Section Title ─── */}
+      <div className="mx-auto max-w-4xl px-4 pt-14 pb-4 text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+        >
+          <span className="font-body text-[11px] font-medium uppercase tracking-[0.25em] text-muted-foreground">
+            Step by step
+          </span>
+          <h2 className="mt-2 font-display text-2xl font-bold text-foreground md:text-3xl">
+            La tua routine in {routine.length} passaggi
           </h2>
-          <p className="mt-2 font-body text-sm text-muted-foreground">
-            Tutti i prodotti della tua routine in un unico ordine
-          </p>
+          <div className="mx-auto mt-3 h-0.5 w-12 rounded-full bg-gradient-gold" />
+        </motion.div>
+      </div>
 
-          <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3">
-            {uniqueProducts.map((p) => (
+      {/* ─── Routine Steps (Alternating Layout) ─── */}
+      <div className="mx-auto max-w-5xl px-4 py-8">
+        {routine.map((step, idx) => {
+          const isEven = idx % 2 === 0;
+          return (
+            <motion.section
+              key={step.id}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ delay: idx * 0.08, duration: 0.6 }}
+              className="relative mb-16 last:mb-8"
+            >
+              {/* Connector line */}
+              {idx < routine.length - 1 && (
+                <div className="absolute left-1/2 -bottom-10 hidden h-12 w-px -translate-x-1/2 bg-gradient-to-b from-primary/20 to-transparent md:block" />
+              )}
+
+              <div className={`flex flex-col items-center gap-8 md:flex-row ${!isEven ? "md:flex-row-reverse" : ""}`}>
+                {/* Step Image */}
+                <motion.div
+                  whileHover={{ scale: 1.02 }}
+                  className="relative w-full md:w-5/12"
+                >
+                  <div className="relative overflow-hidden rounded-3xl border border-primary/10 bg-card shadow-sm">
+                    {/* Step number badge */}
+                    <div className="absolute top-4 left-4 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-gradient-gold font-display text-sm font-bold text-primary-foreground shadow-gold">
+                      {step.order}
+                    </div>
+                    <div className="aspect-square p-6">
+                      <img
+                        src={stepImages[idx % stepImages.length]}
+                        alt={step.name}
+                        className="h-full w-full object-contain"
+                      />
+                    </div>
+                  </div>
+                </motion.div>
+
+                {/* Step Content + Products */}
+                <div className="w-full md:w-7/12">
+                  {/* Step header */}
+                  <div className="mb-5">
+                    <div className="mb-1 flex items-center gap-2">
+                      <span className="text-xl">{step.icon}</span>
+                      <span className="font-body text-[11px] font-medium uppercase tracking-[0.2em] text-primary">
+                        Step {step.order}
+                      </span>
+                    </div>
+                    <h3 className="font-display text-xl font-semibold text-foreground md:text-2xl">
+                      {step.name}
+                    </h3>
+                    <p className="mt-1.5 font-body text-sm leading-relaxed text-muted-foreground">
+                      {step.description}
+                    </p>
+                  </div>
+
+                  {/* Product cards */}
+                  <div className="space-y-3">
+                    {step.products.map((product) => (
+                      <motion.div
+                        key={product.id}
+                        whileHover={{ y: -2, boxShadow: "0 8px 30px -10px hsl(38 55% 55% / 0.2)" }}
+                        transition={{ duration: 0.2 }}
+                        className="group flex items-center gap-4 rounded-2xl border border-border bg-card p-3.5 transition-colors hover:border-primary/20"
+                      >
+                        {/* Product image */}
+                        <div className="flex h-[72px] w-[72px] flex-shrink-0 items-center justify-center overflow-hidden rounded-xl bg-background p-1.5">
+                          <img
+                            src={product.image}
+                            alt={product.name}
+                            className="h-full w-full rounded-lg object-contain"
+                          />
+                        </div>
+
+                        {/* Product info */}
+                        <div className="min-w-0 flex-1">
+                          <p className="font-body text-[11px] font-medium uppercase tracking-wider text-muted-foreground/70">
+                            {product.brand}
+                          </p>
+                          <p className="truncate font-display text-sm font-medium text-foreground">
+                            {product.name}
+                          </p>
+                          <div className="mt-1 flex items-center gap-2">
+                            <div className="flex items-center gap-0.5">
+                              {Array.from({ length: product.rating }).map((_, i) => (
+                                <Star key={i} className="h-3 w-3 fill-primary text-primary" />
+                              ))}
+                            </div>
+                            <span className="font-display text-sm font-bold text-primary">
+                              {product.price.toFixed(2)}€
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Add to cart */}
+                        <motion.button
+                          whileTap={{ scale: 0.85 }}
+                          onClick={() => toggleCart(product.id)}
+                          className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full transition-all duration-200 ${
+                            cart.has(product.id)
+                              ? "bg-gradient-gold text-primary-foreground shadow-gold"
+                              : "border border-border bg-background text-muted-foreground hover:border-primary/30 hover:text-primary"
+                          }`}
+                        >
+                          {cart.has(product.id) ? <Check className="h-4 w-4" /> : <ShoppingBag className="h-4 w-4" />}
+                        </motion.button>
+                      </motion.div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </motion.section>
+          );
+        })}
+      </div>
+
+      {/* ─── Before/After Section ─── */}
+      {selfie && enhancedSelfie && (
+        <div className="border-t border-border">
+          <BeforeAfterSection
+            beforeImage={selfie}
+            afterImage={enhancedSelfie}
+            name={name}
+          />
+        </div>
+      )}
+
+      {/* ─── Bundle CTA ─── */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        className="border-t border-border bg-gradient-cream"
+      >
+        <div className="mx-auto max-w-3xl px-4 py-16">
+          <div className="text-center">
+            <MagicSparkles count={12} />
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
+              <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-gold shadow-gold">
+                <Gift className="h-6 w-6 text-primary-foreground" />
+              </div>
+              <h2 className="font-display text-2xl font-bold text-foreground md:text-3xl">
+                Il tuo kit completo
+              </h2>
+              <p className="mt-2 font-body text-sm text-muted-foreground">
+                Tutti i prodotti della tua routine in un unico ordine con uno sconto esclusivo
+              </p>
+            </motion.div>
+          </div>
+
+          {/* Product grid */}
+          <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+            {uniqueProducts.map((p, i) => (
               <motion.div
                 key={p.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.05 }}
                 whileHover={{ y: -4 }}
-                className={`cursor-pointer rounded-xl border bg-card p-4 text-center transition-all ${
-                  cart.has(p.id) ? "border-gold shadow-gold" : "border-gold/10"
+                className={`group cursor-pointer rounded-2xl border bg-card p-4 text-center transition-all duration-200 ${
+                  cart.has(p.id) 
+                    ? "border-primary/30 shadow-gold" 
+                    : "border-border hover:border-primary/15 hover:shadow-sm"
                 }`}
                 onClick={() => toggleCart(p.id)}
               >
-                <div className="mx-auto mb-3 flex h-24 w-24 items-center justify-center rounded-xl bg-background p-2">
+                <div className="relative mx-auto mb-3 flex h-20 w-20 items-center justify-center rounded-xl bg-background p-2 transition-transform group-hover:scale-105">
                   <img src={p.image} alt={p.name} className="h-full w-full object-contain" />
+                  {cart.has(p.id) && (
+                    <div className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-gradient-gold shadow-sm">
+                      <Check className="h-3 w-3 text-primary-foreground" />
+                    </div>
+                  )}
                 </div>
-                <p className="font-body text-[11px] text-muted-foreground">{p.brand}</p>
-                <p className="font-body text-xs font-medium text-foreground">{p.name}</p>
-                <p className="mt-1 font-display text-sm font-semibold text-gold">{p.price.toFixed(2)}€</p>
-                {cart.has(p.id) && <Check className="mx-auto mt-1 h-4 w-4 text-gold" />}
+                <p className="font-body text-[10px] font-medium uppercase tracking-wider text-muted-foreground/60">
+                  {p.brand}
+                </p>
+                <p className="mt-0.5 truncate font-body text-xs font-medium text-foreground">{p.name}</p>
+                <p className="mt-1.5 font-display text-sm font-bold text-primary">{p.price.toFixed(2)}€</p>
               </motion.div>
             ))}
           </div>
 
-          <div className="mt-8 space-y-3">
-            <div className="rounded-2xl border border-gold/30 bg-card p-6">
-              <div className="flex items-center justify-between">
-                <span className="font-body text-sm text-muted-foreground">Prezzo totale</span>
-                <span className="font-display text-lg text-muted-foreground line-through">{totalPrice.toFixed(2)}€</span>
+          {/* Pricing card */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mt-10"
+          >
+            <div className="overflow-hidden rounded-3xl border border-primary/15 bg-card shadow-sm">
+              {/* Savings banner */}
+              <div className="bg-gradient-gold px-6 py-3 text-center">
+                <p className="font-body text-xs font-semibold text-primary-foreground">
+                  🎉 Risparmi {(totalPrice - bundlePrice).toFixed(2)}€ con il bundle completo
+                </p>
               </div>
-              <div className="mt-1 flex items-center justify-between">
-                <span className="font-display text-lg font-semibold text-foreground">Bundle -20%</span>
-                <span className="font-display text-2xl font-bold text-gold">{bundlePrice.toFixed(2)}€</span>
+
+              <div className="p-6">
+                <div className="flex items-end justify-between">
+                  <div>
+                    <p className="font-body text-xs text-muted-foreground">Prezzo pieno</p>
+                    <p className="font-display text-lg text-muted-foreground/60 line-through">
+                      {totalPrice.toFixed(2)}€
+                    </p>
+                  </div>
+                  <div className="text-right">
+                    <p className="font-body text-xs font-medium text-primary">Bundle -20%</p>
+                    <p className="font-display text-3xl font-bold text-foreground">
+                      {bundlePrice.toFixed(2)}€
+                    </p>
+                  </div>
+                </div>
+
+                <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.97 }}
+                    onClick={() => {
+                      addAllToCart();
+                      onCheckout(uniqueProducts);
+                    }}
+                    className="flex flex-1 items-center justify-center gap-2 rounded-full bg-gradient-gold px-8 py-4 font-body text-sm font-semibold text-primary-foreground shadow-gold-lg transition-shadow hover:shadow-gold"
+                  >
+                    <ShoppingBag className="h-4 w-4" />
+                    Acquista il bundle
+                    <ChevronRight className="h-4 w-4" />
+                  </motion.button>
+
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.97 }}
+                    onClick={() => onCheckout(uniqueProducts.filter((p) => cart.has(p.id)))}
+                    disabled={cart.size === 0}
+                    className="flex flex-1 items-center justify-center gap-2 rounded-full border border-border px-8 py-4 font-body text-sm font-medium text-foreground transition-all hover:border-primary/20 hover:bg-primary/5 disabled:opacity-40"
+                  >
+                    Acquista selezionati ({cart.size})
+                  </motion.button>
+                </div>
               </div>
-              <p className="mt-1 font-body text-xs text-gold">Risparmi {(totalPrice - bundlePrice).toFixed(2)}€! ✨</p>
             </div>
 
-            <div className="flex flex-col gap-3 sm:flex-row">
-              <motion.button
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
-                onClick={() => {
-                  addAllToCart();
-                  onCheckout(uniqueProducts);
-                }}
-                className="flex-1 rounded-full bg-gradient-gold px-8 py-4 font-body text-sm font-medium text-primary-foreground shadow-gold-lg"
-              >
-                <ShoppingBag className="mr-2 inline h-4 w-4" /> Acquista il bundle
-              </motion.button>
-              <motion.button
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
-                onClick={() => onCheckout(uniqueProducts.filter((p) => cart.has(p.id)))}
-                disabled={cart.size === 0}
-                className="flex-1 rounded-full border border-gold/30 px-8 py-4 font-body text-sm font-medium text-foreground transition-all hover:bg-gold/5 disabled:opacity-40"
-              >
-                Acquista selezionati ({cart.size})
-              </motion.button>
-            </div>
-
+            {/* PDF download */}
             <motion.button
               whileHover={{ scale: 1.02 }}
-              className="flex items-center justify-center gap-2 font-body text-xs text-muted-foreground hover:text-foreground"
+              className="mx-auto mt-6 flex items-center justify-center gap-2 font-body text-xs text-muted-foreground transition-colors hover:text-foreground"
             >
-              <Download className="h-3 w-3" /> Scarica il PDF della tua routine
+              <Download className="h-3.5 w-3.5" />
+              Scarica il PDF della tua routine
             </motion.button>
-          </div>
+          </motion.div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };
