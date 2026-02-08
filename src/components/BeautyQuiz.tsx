@@ -2,6 +2,13 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Camera, Clock, Sparkles, ChevronRight, SkipForward } from "lucide-react";
 import MagicSparkles from "./MagicSparkles";
+import stepNameImg from "@/assets/steps/step-name.jpg";
+import stepSelfieImg from "@/assets/steps/step-selfie.jpg";
+import stepAgeImg from "@/assets/steps/step-age.jpg";
+import stepTimeImg from "@/assets/steps/step-time.jpg";
+import stepSkinImg from "@/assets/steps/step-skin.jpg";
+
+const stepImages = [stepNameImg, stepSelfieImg, stepAgeImg, stepTimeImg, stepSkinImg];
 
 export interface QuizData {
   name: string;
@@ -233,6 +240,24 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
 
   return (
     <div className="relative flex min-h-screen flex-col items-center justify-center bg-background px-4 py-8">
+      {/* Step image */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={`img-${step}`}
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 0.12, scale: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.6 }}
+          className="pointer-events-none absolute inset-0 flex items-center justify-center overflow-hidden"
+        >
+          <img
+            src={stepImages[step]}
+            alt=""
+            className="h-full w-full object-cover"
+          />
+        </motion.div>
+      </AnimatePresence>
+
       {/* Progress bar */}
       <div className="fixed left-0 right-0 top-0 z-50 h-1 bg-muted">
         <motion.div
