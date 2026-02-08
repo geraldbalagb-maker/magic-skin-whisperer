@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
-import { ShoppingBag, Download, Star, Check } from "lucide-react";
+import { ShoppingBag, Download, Star, Check, User, Sparkles } from "lucide-react";
 import type { Product, RoutineStep } from "@/data/products";
 import { products } from "@/data/products";
+import type { QuizData } from "./BeautyQuiz";
+import type { AIRoutineResult } from "./AnalysisScreen";
 import routineCleansingImg from "@/assets/steps/routine-step-cleansing.png";
 import routineTonerImg from "@/assets/steps/routine-step-toner.png";
 import routineTreatmentImg from "@/assets/steps/routine-step-treatment.png";
@@ -12,58 +14,30 @@ import MagicSparkles from "./MagicSparkles";
 
 interface ResultsPageProps {
   name: string;
+  quizData: QuizData;
+  aiResult: AIRoutineResult;
   onCheckout: (cart: Product[]) => void;
 }
 
-const generateRoutine = (): RoutineStep[] => {
-  return [
-    {
-      id: "step1",
-      name: "Detersione",
-      description: "Il primo passo fondamentale: rimuovere impurità e trucco con delicatezza, preparando la pelle ai trattamenti successivi.",
-      order: 1,
-      icon: "🧴",
-      products: [products[0], products[8]],
-    },
-    {
-      id: "step2",
-      name: "Tonico",
-      description: "Riequilibra il pH della pelle e prepara la superficie per assorbire al meglio i principi attivi dei prodotti successivi.",
-      order: 2,
-      icon: "💧",
-      products: [products[2], products[10]],
-    },
-    {
-      id: "step3",
-      name: "Trattamento",
-      description: "Il momento dei principi attivi mirati: sieri e trattamenti specifici per le tue esigenze.",
-      order: 3,
-      icon: "✨",
-      products: [products[12], products[5]],
-    },
-    {
-      id: "step4",
-      name: "Crema Idratante",
-      description: "Sigilla l'idratazione e proteggi la pelle con una crema adatta al tuo tipo di pelle.",
-      order: 4,
-      icon: "🌸",
-      products: [products[4], products[9]],
-    },
-    {
-      id: "step5",
-      name: "Esfoliazione (settimanale)",
-      description: "Una o due volte a settimana, rinnova la pelle eliminando le cellule morte per un viso luminoso.",
-      order: 5,
-      icon: "🌟",
-      products: [products[6], products[7]],
-    },
-  ];
-};
-
 const stepImages = [routineCleansingImg, routineTonerImg, routineTreatmentImg, routineMoisturizerImg, routineExfoliationImg];
 
-const ResultsPage = ({ name, onCheckout }: ResultsPageProps) => {
-  const [routine] = useState(generateRoutine);
+const productsMap = new Map(products.map(p => [p.id, p]));
+
+const ResultsPage = ({ name, quizData, aiResult, onCheckout }: ResultsPageProps) => {
+  // Build routine from AI result
+  const routine: RoutineStep[] = useMemo(() => {
+    return aiResult.steps.map((step, idx) => ({
+      id: `step${idx + 1}`,
+      name: step.step_name,
+      description: step.description,
+      order: step.step_order,
+      icon: step.icon,
+      products: step.product_ids
+        .map(id => productsMap.get(id))
+        .filter((p): p is Product => !!p),
+    }));
+  }, [aiResult]);
+
   const [cart, setCart] = useState<Set<string>>(new Set());
   const allProducts = routine.flatMap((s) => s.products);
   const uniqueProducts = Array.from(new Map(allProducts.map(p => [p.id, p])).values());
@@ -84,7 +58,7 @@ const ResultsPage = ({ name, onCheckout }: ResultsPageProps) => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
+      {/* Header with personalized analysis */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -95,8 +69,42 @@ const ResultsPage = ({ name, onCheckout }: ResultsPageProps) => {
           La tua beauty routine, {name} ✨
         </h1>
         <p className="mx-auto mt-3 max-w-md font-body text-sm text-muted-foreground">
-          Abbiamo selezionato i prodotti perfetti per te. Ecco la tua routine personalizzata passo dopo passo.
+          {aiResult.skin_analysis}
         </p>
+
+        {/* Quiz data recap */}
+        <div className="mx-auto mt-6 flex max-w-lg flex-wrap justify-center gap-3">
+          <span className="rounded-full border border-gold/30 bg-card px-4 py-1.5 font-body text-xs text-muted-foreground">
+            🎂 {quizData.age} anni
+          </span>
+          <span className="rounded-full border border-gold/30 bg-card px-4 py-1.5 font-body text-xs text-muted-foreground">
+            ⏱ {quizData.time}
+          </span>
+          {quizData.skinDescription && (
+            <span className="rounded-full border border-gold/30 bg-card px-4 py-1.5 font-body text-xs text-muted-foreground max-w-xs truncate">
+              💬 "{quizData.skinDescription.slice(0, 50)}..."
+            </span>
+          )}
+        </div>
+
+        {/* AI personalized tips */}
+        {aiResult.personalized_tips && aiResult.personalized_tips.length > 0 && (
+          <div className="mx-auto mt-6 max-w-lg">
+            <div className="rounded-2xl border border-gold/20 bg-card/80 backdrop-blur-sm p-5">
+              <div className="flex items-center justify-center gap-2 mb-3">
+                <Sparkles className="h-4 w-4 text-gold" />
+                <p className="font-display text-sm font-semibold text-foreground">I consigli del tuo beauty coach AI</p>
+              </div>
+              <div className="space-y-2">
+                {aiResult.personalized_tips.map((tip, i) => (
+                  <p key={i} className="font-body text-xs text-muted-foreground text-left">
+                    💡 {tip}
+                  </p>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
       </motion.div>
 
       {/* Routine Steps */}

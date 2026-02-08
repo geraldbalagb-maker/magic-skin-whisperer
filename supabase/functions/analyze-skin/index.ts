@@ -1,0 +1,173 @@
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers":
+    "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
+};
+
+// Knowledge base: catalogo completo prodotti con categorie e tag
+const PRODUCTS_KB = [
+  { id: "1", name: "Detergente viso ultra delicato", brand: "Rigenera 0.1", category: "detersione", tags: ["pelle sensibile", "quotidiano", "delicato"], price: 59.9 },
+  { id: "2", name: "Struccante Viso in Salvietta", brand: "Rigenera", category: "detersione", tags: ["pratico", "viaggio", "delicato"], price: 5.9 },
+  { id: "3", name: "Tonico viso AHA", brand: "Rigenera Xaikonix", category: "tonico", tags: ["esfoliante", "luminosità", "anti-età"], price: 59.9 },
+  { id: "4", name: "Flawless Mousse", brand: "Face+ SeboKey", category: "detersione", tags: ["pelle grassa", "pelle mista", "sebo-regolatore"], price: 34.9 },
+  { id: "5", name: "Hama Cream", brand: "Face+ Sensation", category: "crema", tags: ["idratante", "nutriente", "quotidiano"], price: 56.9 },
+  { id: "6", name: "Retynol.me", brand: "Rigenera Xaikonix", category: "crema", tags: ["anti-età", "notte", "rigenerante", "retinolo"], price: 94.9 },
+  { id: "7", name: "Scrub.me", brand: "Rigenera Xaikonix", category: "scrub", tags: ["esfoliante", "rinnovamento", "luminosità"], price: 69.9 },
+  { id: "8", name: "Mask.me", brand: "Rigenera Xaikonix", category: "maschera", tags: ["idratante", "nutriente", "settimanale"], price: 89.9 },
+  { id: "9", name: "Sweety Oil Milky", brand: "Face+ Sensation", category: "detersione", tags: ["delicato", "latte detergente", "pelle secca"], price: 36.9 },
+  { id: "10", name: "Crema Anti Age SPF50", brand: "Rigenera 0.8", category: "crema", tags: ["anti-età", "SPF", "protezione", "quotidiano"], price: 52.0 },
+  { id: "11", name: "Pinky Tonix", brand: "Face+ Sensation", category: "tonico", tags: ["lenitivo", "delicato", "pelle sensibile"], price: 39.9 },
+  { id: "12", name: "Luminor Recovery Cream", brand: "Face+", category: "crema", tags: ["anti-radicali", "recupero", "rigenerante"], price: 64.9 },
+  { id: "13", name: "Acn-End 10% Sulfur Suspension", brand: "Face+ SeboKey", category: "trattamento", tags: ["anti-brufoli", "pelle grassa", "trattamento mirato"], price: 39.9 },
+  { id: "14", name: "Smooth.me Step1 e Step2", brand: "Rigenera Xaikonix", category: "scrub", tags: ["peeling", "professionale", "rinnovamento"], price: 149.9 },
+  { id: "15", name: "Mosqueta's Soft Cream", brand: "Face+ SeboKey", category: "crema", tags: ["nutriente", "rosa mosqueta", "pelle secca"], price: 54.9 },
+];
+
+serve(async (req) => {
+  if (req.method === "OPTIONS") {
+    return new Response(null, { headers: corsHeaders });
+  }
+
+  try {
+    const { name, age, time, skinDescription, hasSelfie } = await req.json();
+
+    const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
+    if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
+
+    const systemPrompt = `Sei un'esperta beauty consultant italiana specializzata in skincare.
+Hai a disposizione il seguente catalogo di prodotti reali:
+
+${JSON.stringify(PRODUCTS_KB, null, 2)}
+
+Il tuo compito è analizzare le informazioni della cliente e creare una routine beauty personalizzata.
+
+REGOLE IMPORTANTI:
+- Devi selezionare SOLO prodotti dal catalogo fornito (usa gli ID esatti)
+- La routine deve avere esattamente 5 step nell'ordine: Detersione, Tonico, Trattamento, Crema Idratante, Esfoliazione/Maschera
+- Per ogni step seleziona 1-2 prodotti dal catalogo
+- Fornisci una spiegazione personalizzata per ogni step basata sulle esigenze della cliente
+- Includi un'analisi generale della pelle della cliente
+- Fornisci consigli personalizzati specifici
+
+RISPONDI ESCLUSIVAMENTE con una chiamata alla funzione fornita, senza testo aggiuntivo.`;
+
+    const userPrompt = `Ecco le informazioni della cliente:
+- Nome: ${name}
+- Fascia d'età: ${age}
+- Tempo disponibile per la routine: ${time}
+- Descrizione della pelle e desideri: ${skinDescription}
+- Ha caricato un selfie: ${hasSelfie ? "Sì" : "No"}
+
+Crea la routine beauty personalizzata perfetta per ${name}.`;
+
+    const response = await fetch(
+      "https://ai.gateway.lovable.dev/v1/chat/completions",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${LOVABLE_API_KEY}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model: "google/gemini-3-flash-preview",
+          messages: [
+            { role: "system", content: systemPrompt },
+            { role: "user", content: userPrompt },
+          ],
+          tools: [
+            {
+              type: "function",
+              function: {
+                name: "create_beauty_routine",
+                description: "Crea una routine beauty personalizzata con analisi della pelle e step con prodotti selezionati dal catalogo.",
+                parameters: {
+                  type: "object",
+                  properties: {
+                    skin_analysis: {
+                      type: "string",
+                      description: "Analisi dettagliata della pelle della cliente (2-3 frasi personalizzate)",
+                    },
+                    personalized_tips: {
+                      type: "array",
+                      items: { type: "string" },
+                      description: "3-4 consigli personalizzati per la cliente",
+                    },
+                    steps: {
+                      type: "array",
+                      items: {
+                        type: "object",
+                        properties: {
+                          step_name: { type: "string", description: "Nome dello step (es: Detersione, Tonico, Trattamento, Crema Idratante, Esfoliazione)" },
+                          step_order: { type: "number" },
+                          icon: { type: "string", description: "Emoji per lo step" },
+                          description: { type: "string", description: "Spiegazione personalizzata di perché questo step è importante per la cliente (1-2 frasi)" },
+                          product_ids: {
+                            type: "array",
+                            items: { type: "string" },
+                            description: "IDs dei prodotti selezionati dal catalogo per questo step",
+                          },
+                        },
+                        required: ["step_name", "step_order", "icon", "description", "product_ids"],
+                        additionalProperties: false,
+                      },
+                    },
+                  },
+                  required: ["skin_analysis", "personalized_tips", "steps"],
+                  additionalProperties: false,
+                },
+              },
+            },
+          ],
+          tool_choice: {
+            type: "function",
+            function: { name: "create_beauty_routine" },
+          },
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      if (response.status === 429) {
+        return new Response(
+          JSON.stringify({ error: "Troppe richieste, riprova tra qualche secondo." }),
+          { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+      if (response.status === 402) {
+        return new Response(
+          JSON.stringify({ error: "Crediti AI esauriti." }),
+          { status: 402, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+      const errorText = await response.text();
+      console.error("AI gateway error:", response.status, errorText);
+      throw new Error(`AI gateway error: ${response.status}`);
+    }
+
+    const data = await response.json();
+    const toolCall = data.choices?.[0]?.message?.tool_calls?.[0];
+
+    if (!toolCall?.function?.arguments) {
+      throw new Error("No tool call in AI response");
+    }
+
+    const routine = JSON.parse(toolCall.function.arguments);
+
+    return new Response(JSON.stringify({ success: true, routine }), {
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
+  } catch (e) {
+    console.error("analyze-skin error:", e);
+    return new Response(
+      JSON.stringify({
+        error: e instanceof Error ? e.message : "Errore sconosciuto",
+      }),
+      {
+        status: 500,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      }
+    );
+  }
+});

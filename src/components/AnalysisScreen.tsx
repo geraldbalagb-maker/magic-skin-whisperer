@@ -1,29 +1,88 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { motion } from "framer-motion";
 import MagicSparkles from "./MagicSparkles";
+import type { QuizData } from "./BeautyQuiz";
+import { supabase } from "@/integrations/supabase/client";
+
+export interface AIRoutineResult {
+  skin_analysis: string;
+  personalized_tips: string[];
+  steps: {
+    step_name: string;
+    step_order: number;
+    icon: string;
+    description: string;
+    product_ids: string[];
+  }[];
+}
 
 interface AnalysisScreenProps {
   name: string;
-  onComplete: () => void;
+  quizData: QuizData;
+  onComplete: (result: AIRoutineResult) => void;
 }
 
-const steps = [
+const loadingSteps = [
   "Analizzo il tuo tipo di pelle...",
   "Cerco i prodotti più adatti a te...",
   "Creo la tua routine personalizzata...",
   "Aggiungo un tocco di magia... ✨",
 ];
 
-const AnalysisScreen = ({ name, onComplete }: AnalysisScreenProps) => {
+const AnalysisScreen = ({ name, quizData, onComplete }: AnalysisScreenProps) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [progress, setProgress] = useState(0);
+  const [error, setError] = useState<string | null>(null);
+  const aiResultRef = useRef<AIRoutineResult | null>(null);
+  const hasCalledAI = useRef(false);
 
+  // Call AI edge function
+  useEffect(() => {
+    if (hasCalledAI.current) return;
+    hasCalledAI.current = true;
+
+    const callAI = async () => {
+      try {
+        const { data, error: fnError } = await supabase.functions.invoke("analyze-skin", {
+          body: {
+            name: quizData.name,
+            age: quizData.age,
+            time: quizData.time,
+            skinDescription: quizData.skinDescription,
+            hasSelfie: !!quizData.selfie,
+          },
+        });
+
+        if (fnError) throw new Error(fnError.message);
+        if (!data?.success) throw new Error(data?.error || "Errore nell'analisi");
+
+        aiResultRef.current = data.routine;
+      } catch (err) {
+        console.error("AI analysis error:", err);
+        setError(err instanceof Error ? err.message : "Errore nell'analisi");
+      }
+    };
+
+    callAI();
+  }, [quizData]);
+
+  // Progress animation
   useEffect(() => {
     const interval = setInterval(() => {
       setProgress((p) => {
+        // If AI is done, speed up to 100
+        if (aiResultRef.current && p >= 80) {
+          if (p >= 100) {
+            clearInterval(interval);
+            setTimeout(() => onComplete(aiResultRef.current!), 300);
+            return 100;
+          }
+          return p + 3;
+        }
+        // If AI not done yet, slow down at 85%
+        if (p >= 85 && !aiResultRef.current) return p;
         if (p >= 100) {
           clearInterval(interval);
-          setTimeout(onComplete, 500);
           return 100;
         }
         return p + 1;
@@ -32,17 +91,38 @@ const AnalysisScreen = ({ name, onComplete }: AnalysisScreenProps) => {
     return () => clearInterval(interval);
   }, [onComplete]);
 
+  // Loading step animation
   useEffect(() => {
     const stepInterval = setInterval(() => {
-      setCurrentStep((s) => (s < steps.length - 1 ? s + 1 : s));
+      setCurrentStep((s) => (s < loadingSteps.length - 1 ? s + 1 : s));
     }, 1500);
     return () => clearInterval(stepInterval);
   }, []);
 
+  if (error) {
+    return (
+      <div className="relative flex min-h-screen flex-col items-center justify-center bg-background px-4">
+        <MagicSparkles count={10} />
+        <div className="flex flex-col items-center gap-6 text-center">
+          <h2 className="font-display text-2xl font-semibold text-foreground">
+            Oops, qualcosa è andato storto 😔
+          </h2>
+          <p className="font-body text-sm text-muted-foreground max-w-sm">{error}</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="bg-gradient-gold rounded-full px-8 py-3 font-body text-sm font-medium text-primary-foreground shadow-gold"
+          >
+            Riprova
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="relative flex min-h-screen flex-col items-center justify-center bg-background px-4">
       <MagicSparkles count={30} />
-      
+
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -81,7 +161,7 @@ const AnalysisScreen = ({ name, onComplete }: AnalysisScreenProps) => {
             animate={{ opacity: 1, y: 0 }}
             className="mt-3 font-body text-sm text-muted-foreground"
           >
-            {steps[currentStep]}
+            {loadingSteps[currentStep]}
           </motion.p>
         </div>
       </motion.div>
