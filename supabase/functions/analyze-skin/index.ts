@@ -8,21 +8,43 @@ const corsHeaders = {
 
 // Knowledge base: catalogo completo prodotti con categorie e tag
 const PRODUCTS_KB = [
+  // DETERSIONE
   { id: "1", name: "Detergente viso ultra delicato", brand: "Rigenera 0.1", category: "detersione", tags: ["pelle sensibile", "quotidiano", "delicato"], price: 59.9 },
   { id: "2", name: "Struccante Viso in Salvietta", brand: "Rigenera", category: "detersione", tags: ["pratico", "viaggio", "delicato"], price: 5.9 },
-  { id: "3", name: "Tonico viso AHA", brand: "Rigenera Xaikonix", category: "tonico", tags: ["esfoliante", "luminosità", "anti-età"], price: 59.9 },
   { id: "4", name: "Flawless Mousse", brand: "Face+ SeboKey", category: "detersione", tags: ["pelle grassa", "pelle mista", "sebo-regolatore"], price: 34.9 },
-  { id: "5", name: "Hama Cream", brand: "Face+ Sensation", category: "crema", tags: ["idratante", "nutriente", "quotidiano"], price: 56.9 },
-  { id: "6", name: "Retynol.me", brand: "Rigenera Xaikonix", category: "crema", tags: ["anti-età", "notte", "rigenerante", "retinolo"], price: 94.9 },
-  { id: "7", name: "Scrub.me", brand: "Rigenera Xaikonix", category: "scrub", tags: ["esfoliante", "rinnovamento", "luminosità"], price: 69.9 },
-  { id: "8", name: "Mask.me", brand: "Rigenera Xaikonix", category: "maschera", tags: ["idratante", "nutriente", "settimanale"], price: 89.9 },
   { id: "9", name: "Sweety Oil Milky", brand: "Face+ Sensation", category: "detersione", tags: ["delicato", "latte detergente", "pelle secca"], price: 36.9 },
-  { id: "10", name: "Crema Anti Age SPF50", brand: "Rigenera 0.8", category: "crema", tags: ["anti-età", "SPF", "protezione", "quotidiano"], price: 52.0 },
+  // TONICI
+  { id: "3", name: "Tonic.me", brand: "Rigenera Xaikonix", category: "tonico", tags: ["esfoliante", "luminosità", "anti-età", "AHA"], price: 59.9 },
   { id: "11", name: "Pinky Tonix", brand: "Face+ Sensation", category: "tonico", tags: ["lenitivo", "delicato", "pelle sensibile"], price: 39.9 },
+  // CREME
+  { id: "5", name: "Hama Cream", brand: "Face+ Sensation", category: "crema", tags: ["idratante", "nutriente", "quotidiano", "acido ialuronico"], price: 56.9 },
+  { id: "6", name: "Retynol.me", brand: "Rigenera Xaikonix", category: "crema", tags: ["anti-età", "notte", "rigenerante", "retinolo"], price: 94.9 },
+  { id: "10", name: "Crema Anti Age SPF50", brand: "Rigenera 0.8", category: "crema", tags: ["anti-età", "SPF", "protezione", "quotidiano"], price: 52.0 },
   { id: "12", name: "Luminor Recovery Cream", brand: "Face+", category: "crema", tags: ["anti-radicali", "recupero", "rigenerante"], price: 64.9 },
-  { id: "13", name: "Acn-End 10% Sulfur Suspension", brand: "Face+ SeboKey", category: "trattamento", tags: ["anti-brufoli", "pelle grassa", "trattamento mirato"], price: 39.9 },
-  { id: "14", name: "Smooth.me Step1 e Step2", brand: "Rigenera Xaikonix", category: "scrub", tags: ["peeling", "professionale", "rinnovamento"], price: 149.9 },
   { id: "15", name: "Mosqueta's Soft Cream", brand: "Face+ SeboKey", category: "crema", tags: ["nutriente", "rosa mosqueta", "pelle secca"], price: 54.9 },
+  { id: "22", name: "Hydra.me", brand: "Rigenera Xaikonix", category: "crema", tags: ["idratante", "profonda", "pelle secca", "disidratata"], price: 79.9 },
+  // SCRUB & ESFOLIANTI
+  { id: "7", name: "Scrub.me", brand: "Rigenera Xaikonix", category: "scrub", tags: ["esfoliante", "rinnovamento", "luminosità"], price: 69.9 },
+  { id: "14", name: "Smooth.me Step1 e Step2", brand: "Rigenera Xaikonix", category: "scrub", tags: ["peeling", "professionale", "rinnovamento"], price: 149.9 },
+  { id: "16", name: "Blacky Coffee Scrub", brand: "Face+ Sensation", category: "scrub", tags: ["corpo", "energizzante", "caffè", "esfoliante"], price: 29.9 },
+  { id: "17", name: "Green Face Scrub", brand: "Face+ Sensation", category: "scrub", tags: ["purificante", "vegetale", "pelle mista"], price: 32.9 },
+  { id: "18", name: "Guanto Scrub Esfoliante", brand: "Rigenera", category: "scrub", tags: ["corpo", "esfoliante", "accessorio"], price: 12.9 },
+  { id: "28", name: "JJ Scrubby", brand: "Face+ Sensation", category: "scrub", tags: ["delicato", "pelle sensibile", "esfoliante"], price: 34.9 },
+  // MASCHERE
+  { id: "8", name: "Mask.me", brand: "Rigenera Xaikonix", category: "maschera", tags: ["idratante", "nutriente", "settimanale"], price: 89.9 },
+  // TRATTAMENTI
+  { id: "13", name: "Acn-End 10% Sulfur Suspension", brand: "Face+ SeboKey", category: "trattamento", tags: ["anti-brufoli", "pelle grassa", "trattamento mirato", "zolfo"], price: 39.9 },
+  { id: "23", name: "Black End Purificante", brand: "Face+ SeboKey", category: "trattamento", tags: ["purificante", "punti neri", "pelle grassa"], price: 29.9 },
+  { id: "25", name: "Perfect.me", brand: "Rigenera Xaikonix", category: "trattamento", tags: ["perfezionante", "anti-imperfezioni", "professionale"], price: 89.9 },
+  // SIERI
+  { id: "24", name: "Boost Serum", brand: "Face+ Sensation", category: "siero", tags: ["luminosità", "concentrato", "booster"], price: 49.9 },
+  { id: "26", name: "Serum.me", brand: "Rigenera Xaikonix", category: "siero", tags: ["anti-età", "concentrato", "attivi"], price: 99.9 },
+  { id: "27", name: "Elisir Rigenerante", brand: "Rigenera", category: "siero", tags: ["rigenerante", "pelle matura", "elisir", "concentrato"], price: 79.9 },
+  { id: "29", name: "Esosomi Serum", brand: "Rigenera", category: "siero", tags: ["esosomi", "rigenerazione cellulare", "innovativo", "anti-età"], price: 119.9 },
+  // OLI
+  { id: "19", name: "Magic Oil Stick Supersonic Hydra Serum", brand: "Face+", category: "olio", tags: ["idratante", "pratico", "viaggio", "stick"], price: 24.9 },
+  // CORPO
+  { id: "20", name: "Bath Sea Salt", brand: "Rigenera", category: "corpo", tags: ["rilassante", "corpo", "bagno", "sali"], price: 19.9 },
 ];
 
 serve(async (req) => {
