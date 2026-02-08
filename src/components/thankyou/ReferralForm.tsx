@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { Heart, Mail, Gift, Send } from "lucide-react";
-import goldenEnvelopeImg from "@/assets/golden-envelope.jpg";
 import HeartBurst from "./HeartBurst";
+import GiftEnvelope from "./GiftEnvelope";
 
 interface ReferralFormProps {
   name: string;
@@ -26,61 +26,83 @@ const ReferralForm = ({
   canSubmit,
   onSubmit,
 }: ReferralFormProps) => (
-  <div className="relative min-h-screen bg-background px-4 py-12">
-    {/* Thank you header */}
-    <motion.div
-      initial={{ opacity: 0, y: -20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="mb-12 text-center"
-    >
-      <h1 className="font-display text-3xl font-bold text-foreground md:text-4xl">
-        Grazie, {name}!
-      </h1>
-      <p className="mx-auto mt-3 max-w-md font-body text-muted-foreground">
-        Il tuo ordine è confermato. La tua beauty routine sta per arrivare!
-      </p>
-    </motion.div>
-
+  <div className="relative min-h-screen bg-background">
     <AnimatePresence mode="wait">
       {!envelopeOpened ? (
         <motion.div
-          key="envelope"
-          className="mx-auto mb-12 max-w-sm cursor-pointer text-center"
-          onClick={onOpenEnvelope}
-          whileHover={{ scale: 1.05, y: -5 }}
-          whileTap={{ scale: 0.95 }}
+          key="envelope-screen"
+          exit={{ opacity: 0, scale: 0.9, filter: "blur(8px)" }}
+          transition={{ duration: 0.5, ease: "easeInOut" }}
+          className="flex min-h-screen flex-col items-center justify-center px-4"
         >
+          {/* Background gradient */}
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-background via-secondary/30 to-background" />
+
           <motion.div
-            animate={{ y: [0, -8, 0] }}
-            transition={{ duration: 2, repeat: Infinity }}
-            className="relative"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="relative z-10 mb-16 text-center"
           >
-            <img
-              src={goldenEnvelopeImg}
-              alt="Busta sorpresa"
-              className="mx-auto w-64 rounded-2xl shadow-gold-lg"
-            />
-            <div className="absolute -right-2 -top-2 rounded-full bg-gradient-gold p-2 shadow-gold animate-pulse-glow">
-              <Gift className="h-5 w-5 text-primary-foreground" />
-            </div>
+            <motion.span
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.2 }}
+              className="inline-block rounded-full bg-primary/10 px-4 py-1.5 font-body text-[10px] font-semibold uppercase tracking-widest text-primary"
+            >
+              Ordine confermato ✓
+            </motion.span>
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.7 }}
+              className="mt-5 font-display text-3xl font-bold text-foreground md:text-5xl"
+            >
+              Grazie, <span className="sparkle-text">{name}</span>!
+            </motion.h1>
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5 }}
+              className="mx-auto mt-3 max-w-sm font-body text-sm text-muted-foreground"
+            >
+              La tua beauty routine sta per arrivare. Ma prima...
+            </motion.p>
           </motion.div>
-          <p className="mt-4 font-display text-lg font-medium text-foreground">
-            Hai un regalo che ti aspetta! 🎁
-          </p>
-          <p className="font-body text-sm text-muted-foreground">
-            Clicca sulla busta per scoprirlo
-          </p>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.7, type: "spring", bounce: 0.4 }}
+            className="relative z-10"
+          >
+            <GiftEnvelope onOpen={onOpenEnvelope} />
+          </motion.div>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.2 }}
+            className="relative z-10 mt-10 font-body text-xs text-muted-foreground/60"
+          >
+            Tocca la busta per scoprire la sorpresa
+          </motion.p>
         </motion.div>
       ) : (
         <motion.div
           key="gift-content"
-          initial={{ opacity: 0, scale: 0.8, rotateY: 90 }}
-          animate={{ opacity: 1, scale: 1, rotateY: 0 }}
-          transition={{ type: "spring", duration: 0.8 }}
-          className="mx-auto mb-12 max-w-md"
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, ease: [0, 0, 0.2, 1] }}
+          className="flex min-h-screen flex-col items-center justify-center px-4 py-12"
         >
-          <div className="rounded-2xl border border-primary/30 bg-card p-8 text-center shadow-gold-lg">
-            <Gift className="mx-auto mb-4 h-12 w-12 text-primary" />
+          <div className="w-full max-w-md rounded-2xl border border-primary/30 bg-card p-8 text-center shadow-gold-lg">
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ type: "spring", delay: 0.1 }}
+            >
+              <Gift className="mx-auto mb-4 h-12 w-12 text-primary" />
+            </motion.div>
             <h2 className="font-display text-2xl font-bold text-foreground">
               Un regalo esclusivo per te! 🎁
             </h2>
@@ -91,7 +113,13 @@ const ReferralForm = ({
 
             <div className="mt-8 space-y-4">
               {[0, 1, 2].map((idx) => (
-                <div key={idx} className="relative">
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.2 + idx * 0.12 }}
+                  className="relative"
+                >
                   <HeartBurst show={heartBursts[idx]} />
                   <div className="flex items-center gap-3">
                     <div
@@ -117,11 +145,14 @@ const ReferralForm = ({
                       }`}
                     />
                   </div>
-                </div>
+                </motion.div>
               ))}
             </div>
 
             <motion.button
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.6 }}
               whileHover={{ scale: canSubmit ? 1.05 : 1 }}
               whileTap={{ scale: canSubmit ? 0.95 : 1 }}
               onClick={onSubmit}
