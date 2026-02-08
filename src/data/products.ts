@@ -1,3 +1,14 @@
+import cleanserImg from '@/assets/products/cleanser.jpg';
+import tonerImg from '@/assets/products/toner.jpg';
+import creamImg from '@/assets/products/cream.jpg';
+import scrubImg from '@/assets/products/scrub.jpg';
+import treatmentImg from '@/assets/products/treatment.jpg';
+import maskImg from '@/assets/products/mask.jpg';
+import milkCleanserImg from '@/assets/products/milk-cleanser.jpg';
+import nightCreamImg from '@/assets/products/night-cream.jpg';
+import spfCreamImg from '@/assets/products/spf-cream.jpg';
+import mousseImg from '@/assets/products/mousse.jpg';
+
 export interface Product {
   id: string;
   name: string;
@@ -19,7 +30,7 @@ export const products: Product[] = [
     brand: 'Rigenera 0.1',
     description: 'Detersione profonda ma gentile per tutti i tipi di pelle',
     price: 59.90,
-    image: 'https://www.luxury-perfumes.net/wp-content/uploads/2023/10/Rigenera-0.1-Detergente-viso-ultra-delicato.webp',
+    image: cleanserImg,
     category: 'detersione',
     tags: ['pelle sensibile', 'quotidiano', 'delicato'],
     rating: 5,
@@ -31,7 +42,7 @@ export const products: Product[] = [
     brand: 'Rigenera',
     description: 'Struccante pratico e delicato per ogni tipo di pelle',
     price: 5.90,
-    image: 'https://www.luxury-perfumes.net/wp-content/uploads/2023/10/Rigenera-Struccante-Viso-in-Salvietta.webp',
+    image: milkCleanserImg,
     category: 'detersione',
     tags: ['pratico', 'viaggio', 'delicato'],
     rating: 5,
@@ -43,7 +54,7 @@ export const products: Product[] = [
     brand: 'Rigenera Xaikonix',
     description: 'Tonico esfoliante con AHA per pelle luminosa',
     price: 59.90,
-    image: 'https://www.luxury-perfumes.net/wp-content/uploads/2023/10/Rigenera-Xaikonix-Tonic.me_.webp',
+    image: tonerImg,
     category: 'tonico',
     tags: ['esfoliante', 'luminosità', 'anti-età'],
     rating: 5,
@@ -55,7 +66,7 @@ export const products: Product[] = [
     brand: 'Face+ SeboKey',
     description: 'Mousse detergente per pelle mista e grassa',
     price: 34.90,
-    image: 'https://www.luxury-perfumes.net/wp-content/uploads/2024/02/Face-SeboKey-Flawless-Mousse.webp',
+    image: mousseImg,
     category: 'detersione',
     tags: ['pelle grassa', 'pelle mista', 'sebo-regolatore'],
     rating: 5,
@@ -67,7 +78,7 @@ export const products: Product[] = [
     brand: 'Face+ Sensation',
     description: 'Crema viso idratante intensiva',
     price: 56.90,
-    image: 'https://www.luxury-perfumes.net/wp-content/uploads/2023/10/Face-Sensation-Hama-Cream.webp',
+    image: creamImg,
     category: 'crema',
     tags: ['idratante', 'nutriente', 'quotidiano'],
     rating: 5,
@@ -79,7 +90,7 @@ export const products: Product[] = [
     brand: 'Rigenera Xaikonix',
     description: 'Crema notte rigenerante con retinolo',
     price: 94.90,
-    image: 'https://www.luxury-perfumes.net/wp-content/uploads/2023/10/Rigenera-Xaikonix-Retynol.me_.webp',
+    image: nightCreamImg,
     category: 'crema',
     tags: ['anti-età', 'notte', 'rigenerante', 'retinolo'],
     rating: 5,
@@ -91,7 +102,7 @@ export const products: Product[] = [
     brand: 'Rigenera Xaikonix',
     description: 'Scrub maschera viso per una pelle rinnovata',
     price: 69.90,
-    image: 'https://www.luxury-perfumes.net/wp-content/uploads/2023/10/Rigenera-Xaikonix-Scrub.me_.webp',
+    image: scrubImg,
     category: 'scrub',
     tags: ['esfoliante', 'rinnovamento', 'luminosità'],
     rating: 5,
@@ -103,7 +114,7 @@ export const products: Product[] = [
     brand: 'Rigenera Xaikonix',
     description: 'Maschera viso ultraidratante',
     price: 89.90,
-    image: 'https://www.luxury-perfumes.net/wp-content/uploads/2023/10/Rigenera-Xaikonix-Mask.me_.webp',
+    image: maskImg,
     category: 'maschera',
     tags: ['idratante', 'nutriente', 'settimanale'],
     rating: 5,
@@ -115,7 +126,7 @@ export const products: Product[] = [
     brand: 'Face+ Sensation',
     description: 'Latte detergente viso delicato',
     price: 36.90,
-    image: 'https://www.luxury-perfumes.net/wp-content/uploads/2023/10/Face-Sensation-Sweety-Oil-Milky.webp',
+    image: milkCleanserImg,
     category: 'detersione',
     tags: ['delicato', 'latte detergente', 'pelle secca'],
     rating: 5,
@@ -127,7 +138,7 @@ export const products: Product[] = [
     brand: 'Rigenera 0.8',
     description: 'Crema anti età con protezione solare alta',
     price: 52.00,
-    image: 'https://www.luxury-perfumes.net/wp-content/uploads/2023/10/Rigenera-0.8-Crema-Anti-Age-SPF50-minisize.webp',
+    image: spfCreamImg,
     category: 'crema',
     tags: ['anti-età', 'SPF', 'protezione', 'quotidiano'],
     rating: 5,
@@ -139,7 +150,7 @@ export const products: Product[] = [
     brand: 'Face+ Sensation',
     description: 'Tonico viso lenitivo con formula delicata',
     price: 39.90,
-    image: 'https://www.luxury-perfumes.net/wp-content/uploads/2024/02/Face-Sensation-Pinky-Tonix.webp',
+    image: tonerImg,
     category: 'tonico',
     tags: ['lenitivo', 'delicato', 'pelle sensibile'],
     rating: 5,
@@ -151,7 +162,7 @@ export const products: Product[] = [
     brand: 'Face+',
     description: 'Crema anti radicali per il recupero della pelle',
     price: 64.90,
-    image: 'https://www.luxury-perfumes.net/wp-content/uploads/2024/02/Face-Luminor-Recovery-Cream.webp',
+    image: creamImg,
     category: 'crema',
     tags: ['anti-radicali', 'recupero', 'rigenerante'],
     rating: 5,
@@ -163,7 +174,7 @@ export const products: Product[] = [
     brand: 'Face+ SeboKey',
     description: 'Trattamento mirato brufoli con zolfo',
     price: 39.90,
-    image: 'https://www.luxury-perfumes.net/wp-content/uploads/2023/10/Face-SeboKey-Acn-End-10-Sulfur-Suspension.webp',
+    image: treatmentImg,
     category: 'trattamento',
     tags: ['anti-brufoli', 'pelle grassa', 'trattamento mirato'],
     rating: 5,
@@ -175,7 +186,7 @@ export const products: Product[] = [
     brand: 'Rigenera Xaikonix',
     description: 'Esfoliante peeling viso in due step',
     price: 149.90,
-    image: 'https://www.luxury-perfumes.net/wp-content/uploads/2023/10/Rigenera-Xaikonix-Smooth.me_.webp',
+    image: scrubImg,
     category: 'scrub',
     tags: ['peeling', 'professionale', 'rinnovamento'],
     rating: 5,
@@ -187,7 +198,7 @@ export const products: Product[] = [
     brand: 'Face+ SeboKey',
     description: 'Crema delicata alla rosa mosqueta',
     price: 54.90,
-    image: 'https://www.luxury-perfumes.net/wp-content/uploads/2024/02/Face-SeboKey-Mosquetas-Soft-Cream.webp',
+    image: creamImg,
     category: 'crema',
     tags: ['nutriente', 'rosa mosqueta', 'pelle secca'],
     rating: 5,
@@ -210,7 +221,7 @@ export const giftProduct: Product = {
   brand: 'Face+ SeboKey',
   description: 'Tonico magico formato viaggio - il tuo regalo esclusivo!',
   price: 0,
-  image: 'https://www.luxury-perfumes.net/wp-content/uploads/2024/02/Face-SeboKey-Magic-Tonix.webp',
+  image: tonerImg,
   category: 'tonico',
   tags: ['regalo', 'viaggio'],
   rating: 5,
