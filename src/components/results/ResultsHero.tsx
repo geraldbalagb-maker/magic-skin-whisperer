@@ -113,7 +113,8 @@ const ResultsHero = ({ name, quizData, aiResult }: ResultsHeroProps) => (
         <motion.div
           animate={{ y: [0, 8, 0] }}
           transition={{ duration: 2, repeat: Infinity }}
-          className="flex flex-col items-center gap-2"
+          className="flex cursor-pointer flex-col items-center gap-2"
+          onClick={() => document.getElementById("routine-section")?.scrollIntoView({ behavior: "smooth" })}
         >
           <span className="font-body text-[10px] uppercase tracking-widest text-primary-foreground/40">
             Scopri la tua routine

@@ -62,7 +62,9 @@ const ResultsPage = ({ name, quizData, aiResult, selfie, enhancedSelfie, onCheck
   return (
     <div className="min-h-screen bg-background">
       <ResultsHero name={name} quizData={quizData} aiResult={aiResult} />
-      <AITipsGrid tips={aiResult.personalized_tips} />
+      <div id="routine-section">
+        <AITipsGrid tips={aiResult.personalized_tips} />
+      </div>
       <RoutineSteps routine={routine} cart={cart} onToggleCart={toggleCart} />
 
       {selfie && enhancedSelfie && (
