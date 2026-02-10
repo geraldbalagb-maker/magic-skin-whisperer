@@ -14,7 +14,7 @@ const CelebrationScreen = ({ name, showConfetti }: CelebrationScreenProps) => (
   <div className="relative min-h-screen overflow-hidden bg-background">
     {/* Logo */}
     <div className="absolute top-6 left-1/2 z-50 -translate-x-1/2">
-      <MaisonLogo circular size="md" />
+      <MaisonLogo size="md" />
     </div>
     {showConfetti && <Confetti />}
 
