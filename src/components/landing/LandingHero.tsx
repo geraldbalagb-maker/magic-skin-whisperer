@@ -44,9 +44,8 @@ const LandingHero = ({ onStartQuiz }: LandingHeroProps) => (
           transition={{ delay: 0.3, duration: 0.8 }}
           className="font-display text-4xl font-bold leading-[1.1] text-foreground md:text-5xl lg:text-6xl"
         >
-          La tua beauty routine su misura
-          <br />
-          in <span className="sparkle-text">1 minuto</span>
+          La tua routine su misura,{" "}
+          <span className="sparkle-text">in 1 minuto</span>
         </motion.h1>
 
         <motion.p
