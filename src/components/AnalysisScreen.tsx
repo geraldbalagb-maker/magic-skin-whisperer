@@ -146,7 +146,7 @@ const AnalysisScreen = ({ name, quizData, onComplete }: AnalysisScreenProps) => 
       transition={{ duration: 0.8, ease: "easeInOut" }}
     >
       {/* Logo */}
-      <div className="absolute top-6 left-1/2 z-50 -translate-x-1/2">
+      <div className="absolute top-6 right-6 z-50">
         <MaisonLogo variant="light" size="md" />
       </div>
 
