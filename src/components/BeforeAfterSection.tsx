@@ -1,6 +1,6 @@
 import { useState, useRef, useCallback } from "react";
 import { motion } from "framer-motion";
-import { AlertTriangle } from "lucide-react";
+
 
 interface BeforeAfterSectionProps {
   beforeImage: string;
@@ -119,7 +119,6 @@ const BeforeAfterSection = ({ beforeImage, afterImage, name }: BeforeAfterSectio
         className="mx-auto mt-6 max-w-md"
       >
         <div className="flex items-start gap-3 rounded-xl border border-gold/20 bg-card p-4">
-          <AlertTriangle className="mt-0.5 h-4 w-4 flex-shrink-0 text-gold" />
           <div>
             <p className="font-body text-xs font-medium text-foreground">
               Immagine a scopo illustrativo
