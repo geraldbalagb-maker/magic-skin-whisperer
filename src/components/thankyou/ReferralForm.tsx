@@ -83,14 +83,6 @@ const ReferralForm = ({
             <GiftEnvelope onOpen={onOpenEnvelope} />
           </motion.div>
 
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.2 }}
-            className="relative z-10 mt-10 font-body text-xs text-muted-foreground/60"
-          >
-            Tocca la busta per scoprire la sorpresa
-          </motion.p>
         </motion.div>
       ) : (
         <motion.div
