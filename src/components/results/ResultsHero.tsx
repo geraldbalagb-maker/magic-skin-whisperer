@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { ChevronRight } from "lucide-react";
 import type { QuizData } from "../BeautyQuiz";
 import type { AIRoutineResult } from "../AnalysisScreen";
+import MaisonLogo from "@/components/MaisonLogo";
 
 interface ResultsHeroProps {
   name: string;
@@ -29,7 +30,10 @@ const ResultsHero = ({ name, quizData, aiResult }: ResultsHeroProps) => (
     </div>
 
     <div className="relative z-10 mx-auto max-w-5xl px-4 py-16 md:py-24">
-      {/* Top label */}
+      {/* Logo */}
+      <div className="mb-8 flex justify-center">
+        <MaisonLogo circular size="lg" />
+      </div>
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}

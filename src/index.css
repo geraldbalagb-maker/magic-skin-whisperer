@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -15,7 +15,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 10%;
 
-    --primary: 38 55% 55%;
+    --primary: 40 45% 50%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 0 0% 96%;
@@ -24,7 +24,7 @@
     --muted: 0 0% 96%;
     --muted-foreground: 0 0% 45%;
 
-    --accent: 38 45% 50%;
+    --accent: 40 40% 48%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84.2% 60.2%;
@@ -32,17 +32,17 @@
 
     --border: 0 0% 91%;
     --input: 0 0% 91%;
-    --ring: 38 55% 55%;
+    --ring: 40 45% 50%;
 
     --radius: 0.5rem;
 
-    /* Brand palette */
-    --gold: 38 55% 55%;
-    --gold-light: 40 60% 75%;
-    --gold-dark: 36 50% 40%;
-    --cream: 0 0% 98%;
-    --cream-dark: 0 0% 95%;
-    --charcoal: 0 0% 10%;
+    /* Brand palette — Maison 22 */
+    --gold: 40 45% 50%;
+    --gold-light: 42 50% 68%;
+    --gold-dark: 38 42% 38%;
+    --cream: 40 20% 97%;
+    --cream-dark: 40 15% 94%;
+    --charcoal: 0 0% 8%;
     --rose: 350 40% 70%;
     --rose-light: 350 50% 85%;
     --cta: 0 72% 51%;
@@ -57,8 +57,8 @@
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
 
-    --font-display: 'Cormorant Garamond', serif;
-    --font-body: 'DM Sans', sans-serif;
+    --font-display: 'Playfair Display', serif;
+    --font-body: 'Montserrat', sans-serif;
   }
 }
 
@@ -81,22 +81,22 @@
 
 @layer utilities {
   .text-gradient-gold {
-    background: linear-gradient(135deg, hsl(38 55% 55%), hsl(40 60% 75%), hsl(38 55% 55%));
+    background: linear-gradient(135deg, hsl(40 45% 50%), hsl(42 50% 68%), hsl(40 45% 50%));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
   .bg-gradient-gold {
-    background: linear-gradient(135deg, hsl(38 55% 55%), hsl(40 60% 75%));
+    background: linear-gradient(135deg, hsl(40 45% 50%), hsl(42 50% 68%));
   }
 
   .bg-gradient-cream {
-    background: linear-gradient(180deg, hsl(0 0% 98%), hsl(0 0% 96%));
+    background: linear-gradient(180deg, hsl(40 20% 97%), hsl(40 15% 94%));
   }
 
   .bg-gradient-dark {
-    background: linear-gradient(135deg, hsl(0 0% 8%), hsl(0 0% 14%));
+    background: linear-gradient(135deg, hsl(0 0% 5%), hsl(0 0% 12%));
   }
 
   .bg-cta {
@@ -109,11 +109,11 @@
   }
 
   .shadow-gold {
-    box-shadow: 0 4px 30px -5px hsl(38 55% 55% / 0.25);
+    box-shadow: 0 4px 30px -5px hsl(40 45% 50% / 0.25);
   }
 
   .shadow-gold-lg {
-    box-shadow: 0 10px 50px -10px hsl(38 55% 55% / 0.35);
+    box-shadow: 0 10px 50px -10px hsl(40 45% 50% / 0.35);
   }
 
   .shadow-elegant {
@@ -129,15 +129,15 @@
   }
 
   .border-gold {
-    border-color: hsl(38 55% 55% / 0.3);
+    border-color: hsl(40 45% 50% / 0.3);
   }
 
   .glow-gold {
-    box-shadow: 0 0 20px hsl(38 55% 55% / 0.3), 0 0 60px hsl(38 55% 55% / 0.1);
+    box-shadow: 0 0 20px hsl(40 45% 50% / 0.3), 0 0 60px hsl(40 45% 50% / 0.1);
   }
 
   .sparkle-text {
-    background: linear-gradient(90deg, hsl(38 55% 55%), hsl(40 60% 75%), hsl(350 40% 70%), hsl(38 55% 55%));
+    background: linear-gradient(90deg, hsl(40 45% 50%), hsl(42 50% 68%), hsl(350 40% 70%), hsl(40 45% 50%));
     background-size: 200% auto;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -156,8 +156,8 @@
   }
 
   @keyframes pulse-glow {
-    0%, 100% { box-shadow: 0 0 20px hsl(38 55% 55% / 0.2); }
-    50% { box-shadow: 0 0 40px hsl(38 55% 55% / 0.5); }
+    0%, 100% { box-shadow: 0 0 20px hsl(40 45% 50% / 0.2); }
+    50% { box-shadow: 0 0 40px hsl(40 45% 50% / 0.5); }
   }
 
   @keyframes shimmer {
@@ -174,7 +174,7 @@
   }
 
   .animate-shimmer {
-    background: linear-gradient(90deg, transparent 0%, hsl(38 55% 55% / 0.06) 50%, transparent 100%);
+    background: linear-gradient(90deg, transparent 0%, hsl(40 45% 50% / 0.06) 50%, transparent 100%);
     background-size: 200% 100%;
     animation: shimmer 3s ease-in-out infinite;
   }

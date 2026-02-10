@@ -3,6 +3,7 @@ import { Gift, Truck, Shield, Package } from "lucide-react";
 import Confetti from "./Confetti";
 import GiftProductShowcase from "./GiftProductShowcase";
 import FounderMessage from "./FounderMessage";
+import MaisonLogo from "@/components/MaisonLogo";
 
 interface CelebrationScreenProps {
   name: string;
@@ -11,6 +12,10 @@ interface CelebrationScreenProps {
 
 const CelebrationScreen = ({ name, showConfetti }: CelebrationScreenProps) => (
   <div className="relative min-h-screen overflow-hidden bg-background">
+    {/* Logo */}
+    <div className="absolute top-6 left-1/2 z-50 -translate-x-1/2">
+      <MaisonLogo circular size="md" />
+    </div>
     {showConfetti && <Confetti />}
 
     {/* ─── Hero celebration ─── */}

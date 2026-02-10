@@ -1,20 +1,23 @@
+import MaisonLogo from "@/components/MaisonLogo";
+
 const Footer = () => (
-  <footer className="border-t border-border bg-secondary/30 px-6 py-10">
+  <footer className="border-t border-border bg-foreground px-6 py-10">
     <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 md:flex-row">
-      <div className="flex items-center gap-2">
-        <span className="font-display text-sm font-semibold text-foreground">Luxury Perfumes</span>
+      <div className="flex items-center gap-3">
+        <MaisonLogo variant="light" size="sm" />
+        <span className="font-display text-sm font-semibold text-background">Maison 22 Esthétique</span>
       </div>
-      <p className="font-body text-[11px] text-muted-foreground">
-        © 2026 Luxury Perfumes. Tutti i diritti riservati.
+      <p className="font-body text-[11px] text-background/50">
+        © 2026 Maison 22 Esthétique. Tutti i diritti riservati.
       </p>
       <div className="flex gap-4">
-        <a href="https://www.luxury-perfumes.net" target="_blank" rel="noopener noreferrer" className="font-body text-xs text-muted-foreground transition-colors hover:text-foreground">
-          Shop
+        <a href="https://www.maison22esthetique.it" target="_blank" rel="noopener noreferrer" className="font-body text-xs text-background/50 transition-colors hover:text-background">
+          Sito ufficiale
         </a>
-        <a href="#" className="font-body text-xs text-muted-foreground transition-colors hover:text-foreground">
+        <a href="#" className="font-body text-xs text-background/50 transition-colors hover:text-background">
           Privacy
         </a>
-        <a href="#" className="font-body text-xs text-muted-foreground transition-colors hover:text-foreground">
+        <a href="#" className="font-body text-xs text-background/50 transition-colors hover:text-background">
           Contatti
         </a>
       </div>
