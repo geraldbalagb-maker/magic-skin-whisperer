@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Camera, ChevronRight, SkipForward, Sparkles, Loader2 } from "lucide-react";
 import MaisonLogo from "@/components/MaisonLogo";
-import { Camera, Clock, ChevronRight, SkipForward } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 import stepNameImg from "@/assets/steps/step-name.jpg";
 import stepSelfieImg from "@/assets/steps/step-selfie.jpg";
 import stepAgeImg from "@/assets/steps/step-age.jpg";
@@ -28,6 +29,19 @@ const stepVariants = {
   exit: { opacity: 0, y: -40, scale: 0.96 },
 };
 
+const skinSuggestions = [
+  "Pelle secca e disidratata",
+  "Pelle grassa con pori dilatati",
+  "Pelle mista, zona T lucida",
+  "Pelle sensibile e arrossata",
+  "Macchie scure e discromie",
+  "Rughe e segni del tempo",
+  "Acne e imperfezioni",
+  "Voglio un effetto glow",
+  "Pelle spenta e opaca",
+  "Occhiaie e borse",
+];
+
 const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
   const [step, setStep] = useState(0);
   const [data, setData] = useState<QuizData>({
@@ -37,6 +51,7 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
     time: "",
     skinDescription: "",
   });
+  const [isEnhancing, setIsEnhancing] = useState(false);
 
   const nextStep = () => {
     if (step < 4) setStep(step + 1);
@@ -55,14 +70,33 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
     }
   };
 
-  const timeOptions = [
-    { label: "5 minuti", emoji: "⚡" },
-    { label: "10 minuti", emoji: "☕" },
-    { label: "20 minuti", emoji: "🧖‍♀️" },
-    { label: "30+ minuti", emoji: "👑" },
-  ];
+  const timeOptions = ["5 minuti", "10 minuti", "20 minuti", "30+ minuti"];
 
-  const ageOptions = ["18-25", "26-35", "36-45", "46-55", "55+"];
+  const handleSuggestionClick = (suggestion: string) => {
+    setData((prev) => ({
+      ...prev,
+      skinDescription: prev.skinDescription
+        ? `${prev.skinDescription}, ${suggestion.toLowerCase()}`
+        : suggestion,
+    }));
+  };
+
+  const enhanceWithAI = useCallback(async () => {
+    if (!data.skinDescription.trim() || isEnhancing) return;
+    setIsEnhancing(true);
+    try {
+      const res = await supabase.functions.invoke("enhance-text", {
+        body: { text: data.skinDescription, name: data.name },
+      });
+      if (res.data?.enhanced) {
+        setData((prev) => ({ ...prev, skinDescription: res.data.enhanced }));
+      }
+    } catch (err) {
+      console.warn("Text enhancement failed:", err);
+    } finally {
+      setIsEnhancing(false);
+    }
+  }, [data.skinDescription, data.name, isEnhancing]);
 
   const renderStep = () => {
     switch (step) {
@@ -141,33 +175,33 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
             <p className="font-body text-sm text-muted-foreground">
               Ogni età ha la sua bellezza — e la sua routine perfetta
             </p>
-            <div className="flex flex-wrap justify-center gap-3">
-              {ageOptions.map((age) => (
-                <motion.button
-                  key={age}
-                  whileHover={{ scale: 1.08 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => {
-                    setData({ ...data, age });
-                    setTimeout(() => setStep(3), 400);
-                  }}
-                  className={`rounded-sm border px-6 py-3 font-body text-sm transition-all ${
-                    data.age === age
-                      ? "border-foreground bg-foreground text-background"
-                      : "border-border bg-card text-foreground hover:border-foreground/40"
-                  }`}
-                >
-                  {age}
-                </motion.button>
-              ))}
-            </div>
+            <input
+              type="number"
+              inputMode="numeric"
+              min={13}
+              max={99}
+              value={data.age}
+              onChange={(e) => setData({ ...data, age: e.target.value })}
+              placeholder="La tua età"
+              className="w-full max-w-[160px] rounded-sm border border-border bg-card px-6 py-4 text-center font-display text-2xl text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+              autoFocus
+              onKeyDown={(e) => e.key === "Enter" && data.age && nextStep()}
+            />
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={nextStep}
+              disabled={!data.age}
+              className="bg-gradient-cta rounded-sm px-8 py-3 font-body text-xs font-semibold uppercase tracking-widest text-cta-foreground shadow-cta transition-all disabled:opacity-40"
+            >
+              Continua <ChevronRight className="ml-1 inline h-4 w-4" />
+            </motion.button>
           </motion.div>
         );
 
       case 3:
         return (
           <motion.div key="time" variants={stepVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.5 }} className="flex flex-col items-center gap-6 text-center">
-            <Clock className="mx-auto h-8 w-8 text-foreground" />
             <h2 className="font-display text-2xl font-semibold text-foreground md:text-3xl">
               Sappiamo che hai mille impegni, {data.name}
             </h2>
@@ -177,20 +211,20 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
             <div className="grid grid-cols-2 gap-3">
               {timeOptions.map((opt) => (
                 <motion.button
-                  key={opt.label}
+                  key={opt}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => {
-                    setData({ ...data, time: opt.label });
+                    setData({ ...data, time: opt });
                     setTimeout(() => setStep(4), 400);
                   }}
-                  className={`flex items-center gap-2 rounded-sm border px-5 py-4 font-body text-sm transition-all ${
-                    data.time === opt.label
+                  className={`rounded-sm border px-5 py-4 font-body text-sm transition-all ${
+                    data.time === opt
                       ? "border-foreground bg-foreground text-background"
                       : "border-border bg-card text-foreground hover:border-foreground/40"
                   }`}
                 >
-                  <span className="text-lg">{opt.emoji}</span> {opt.label}
+                  {opt}
                 </motion.button>
               ))}
             </div>
@@ -206,13 +240,52 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
             <p className="max-w-sm font-body text-sm text-muted-foreground">
               Com'è la tua pelle? Hai particolari esigenze? Che effetto vorresti ottenere?
             </p>
-            <textarea
-              value={data.skinDescription}
-              onChange={(e) => setData({ ...data, skinDescription: e.target.value })}
-              placeholder="Es: Ho la pelle mista, con qualche imperfezione sulla zona T. Vorrei un effetto glow naturale..."
-              className="h-32 w-full max-w-md resize-none rounded-sm border border-border bg-card px-5 py-4 font-body text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/40"
-              autoFocus
-            />
+
+            {/* Suggestion chips */}
+            <div className="flex max-w-md flex-wrap justify-center gap-2">
+              {skinSuggestions.map((s) => (
+                <motion.button
+                  key={s}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => handleSuggestionClick(s)}
+                  className="rounded-full border border-border bg-card px-3 py-1.5 font-body text-[11px] text-muted-foreground transition-all hover:border-primary/40 hover:text-foreground"
+                >
+                  {s}
+                </motion.button>
+              ))}
+            </div>
+
+            <div className="relative w-full max-w-md">
+              <textarea
+                value={data.skinDescription}
+                onChange={(e) => setData({ ...data, skinDescription: e.target.value })}
+                placeholder="Es: Ho la pelle mista, con qualche imperfezione sulla zona T. Vorrei un effetto glow naturale..."
+                className="h-32 w-full resize-none rounded-sm border border-border bg-card px-5 py-4 pr-12 font-body text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/40"
+                autoFocus
+              />
+              {/* AI enhance button */}
+              {data.skinDescription.trim().length > 10 && (
+                <motion.button
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  onClick={enhanceWithAI}
+                  disabled={isEnhancing}
+                  className="absolute bottom-3 right-3 flex items-center gap-1 rounded-full bg-foreground px-2.5 py-1.5 font-body text-[10px] font-medium text-background transition-all disabled:opacity-50"
+                  title="Migliora il testo con l'AI"
+                >
+                  {isEnhancing ? (
+                    <Loader2 className="h-3 w-3 animate-spin" />
+                  ) : (
+                    <Sparkles className="h-3 w-3" />
+                  )}
+                  {isEnhancing ? "..." : "Migliora"}
+                </motion.button>
+              )}
+            </div>
+
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
