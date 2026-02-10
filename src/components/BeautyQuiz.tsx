@@ -171,7 +171,7 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
               {data.name}, quanti anni hai? 🌸
             </h2>
             <p className="font-body text-sm text-muted-foreground">
-              Ogni età ha la sua bellezza — e la sua routine perfetta
+              Ogni età ha la sua bellezza, e la sua routine perfetta
             </p>
             <input
               type="number"
