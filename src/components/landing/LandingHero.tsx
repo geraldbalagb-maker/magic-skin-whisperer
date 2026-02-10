@@ -42,7 +42,7 @@ const LandingHero = ({ onStartQuiz }: LandingHeroProps) => (
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 0.8 }}
-          className="font-display text-[1.75rem] font-bold leading-[1.1] text-foreground md:text-5xl lg:text-6xl"
+          className="font-display text-[1.75rem] font-bold leading-[1.1] text-foreground md:text-4xl lg:text-5xl"
         >
           La tua routine su misura,{" "}
           <span className="sparkle-text">in 1 minuto</span>
