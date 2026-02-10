@@ -32,14 +32,8 @@ const stepVariants = {
 const skinSuggestions = [
   "Pelle secca e disidratata",
   "Pelle grassa con pori dilatati",
-  "Pelle mista, zona T lucida",
-  "Pelle sensibile e arrossata",
-  "Macchie scure e discromie",
   "Rughe e segni del tempo",
   "Acne e imperfezioni",
-  "Voglio un effetto glow",
-  "Pelle spenta e opaca",
-  "Occhiaie e borse",
 ];
 
 const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
@@ -116,7 +110,7 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
               value={data.name}
               onChange={(e) => setData({ ...data, name: e.target.value })}
               placeholder="Il tuo nome..."
-              className="w-full max-w-xs rounded-sm border border-border bg-card px-6 py-4 text-center font-display text-lg text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all"
+              className="w-full max-w-xs rounded-lg border border-primary/20 bg-card/80 px-6 py-4 text-center font-display text-lg text-foreground shadow-elegant backdrop-blur-sm placeholder:text-muted-foreground/40 focus:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
               autoFocus
               onKeyDown={(e) => e.key === "Enter" && data.name && nextStep()}
             />
@@ -182,8 +176,8 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
               max={99}
               value={data.age}
               onChange={(e) => setData({ ...data, age: e.target.value })}
-              placeholder="La tua età"
-              className="w-full max-w-[160px] rounded-sm border border-border bg-card px-6 py-4 text-center font-display text-2xl text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+              placeholder="Età"
+              className="w-full max-w-[160px] rounded-lg border border-primary/20 bg-card/80 px-6 py-4 text-center font-display text-2xl text-foreground shadow-elegant backdrop-blur-sm placeholder:text-sm placeholder:text-muted-foreground/40 focus:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
               autoFocus
               onKeyDown={(e) => e.key === "Enter" && data.age && nextStep()}
             />
@@ -261,7 +255,7 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
                 value={data.skinDescription}
                 onChange={(e) => setData({ ...data, skinDescription: e.target.value })}
                 placeholder="Es: Ho la pelle mista, con qualche imperfezione sulla zona T. Vorrei un effetto glow naturale..."
-                className="h-32 w-full resize-none rounded-sm border border-border bg-card px-5 py-4 pr-12 font-body text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/40"
+                className="h-32 w-full resize-none rounded-lg border border-primary/20 bg-card/80 px-5 py-4 pr-12 font-body text-sm text-foreground shadow-elegant backdrop-blur-sm placeholder:text-muted-foreground/40 focus:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/20"
                 autoFocus
               />
               {/* AI enhance button */}
