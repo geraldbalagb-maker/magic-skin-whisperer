@@ -45,6 +45,7 @@ const LandingHero = ({ onStartQuiz }: LandingHeroProps) => (
           className="font-display text-[1.75rem] font-bold leading-[1.1] text-foreground md:text-4xl lg:text-5xl"
         >
           La tua routine su misura,{" "}
+          <br className="hidden md:block" />
           <span className="sparkle-text">in 1 minuto</span>
         </motion.h1>
 
