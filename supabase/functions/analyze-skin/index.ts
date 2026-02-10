@@ -174,13 +174,38 @@ Crea la routine beauty personalizzata perfetta per ${name}.`;
     }
 
     const data = await response.json();
-    const toolCall = data.choices?.[0]?.message?.tool_calls?.[0];
+    let routine;
 
-    if (!toolCall?.function?.arguments) {
-      throw new Error("No tool call in AI response");
+    // Try tool_calls first (preferred)
+    const toolCall = data.choices?.[0]?.message?.tool_calls?.[0];
+    if (toolCall?.function?.arguments) {
+      try {
+        routine = JSON.parse(toolCall.function.arguments);
+      } catch (e) {
+        console.error("Tool call parse failed:", e);
+      }
     }
 
-    const routine = JSON.parse(toolCall.function.arguments);
+    // Fallback: parse JSON from content if tool_calls missing
+    if (!routine) {
+      const content = data.choices?.[0]?.message?.content || "";
+      let cleaned = content.trim();
+      if (cleaned.startsWith("```")) {
+        cleaned = cleaned.replace(/^```(?:json)?\n?/, "").replace(/\n?```$/, "");
+      }
+      const jsonMatch = cleaned.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        try {
+          routine = JSON.parse(jsonMatch[0]);
+        } catch (parseError) {
+          console.error("Content JSON parse failed:", (jsonMatch[0] as string).substring(0, 200));
+        }
+      }
+    }
+
+    if (!routine) {
+      throw new Error("Could not extract routine from AI response");
+    }
 
     return new Response(JSON.stringify({ success: true, routine }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
