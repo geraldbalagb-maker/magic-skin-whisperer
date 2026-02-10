@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Camera, ChevronRight, SkipForward, Sparkles, Loader2 } from "lucide-react";
+import { Camera, ChevronRight, ChevronLeft, SkipForward, Sparkles, Loader2 } from "lucide-react";
 import MaisonLogo from "@/components/MaisonLogo";
 import { supabase } from "@/integrations/supabase/client";
 import stepNameImg from "@/assets/steps/step-name.jpg";
@@ -46,6 +46,10 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
     skinDescription: "",
   });
   const [isEnhancing, setIsEnhancing] = useState(false);
+
+  const prevStep = () => {
+    if (step > 0) setStep(step - 1);
+  };
 
   const nextStep = () => {
     if (step < 4) setStep(step + 1);
@@ -332,6 +336,19 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
         />
       </div>
 
+      {/* Back button */}
+      {step > 0 && (
+        <motion.button
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          onClick={prevStep}
+          className="fixed left-4 top-6 z-50 flex items-center gap-1 rounded-full bg-card/80 px-3 py-2 font-body text-xs text-muted-foreground shadow-sm backdrop-blur-sm transition-colors hover:text-foreground"
+        >
+          <ChevronLeft className="h-4 w-4" />
+          Indietro
+        </motion.button>
+      )}
+
       {/* Chat-style container */}
       <div className="relative w-full max-w-lg">
         <AnimatePresence mode="wait">
@@ -342,10 +359,12 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
       {/* Step indicator */}
       <div className="mt-8 flex gap-2">
         {[0, 1, 2, 3, 4].map((i) => (
-          <div
+          <button
             key={i}
+            onClick={() => i < step && setStep(i)}
+            disabled={i >= step}
             className={`h-1.5 rounded-full transition-all duration-300 ${
-              i === step ? "w-8 bg-foreground" : i < step ? "w-2 bg-foreground/40" : "w-2 bg-muted"
+              i === step ? "w-8 bg-foreground" : i < step ? "w-2 bg-foreground/40 cursor-pointer hover:bg-foreground/60" : "w-2 bg-muted"
             }`}
           />
         ))}
