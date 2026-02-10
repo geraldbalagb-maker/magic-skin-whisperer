@@ -1,14 +1,26 @@
 import { motion } from "framer-motion";
 import SectionHeader from "../landing/SectionHeader";
 
+interface AITip {
+  title: string;
+  text: string;
+}
+
 interface AITipsGridProps {
-  tips: string[];
+  tips: AITip[] | string[];
 }
 
 const tipIcons = ["🧴", "🌙", "☀️", "💧", "🍃", "✨"];
 
 const AITipsGrid = ({ tips }: AITipsGridProps) => {
   if (!tips || tips.length === 0) return null;
+
+  // Support both old string[] and new {title, text}[] format
+  const normalizedTips: AITip[] = tips.map((tip, i) =>
+    typeof tip === "string"
+      ? { title: `Consiglio #${i + 1}`, text: tip }
+      : tip
+  );
 
   return (
     <div className="border-b border-border bg-gradient-cream">
@@ -20,7 +32,7 @@ const AITipsGrid = ({ tips }: AITipsGridProps) => {
         />
 
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {tips.map((tip, i) => (
+          {normalizedTips.map((tip, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, y: 30 }}
@@ -32,20 +44,19 @@ const AITipsGrid = ({ tips }: AITipsGridProps) => {
                 i === 0 ? "md:col-span-2 lg:col-span-1" : ""
               }`}
             >
-              {/* Shimmer on hover */}
               <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 animate-shimmer" />
 
               <div className="relative z-10">
-                <div className="mb-4 flex items-center gap-3">
+                <div className="mb-3 flex items-center gap-3">
                   <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-gold shadow-gold">
                     <span className="text-lg">{tipIcons[i % tipIcons.length]}</span>
                   </div>
-                  <span className="font-body text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
-                    Tip #{i + 1}
-                  </span>
+                  <h3 className="font-display text-sm font-semibold text-foreground">
+                    {tip.title}
+                  </h3>
                 </div>
                 <p className="font-body text-sm leading-relaxed text-muted-foreground">
-                  {tip}
+                  {tip.text}
                 </p>
               </div>
             </motion.div>

@@ -25,7 +25,7 @@ interface ResultsPageProps {
 const productsMap = new Map(products.map(p => [p.id, p]));
 
 const ResultsPage = ({ name, quizData, aiResult, selfie, enhancedSelfie, onCheckout }: ResultsPageProps) => {
-  const routine: RoutineStep[] = useMemo(() => {
+  const routine = useMemo(() => {
     return aiResult.steps.map((step, idx) => ({
       id: `step${idx + 1}`,
       name: step.step_name,
@@ -33,6 +33,9 @@ const ResultsPage = ({ name, quizData, aiResult, selfie, enhancedSelfie, onCheck
       order: step.step_order,
       icon: step.icon,
       products: step.product_ids
+        .map(id => productsMap.get(id))
+        .filter((p): p is Product => !!p),
+      alternativeProducts: (step.alternative_product_ids || [])
         .map(id => productsMap.get(id))
         .filter((p): p is Product => !!p),
     }));
