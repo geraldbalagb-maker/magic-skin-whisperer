@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import MaisonLogo from "@/components/MaisonLogo";
 import { Camera, Clock, ChevronRight, SkipForward } from "lucide-react";
 import stepNameImg from "@/assets/steps/step-name.jpg";
 import stepSelfieImg from "@/assets/steps/step-selfie.jpg";
@@ -233,6 +234,10 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
 
   return (
     <div className="relative flex min-h-screen flex-col items-center justify-center bg-background px-4 py-8">
+      {/* Logo */}
+      <div className="absolute top-6 left-1/2 z-50 -translate-x-1/2">
+        <MaisonLogo variant="dark" size="md" />
+      </div>
       {/* Step image */}
       <AnimatePresence mode="wait">
         <motion.div

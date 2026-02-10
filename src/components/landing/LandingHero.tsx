@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import heroImage from "@/assets/hero-beauty.jpg";
+import MaisonLogo from "@/components/MaisonLogo";
 
 interface LandingHeroProps {
   onStartQuiz: () => void;
@@ -8,6 +9,11 @@ interface LandingHeroProps {
 
 const LandingHero = ({ onStartQuiz }: LandingHeroProps) => (
   <section className="relative flex min-h-[100dvh] flex-col items-end justify-end overflow-hidden pb-24">
+    {/* Logo top center */}
+    <div className="absolute top-6 left-1/2 z-20 -translate-x-1/2">
+      <MaisonLogo variant="dark" size="lg" />
+    </div>
+
     <div className="absolute inset-0">
       <img src={heroImage} alt="Beauty" className="h-full w-full object-cover" />
       <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-background/20" />
@@ -27,9 +33,9 @@ const LandingHero = ({ onStartQuiz }: LandingHeroProps) => (
           transition={{ delay: 0.2 }}
           className="mb-6"
         >
-          <span className="font-body text-xs font-semibold uppercase tracking-[0.3em] text-primary">
-            Luxury Perfumes
-          </span>
+           <span className="font-body text-xs font-semibold uppercase tracking-[0.3em] text-primary">
+             Maison 22 Esthétique
+           </span>
         </motion.div>
 
         <motion.h1

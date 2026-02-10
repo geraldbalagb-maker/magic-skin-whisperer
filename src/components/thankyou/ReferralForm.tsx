@@ -2,6 +2,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Heart, Mail, Gift, Send } from "lucide-react";
 import HeartBurst from "./HeartBurst";
 import GiftEnvelope from "./GiftEnvelope";
+import MaisonLogo from "@/components/MaisonLogo";
 
 interface ReferralFormProps {
   name: string;
@@ -27,6 +28,10 @@ const ReferralForm = ({
   onSubmit,
 }: ReferralFormProps) => (
   <div className="relative min-h-screen bg-background">
+    {/* Logo */}
+    <div className="absolute top-6 left-1/2 z-50 -translate-x-1/2">
+      <MaisonLogo variant="dark" size="md" />
+    </div>
     <AnimatePresence mode="wait">
       {!envelopeOpened ? (
         <motion.div
