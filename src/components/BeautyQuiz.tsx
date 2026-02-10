@@ -444,7 +444,7 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
   return (
     <div className="relative flex min-h-screen flex-col items-center justify-center bg-background px-4 py-8">
       {/* Logo */}
-      <div className="absolute top-6 left-1/2 z-50 -translate-x-1/2">
+      <div className="absolute top-6 right-6 z-50">
         <MaisonLogo variant="dark" size="md" />
       </div>
 

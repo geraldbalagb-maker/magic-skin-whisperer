@@ -29,7 +29,7 @@ const ReferralForm = ({
 }: ReferralFormProps) => (
   <div className="relative min-h-screen bg-background">
     {/* Logo */}
-    <div className="absolute top-6 left-1/2 z-50 -translate-x-1/2">
+    <div className="absolute top-6 right-6 z-50">
       <MaisonLogo variant="dark" size="md" />
     </div>
     <AnimatePresence mode="wait">
