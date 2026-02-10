@@ -444,7 +444,7 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
   return (
     <div className="relative flex min-h-screen flex-col items-center justify-center bg-background px-4 py-8">
       {/* Logo */}
-      <div className="absolute top-6 right-6 z-50">
+      <div className="absolute top-6 left-6 z-50">
         <MaisonLogo variant="dark" size="md" />
       </div>
 
@@ -482,7 +482,7 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
           initial={{ opacity: 0, x: -10 }}
           animate={{ opacity: 1, x: 0 }}
           onClick={prevStep}
-          className="fixed left-4 top-6 z-50 flex items-center gap-1.5 rounded-full border border-white/[0.08] bg-white/[0.04] px-3.5 py-2 font-body text-xs text-muted-foreground shadow-elegant backdrop-blur-xl transition-all hover:bg-white/[0.08] hover:text-foreground"
+          className="fixed left-4 bottom-6 z-50 flex items-center gap-1.5 rounded-full border border-white/[0.08] bg-white/[0.04] px-3.5 py-2 font-body text-xs text-muted-foreground shadow-elegant backdrop-blur-xl transition-all hover:bg-white/[0.08] hover:text-foreground"
         >
           <ChevronLeft className="h-3.5 w-3.5" />
           Indietro
