@@ -32,7 +32,7 @@ const ResultsHero = ({ name, quizData, aiResult }: ResultsHeroProps) => (
     <div className="relative z-10 mx-auto max-w-5xl px-4 py-16 md:py-24">
       {/* Logo */}
       <div className="mb-8 flex justify-center">
-        <MaisonLogo circular size="lg" />
+        <MaisonLogo size="lg" />
       </div>
       <motion.div
         initial={{ opacity: 0, y: -20 }}
