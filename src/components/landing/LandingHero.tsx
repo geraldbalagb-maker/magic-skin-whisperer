@@ -10,7 +10,7 @@ interface LandingHeroProps {
 const LandingHero = ({ onStartQuiz }: LandingHeroProps) => (
   <section className="relative flex min-h-[100dvh] flex-col items-end justify-end overflow-hidden pb-24">
     {/* Logo top center */}
-    <div className="absolute top-6 right-6 z-20">
+    <div className="absolute top-6 left-6 z-20">
       <MaisonLogo variant="dark" size="lg" />
     </div>
 
