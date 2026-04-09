@@ -48,6 +48,12 @@
     --cta: 0 72% 51%;
     --cta-foreground: 0 0% 100%;
 
+    /* V2 — Luxury Perfumes aligned */
+    --v2-amber: 34 55% 54%;
+    --v2-amber-dark: 34 55% 42%;
+    --v2-topbar: 0 0% 12%;
+    --v2-topbar-foreground: 0 0% 90%;
+
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
     --sidebar-primary: 240 5.9% 10%;
