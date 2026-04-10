@@ -17,21 +17,28 @@ const V2Hero = ({ onStartQuiz }: V2HeroProps) => (
           transition={{ delay: 0.2, duration: 0.7 }}
           className="font-display text-3xl font-bold leading-tight text-foreground md:text-4xl lg:text-5xl"
         >
-          La tua routine su misura,
-          <br />
-          <span className="text-primary">in 1 minuto</span>
+          La tua routine su misura, <span className="text-primary">in 1 minuto</span>
         </motion.h1>
 
-        <motion.p
+        <motion.ul
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
-          className="mt-6 max-w-md font-body text-sm leading-relaxed text-muted-foreground md:text-base"
+          className="mt-6 flex max-w-md flex-col gap-2.5 font-body text-sm text-muted-foreground md:text-base"
         >
-          Rispondi a poche domande e scopri i prodotti perfetti per la tua pelle,
-          selezionati dall'intelligenza artificiale. Un'esperienza pensata per te,
-          con la cura e l'attenzione che meriti.
-        </motion.p>
+          <li className="flex items-start gap-2">
+            <span className="mt-0.5 text-primary">✦</span>
+            Rispondi a poche domande sulla tua pelle
+          </li>
+          <li className="flex items-start gap-2">
+            <span className="mt-0.5 text-primary">✦</span>
+            L'AI seleziona i prodotti ideali per te
+          </li>
+          <li className="flex items-start gap-2">
+            <span className="mt-0.5 text-primary">✦</span>
+            Ricevi la tua routine personalizzata
+          </li>
+        </motion.ul>
 
         <motion.div
           initial={{ opacity: 0, y: 15 }}
