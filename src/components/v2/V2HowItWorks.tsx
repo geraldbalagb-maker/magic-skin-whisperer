@@ -1,55 +1,98 @@
 import { motion } from "framer-motion";
-import { ClipboardList, Sparkles, ShoppingBag } from "lucide-react";
 
 const steps = [
   {
-    icon: ClipboardList,
-    title: "Rispondi al quiz",
-    description: "Poche domande sulla tua pelle, le tue abitudini e i tuoi obiettivi.",
+    number: "01",
+    title: "Racconta la tua pelle",
+    description:
+      "Rispondi a poche domande sulle tue abitudini, il tuo tipo di pelle e i risultati che desideri.",
+    emoji: "🪞",
+    accent: "from-amber-50 to-orange-50",
   },
   {
-    icon: Sparkles,
-    title: "Analisi AI",
-    description: "La nostra intelligenza artificiale analizza le tue risposte e trova i prodotti ideali.",
+    number: "02",
+    title: "L'AI trova il match perfetto",
+    description:
+      "Il nostro algoritmo analizza le risposte e incrocia i dati con il catalogo per trovare i prodotti ideali.",
+    emoji: "✨",
+    accent: "from-rose-50 to-pink-50",
   },
   {
-    icon: ShoppingBag,
-    title: "La tua routine",
-    description: "Ricevi una routine personalizzata con i prodotti più adatti a te.",
+    number: "03",
+    title: "Ricevi la tua routine",
+    description:
+      "Una skincare routine completa e personalizzata, pronta da acquistare con un click.",
+    emoji: "🎁",
+    accent: "from-violet-50 to-indigo-50",
   },
 ];
 
 const V2HowItWorks = () => (
-  <section className="border-t border-border bg-background px-6 py-16 md:py-20">
-    <div className="mx-auto max-w-7xl">
-      <div className="mb-12 text-center">
-        <h2 className="font-display text-xl font-bold text-foreground md:text-2xl">
+  <section className="border-t border-border bg-background px-6 py-20 md:py-28">
+    <div className="mx-auto max-w-5xl">
+      {/* Header */}
+      <div className="mb-16 text-center">
+        <motion.span
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-primary"
+        >
           Come funziona
-        </h2>
-        <div className="mx-auto mt-3 h-px w-12 bg-[hsl(34_55%_54%)]" />
+        </motion.span>
+        <motion.h2
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.1 }}
+          className="mt-3 font-display text-2xl font-bold text-foreground md:text-3xl"
+        >
+          Tre semplici passi verso la tua routine ideale
+        </motion.h2>
       </div>
 
-      <div className="grid gap-8 md:grid-cols-3">
-        {steps.map((step, i) => (
-          <motion.div
-            key={step.title}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: i * 0.15 }}
-            className="group border border-border bg-background p-8 text-center transition-shadow hover:shadow-elevated"
-          >
-            <div className="mx-auto mb-5 flex h-12 w-12 items-center justify-center border border-border">
-              <step.icon className="h-5 w-5 text-[hsl(34_55%_54%)]" />
-            </div>
-            <h3 className="mb-2 font-display text-sm font-bold uppercase tracking-wider text-foreground">
-              {step.title}
-            </h3>
-            <p className="font-body text-sm leading-relaxed text-muted-foreground">
-              {step.description}
-            </p>
-          </motion.div>
-        ))}
+      {/* Steps */}
+      <div className="flex flex-col gap-10 md:gap-0">
+        {steps.map((step, i) => {
+          const isEven = i % 2 === 1;
+          return (
+            <motion.div
+              key={step.number}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ delay: i * 0.12, duration: 0.5 }}
+              className={`relative flex flex-col items-center gap-6 md:flex-row md:gap-12 ${
+                isEven ? "md:flex-row-reverse" : ""
+              }`}
+            >
+              {/* Illustration card */}
+              <div
+                className={`flex h-44 w-full shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br md:h-52 md:w-1/2 ${step.accent}`}
+              >
+                <span className="text-6xl md:text-7xl">{step.emoji}</span>
+              </div>
+
+              {/* Text */}
+              <div className="flex-1 text-center md:text-left">
+                <span className="font-display text-3xl font-bold text-primary/20 md:text-4xl">
+                  {step.number}
+                </span>
+                <h3 className="mt-1 font-display text-lg font-bold text-foreground md:text-xl">
+                  {step.title}
+                </h3>
+                <p className="mt-2 max-w-sm font-body text-sm leading-relaxed text-muted-foreground md:text-base">
+                  {step.description}
+                </p>
+              </div>
+
+              {/* Connector line (hidden on last step and mobile) */}
+              {i < steps.length - 1 && (
+                <div className="absolute -bottom-10 left-1/2 hidden h-10 w-px bg-border md:block" />
+              )}
+            </motion.div>
+          );
+        })}
       </div>
     </div>
   </section>
