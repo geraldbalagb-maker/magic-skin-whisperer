@@ -11,7 +11,7 @@ const V2Header = () => (
         rel="noopener noreferrer"
         className="flex items-center gap-3"
       >
-        <img src={logoMe} alt="Maison 22 Esthétique" className="h-16 w-auto object-contain md:h-20" />
+        <img src={logoMe} alt="Maison 22 Esthétique" className="h-20 w-auto object-contain md:h-24" />
       </a>
 
       {/* Center title */}
