@@ -39,7 +39,7 @@ const skinSuggestions = [
 /* Glassmorphism card wrapper */
 const GlassCard = ({ children, className = "" }: { children: React.ReactNode; className?: string }) => (
   <div
-    className={`relative overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.04] p-8 shadow-[0_8px_60px_-12px_hsl(0_0%_0%/0.25),inset_0_1px_0_hsl(0_0%_100%/0.06)] backdrop-blur-xl md:p-10 ${className}`}
+    className={`relative overflow-hidden rounded-2xl border border-border/30 bg-white/95 p-8 shadow-elevated backdrop-blur-xl md:p-10 ${className}`}
   >
     {/* Subtle inner glow top-left */}
     <div className="pointer-events-none absolute -left-20 -top-20 h-40 w-40 rounded-full bg-primary/[0.07] blur-3xl" />
