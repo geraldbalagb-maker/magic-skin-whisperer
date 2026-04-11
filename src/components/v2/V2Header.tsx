@@ -2,7 +2,7 @@ import { User } from "lucide-react";
 import logoMe from "@/assets/logo-me.png";
 
 const V2Header = () => (
-  <header className="border-b border-border bg-background px-4 py-3">
+  <header className="hidden md:block border-b border-border bg-background px-4 py-3">
     <div className="mx-auto flex max-w-7xl items-center justify-between">
       {/* Logo */}
       <a
@@ -11,11 +11,11 @@ const V2Header = () => (
         rel="noopener noreferrer"
         className="flex items-center gap-3"
       >
-        <img src={logoMe} alt="Maison 22 Esthétique" className="h-20 w-auto object-contain md:h-24" />
+        <img src={logoMe} alt="Maison 22 Esthétique" className="h-24 w-auto object-contain" />
       </a>
 
       {/* Center title */}
-      <span className="hidden font-display text-sm font-semibold uppercase tracking-[0.2em] text-foreground md:block">
+      <span className="font-display text-sm font-semibold uppercase tracking-[0.2em] text-foreground">
         Beauty Routine AI
       </span>
 

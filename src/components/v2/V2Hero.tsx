@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import heroImage from "@/assets/hero-beauty.jpg";
+import logoMe from "@/assets/logo-me.png";
 
 interface V2HeroProps {
   onStartQuiz: () => void;
@@ -11,6 +12,18 @@ const V2Hero = ({ onStartQuiz }: V2HeroProps) => (
     <div className="mx-auto grid max-w-7xl md:grid-cols-2">
       {/* Left column — text & CTA */}
       <div className="flex flex-col justify-center px-6 py-14 md:px-12 md:py-20 lg:px-16">
+        {/* Mobile-only logo */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1, duration: 0.5 }}
+          className="mb-6 md:hidden"
+        >
+          <a href="https://www.luxury-perfumes.net/" target="_blank" rel="noopener noreferrer">
+            <img src={logoMe} alt="Maison 22 Esthétique" className="h-20 w-auto object-contain" />
+          </a>
+        </motion.div>
+
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
