@@ -11,7 +11,7 @@ const V2Hero = ({ onStartQuiz }: V2HeroProps) => (
   <section className="bg-background">
     <div className="mx-auto grid max-w-7xl md:grid-cols-2">
       {/* Left column — text & CTA */}
-      <div className="flex flex-col justify-center px-6 py-14 md:px-12 md:py-20 lg:px-16">
+      <div className="flex flex-col justify-center px-6 py-8 md:px-12 md:py-20 lg:px-16">
         {/* Mobile-only logo */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
@@ -20,7 +20,7 @@ const V2Hero = ({ onStartQuiz }: V2HeroProps) => (
           className="mb-6 md:hidden"
         >
           <a href="https://www.luxury-perfumes.net/" target="_blank" rel="noopener noreferrer">
-            <img src={logoMe} alt="Maison 22 Esthétique" className="h-20 w-auto object-contain" />
+            <img src={logoMe} alt="Maison 22 Esthétique" className="h-28 w-auto object-contain" />
           </a>
         </motion.div>
 
