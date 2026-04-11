@@ -38,18 +38,37 @@ serve(async (req) => {
             content: [
               {
                 type: "text",
-                text: `Edit ONLY the face and skin in this selfie photo to show a subtle, believable "after skincare routine" result. 
-                
-IMPORTANT RULES:
-- Keep the background, hair, clothing, and all non-face areas EXACTLY the same
-- Only enhance the FACIAL SKIN area
-- Make the skin look slightly smoother, more hydrated, and with a natural healthy glow
-- Reduce any visible redness, uneven tone, or minor blemishes subtly
-- The result must look REALISTIC and NATURAL - not heavily filtered or artificial
-- Do NOT change facial features, expression, or face shape
-- The improvement should be noticeable but subtle - like the result of 4-6 weeks of a good skincare routine
-- Maintain the same lighting, angle, and photo quality
-- Do NOT add makeup effects`
+                text: `Use the provided image as the ONLY source of truth. Your task is to enhance this selfie to show a subtle, believable "after skincare routine" result while strictly preserving the original identity.
+
+MANDATORY RULES:
+1. DO NOT alter, reinterpret, or redesign any element in the image
+   - Keep IDENTICAL composition, framing, proportions, and perspective
+   - Preserve every facial feature, expression, bone structure, and detail exactly as they are
+   - Do NOT add or remove elements (no makeup, no accessories, no artistic filters)
+   - Keep the background, hair, clothing, and all non-face areas EXACTLY the same
+
+2. Perform high-end skin enhancement ONLY on the facial area
+   - Make the skin look slightly smoother, more hydrated, and with a natural healthy glow
+   - Subtly reduce visible redness, uneven tone, and minor blemishes
+   - Add a soft, natural luminosity as if the skin is well-nourished and healthy
+   - Keep pores and natural skin texture visible — do NOT create a "plastic" or airbrushed look
+   - The improvement should look like the result of 4-6 weeks of a consistent skincare routine
+
+3. Enhance image quality
+   - Increase sharpness and micro-details (especially eyes, eyebrows, hair)
+   - Remove noise, blur, and compression artifacts
+   - Improve lighting balance and clarity ONLY if it reflects the original scene
+
+4. Maintain photographic realism
+   - No artistic filters, no cinematic grading, no stylization
+   - Result must look like a real high-resolution photograph, not AI-generated
+   - Do NOT add makeup effects of any kind
+
+5. Respect original imperfections where relevant
+   - Do not over-clean to the point of losing authenticity
+   - Preserve natural grain if it contributes to realism
+
+FINAL OUTPUT: A ultra-detailed, photorealistic, faithful enhancement of the original selfie with visibly healthier, glowing skin — as if captured with a modern high-end camera after weeks of skincare — without altering identity in any way.`
               },
               {
                 type: "image_url",
