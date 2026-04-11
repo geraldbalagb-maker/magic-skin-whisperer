@@ -1,4 +1,4 @@
-import { User, ShoppingCart } from "lucide-react";
+import { User } from "lucide-react";
 import logoMe from "@/assets/logo-me.png";
 
 interface BrandHeaderProps {
@@ -33,17 +33,6 @@ const BrandHeader = ({ showNav = true, centerLabel = "Beauty Routine AI" }: Bran
             className="text-foreground/70 transition-colors hover:text-foreground"
           >
             <User className="h-5 w-5" />
-          </a>
-          <a
-            href="https://www.luxury-perfumes.net/carrello/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="relative text-foreground/70 transition-colors hover:text-foreground"
-          >
-            <ShoppingCart className="h-5 w-5" />
-            <span className="absolute -right-1.5 -top-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-foreground text-[9px] font-bold text-background">
-              0
-            </span>
           </a>
         </div>
       )}
