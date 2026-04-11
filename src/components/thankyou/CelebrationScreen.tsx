@@ -3,7 +3,7 @@ import { Gift, Truck, Shield, Package } from "lucide-react";
 import Confetti from "./Confetti";
 import GiftProductShowcase from "./GiftProductShowcase";
 import FounderMessage from "./FounderMessage";
-import MaisonLogo from "@/components/MaisonLogo";
+import PageShell from "@/components/shared/PageShell";
 
 interface CelebrationScreenProps {
   name: string;
@@ -11,11 +11,8 @@ interface CelebrationScreenProps {
 }
 
 const CelebrationScreen = ({ name, showConfetti }: CelebrationScreenProps) => (
-  <div className="relative min-h-screen overflow-hidden bg-background">
-    {/* Logo */}
-    <div className="absolute top-6 left-6 z-50">
-      <MaisonLogo size="md" />
-    </div>
+  <PageShell headerCenterLabel="Grazie!">
+    <div className="relative overflow-hidden">
     {showConfetti && <Confetti />}
 
     {/* ─── Hero celebration ─── */}
@@ -148,7 +145,8 @@ const CelebrationScreen = ({ name, showConfetti }: CelebrationScreenProps) => (
         <div className="mx-auto mt-6 h-0.5 w-16 rounded-full bg-gradient-gold opacity-40" />
       </motion.div>
     </section>
-  </div>
+    </div>
+  </PageShell>
 );
 
 export default CelebrationScreen;

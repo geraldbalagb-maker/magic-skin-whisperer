@@ -1,7 +1,7 @@
 import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Camera, ChevronRight, ChevronLeft, SkipForward, Sparkles, Loader2 } from "lucide-react";
-import MaisonLogo from "@/components/MaisonLogo";
+import BrandLogo from "@/components/shared/BrandLogo";
 import { supabase } from "@/integrations/supabase/client";
 import stepNameImg from "@/assets/steps/step-name.jpg";
 import stepSelfieImg from "@/assets/steps/step-selfie.jpg";
@@ -159,7 +159,7 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
                   whileTap={{ scale: 0.97 }}
                   onClick={nextStep}
                   disabled={!data.name}
-                  className="bg-gradient-cta rounded-xl px-10 py-3.5 font-body text-xs font-semibold uppercase tracking-[0.2em] text-cta-foreground shadow-cta transition-all disabled:opacity-30 disabled:shadow-none"
+                  className="rounded-none bg-[hsl(var(--v2-amber))] px-10 py-3.5 font-body text-xs font-semibold uppercase tracking-[0.2em] text-white transition-all hover:bg-[hsl(var(--v2-amber-dark))] disabled:opacity-30"
                 >
                   Continua <ChevronRight className="ml-1 inline h-4 w-4" />
                 </motion.button>
@@ -282,7 +282,7 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
                   whileTap={{ scale: 0.97 }}
                   onClick={nextStep}
                   disabled={!data.age}
-                  className="bg-gradient-cta rounded-xl px-10 py-3.5 font-body text-xs font-semibold uppercase tracking-[0.2em] text-cta-foreground shadow-cta transition-all disabled:opacity-30 disabled:shadow-none"
+                  className="rounded-none bg-[hsl(var(--v2-amber))] px-10 py-3.5 font-body text-xs font-semibold uppercase tracking-[0.2em] text-white transition-all hover:bg-[hsl(var(--v2-amber-dark))] disabled:opacity-30"
                 >
                   Continua <ChevronRight className="ml-1 inline h-4 w-4" />
                 </motion.button>
@@ -425,7 +425,7 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
                   whileTap={{ scale: 0.97 }}
                   onClick={nextStep}
                   disabled={!data.skinDescription}
-                  className="bg-gradient-cta rounded-xl px-10 py-3.5 font-body text-xs font-semibold uppercase tracking-[0.2em] text-cta-foreground shadow-cta transition-all disabled:opacity-30 disabled:shadow-none"
+                  className="rounded-none bg-[hsl(var(--v2-amber))] px-10 py-3.5 font-body text-xs font-semibold uppercase tracking-[0.2em] text-white transition-all hover:bg-[hsl(var(--v2-amber-dark))] disabled:opacity-30"
                 >
                   Scopri la tua routine
                 </motion.button>
@@ -445,7 +445,7 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
     <div className="relative flex min-h-screen flex-col items-center justify-center bg-background px-4 py-8">
       {/* Logo */}
       <div className="absolute top-6 left-6 z-50">
-        <MaisonLogo variant="dark" size="md" />
+        <BrandLogo size="md" />
       </div>
 
       {/* Step background image with blur overlay */}

@@ -12,6 +12,7 @@ import BeforeAfterSection from "./BeforeAfterSection";
 import BundleSection from "./BundleSection";
 import ReviewsSection from "./ReviewsSection";
 import FAQSection from "./FAQSection";
+import PageShell from "./shared/PageShell";
 
 interface ResultsPageProps {
   name: string;
@@ -60,7 +61,8 @@ const ResultsPage = ({ name, quizData, aiResult, selfie, enhancedSelfie, onCheck
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <PageShell headerCenterLabel="La tua routine">
+      <div>
       <ResultsHero name={name} quizData={quizData} aiResult={aiResult} />
       <div id="routine-section">
         <AITipsGrid tips={aiResult.personalized_tips} />
@@ -94,7 +96,8 @@ const ResultsPage = ({ name, quizData, aiResult, selfie, enhancedSelfie, onCheck
           Scarica il PDF della tua routine
         </motion.button>
       </div>
-    </div>
+      </div>
+    </PageShell>
   );
 };
 

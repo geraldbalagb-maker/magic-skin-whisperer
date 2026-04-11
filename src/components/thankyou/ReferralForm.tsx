@@ -2,7 +2,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Heart, Mail, Gift, Send } from "lucide-react";
 import HeartBurst from "./HeartBurst";
 import GiftEnvelope from "./GiftEnvelope";
-import MaisonLogo from "@/components/MaisonLogo";
+import BrandLogo from "@/components/shared/BrandLogo";
 
 interface ReferralFormProps {
   name: string;
@@ -30,7 +30,7 @@ const ReferralForm = ({
   <div className="relative min-h-screen bg-background">
     {/* Logo */}
     <div className="absolute top-6 left-6 z-50">
-      <MaisonLogo variant="dark" size="md" />
+      <BrandLogo size="md" />
     </div>
     <AnimatePresence mode="wait">
       {!envelopeOpened ? (
@@ -154,7 +154,7 @@ const ReferralForm = ({
               whileTap={{ scale: canSubmit ? 0.95 : 1 }}
               onClick={onSubmit}
               disabled={!canSubmit}
-              className="mt-6 w-full rounded-sm bg-gradient-cta px-8 py-4 font-body text-xs font-semibold uppercase tracking-widest text-cta-foreground shadow-cta transition-all disabled:opacity-40"
+              className="mt-6 w-full bg-[hsl(var(--v2-amber))] px-8 py-4 font-body text-xs font-semibold uppercase tracking-widest text-white transition-all hover:bg-[hsl(var(--v2-amber-dark))] disabled:opacity-40"
             >
               <Send className="mr-2 inline h-4 w-4" /> Invia gli inviti e ricevi il regalo
             </motion.button>

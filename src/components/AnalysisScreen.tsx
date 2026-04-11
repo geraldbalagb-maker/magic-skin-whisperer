@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Check, Sparkles } from "lucide-react";
-import MaisonLogo from "@/components/MaisonLogo";
+import { Check, Loader2 } from "lucide-react";
+import BrandLogo from "@/components/shared/BrandLogo";
 import type { QuizData } from "./BeautyQuiz";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -147,7 +147,7 @@ const AnalysisScreen = ({ name, quizData, onComplete }: AnalysisScreenProps) => 
     >
       {/* Logo */}
       <div className="absolute top-6 left-6 z-50">
-        <MaisonLogo variant="light" size="md" />
+        <BrandLogo size="md" />
       </div>
 
       {/* Animated background */}
@@ -256,7 +256,7 @@ const AnalysisScreen = ({ name, quizData, onComplete }: AnalysisScreenProps) => 
                   </p>
                   {isActive && (
                     <motion.div animate={{ opacity: [0.3, 1, 0.3] }} transition={{ duration: 1, repeat: Infinity }}>
-                      <Sparkles className="h-3 w-3 text-primary" />
+                      <Loader2 className="h-3 w-3 animate-spin text-primary" />
                     </motion.div>
                   )}
                 </motion.div>
