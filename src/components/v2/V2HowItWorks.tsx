@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { ScanFace, Sparkles, PackageCheck } from "lucide-react";
 
 const steps = [
   {
@@ -6,24 +7,21 @@ const steps = [
     title: "Racconta la tua pelle",
     description:
       "Rispondi a poche domande sulle tue abitudini, il tuo tipo di pelle e i risultati che desideri.",
-    emoji: "🪞",
-    accent: "from-amber-50 to-orange-50",
+    icon: ScanFace,
   },
   {
     number: "02",
     title: "L'AI trova il match perfetto",
     description:
       "Il nostro algoritmo analizza le risposte e incrocia i dati con il catalogo per trovare i prodotti ideali.",
-    emoji: "✨",
-    accent: "from-rose-50 to-pink-50",
+    icon: Sparkles,
   },
   {
     number: "03",
     title: "Ricevi la tua routine",
     description:
       "Una skincare routine completa e personalizzata, pronta da acquistare con un click.",
-    emoji: "🎁",
-    accent: "from-violet-50 to-indigo-50",
+    icon: PackageCheck,
   },
 ];
 
@@ -55,6 +53,7 @@ const V2HowItWorks = () => (
       <div className="flex flex-col gap-10 md:gap-0">
         {steps.map((step, i) => {
           const isEven = i % 2 === 1;
+          const Icon = step.icon;
           return (
             <motion.div
               key={step.number}
@@ -66,11 +65,11 @@ const V2HowItWorks = () => (
                 isEven ? "md:flex-row-reverse" : ""
               }`}
             >
-              {/* Illustration card */}
-              <div
-                className={`flex h-44 w-full shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br md:h-52 md:w-1/2 ${step.accent}`}
-              >
-                <span className="text-6xl md:text-7xl">{step.emoji}</span>
+              {/* Icon card — monochrome gold/black */}
+              <div className="flex h-44 w-full shrink-0 items-center justify-center border border-border bg-[hsl(var(--cream))] md:h-52 md:w-1/2">
+                <div className="flex h-20 w-20 items-center justify-center border border-primary/20 bg-background">
+                  <Icon className="h-9 w-9 text-primary" strokeWidth={1.5} />
+                </div>
               </div>
 
               {/* Text */}
@@ -86,7 +85,7 @@ const V2HowItWorks = () => (
                 </p>
               </div>
 
-              {/* Connector line (hidden on last step and mobile) */}
+              {/* Connector line */}
               {i < steps.length - 1 && (
                 <div className="absolute -bottom-10 left-1/2 hidden h-10 w-px bg-border md:block" />
               )}

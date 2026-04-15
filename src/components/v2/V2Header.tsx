@@ -14,10 +14,8 @@ const V2Header = () => (
         <img src={logoMe} alt="Maison 22 Esthétique" className="h-24 w-auto object-contain" />
       </a>
 
-      {/* Center title */}
-      <span className="font-display text-sm font-semibold uppercase tracking-[0.2em] text-foreground">
-        Beauty Routine AI
-      </span>
+      {/* Center — intentionally empty for minimal look */}
+      <div />
 
       {/* Right icons */}
       <div className="flex items-center gap-4">

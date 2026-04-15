@@ -3,13 +3,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Camera, ChevronRight, ChevronLeft, SkipForward, Sparkles, Loader2 } from "lucide-react";
 import BrandLogo from "@/components/shared/BrandLogo";
 import { supabase } from "@/integrations/supabase/client";
-import stepNameImg from "@/assets/steps/step-name.jpg";
-import stepSelfieImg from "@/assets/steps/step-selfie.jpg";
-import stepAgeImg from "@/assets/steps/step-age.jpg";
-import stepTimeImg from "@/assets/steps/step-time.jpg";
-import stepSkinImg from "@/assets/steps/step-skin.jpg";
-
-const stepImages = [stepNameImg, stepSelfieImg, stepAgeImg, stepTimeImg, stepSkinImg];
 
 export interface QuizData {
   name: string;
@@ -36,16 +29,12 @@ const skinSuggestions = [
   "Acne e imperfezioni",
 ];
 
-/* Glassmorphism card wrapper */
-const GlassCard = ({ children, className = "" }: { children: React.ReactNode; className?: string }) => (
+/* Minimal card wrapper — no glassmorphism, no rounded corners */
+const MinimalCard = ({ children, className = "" }: { children: React.ReactNode; className?: string }) => (
   <div
-    className={`relative overflow-hidden rounded-2xl border border-border/30 bg-white/95 p-8 shadow-elevated backdrop-blur-xl md:p-10 ${className}`}
+    className={`border border-border bg-background p-8 shadow-elegant md:p-10 ${className}`}
   >
-    {/* Subtle inner glow top-left */}
-    <div className="pointer-events-none absolute -left-20 -top-20 h-40 w-40 rounded-full bg-primary/[0.07] blur-3xl" />
-    {/* Subtle inner glow bottom-right */}
-    <div className="pointer-events-none absolute -bottom-20 -right-20 h-40 w-40 rounded-full bg-primary/[0.05] blur-3xl" />
-    <div className="relative z-10">{children}</div>
+    {children}
   </div>
 );
 
@@ -114,17 +103,11 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
       case 0:
         return (
           <motion.div key="name" variants={stepVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}>
-            <GlassCard>
+            <MinimalCard>
               <div className="flex flex-col items-center gap-7 text-center">
-                {/* Step badge */}
-                <motion.div
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ delay: 0.2, type: "spring", bounce: 0.5 }}
-                  className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-gold text-sm font-bold text-white shadow-gold"
-                >
+                <div className="flex h-10 w-10 items-center justify-center border border-primary/20 bg-[hsl(var(--cream))] font-display text-sm font-bold text-primary">
                   1
-                </motion.div>
+                </div>
 
                 <div>
                   <h2 className="font-display text-3xl font-bold tracking-tight text-foreground md:text-4xl">
@@ -141,13 +124,12 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
                     value={data.name}
                     onChange={(e) => setData({ ...data, name: e.target.value })}
                     placeholder="Il tuo nome..."
-                    className="w-full rounded-xl border border-primary/15 bg-white/[0.06] px-6 py-4 text-center font-display text-lg text-foreground shadow-[inset_0_1px_0_hsl(0_0%_100%/0.08),0_2px_16px_-4px_hsl(0_0%_0%/0.06)] backdrop-blur-sm placeholder:text-muted-foreground/35 focus:border-primary/30 focus:outline-none focus:ring-2 focus:ring-primary/15 transition-all duration-300"
+                    className="w-full border border-border bg-background px-6 py-4 text-center font-display text-lg text-foreground placeholder:text-muted-foreground/35 focus:border-primary focus:outline-none transition-all duration-300"
                     autoFocus
                     onKeyDown={(e) => e.key === "Enter" && data.name && nextStep()}
                   />
-                  {/* Decorative underline */}
                   <motion.div
-                    className="absolute -bottom-px left-1/2 h-px -translate-x-1/2 bg-gradient-gold"
+                    className="absolute -bottom-px left-1/2 h-px -translate-x-1/2 bg-primary"
                     initial={{ width: 0 }}
                     animate={{ width: data.name ? "80%" : "0%" }}
                     transition={{ duration: 0.4 }}
@@ -159,28 +141,23 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
                   whileTap={{ scale: 0.97 }}
                   onClick={nextStep}
                   disabled={!data.name}
-                  className="rounded-none bg-[hsl(var(--v2-amber))] px-10 py-3.5 font-body text-xs font-semibold uppercase tracking-[0.2em] text-white transition-all hover:bg-[hsl(var(--v2-amber-dark))] disabled:opacity-30"
+                  className="bg-[hsl(var(--v2-amber))] px-10 py-3.5 font-body text-xs font-semibold uppercase tracking-[0.2em] text-white transition-all hover:bg-[hsl(var(--v2-amber-dark))] disabled:opacity-30"
                 >
                   Continua <ChevronRight className="ml-1 inline h-4 w-4" />
                 </motion.button>
               </div>
-            </GlassCard>
+            </MinimalCard>
           </motion.div>
         );
 
       case 1:
         return (
           <motion.div key="selfie" variants={stepVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}>
-            <GlassCard>
+            <MinimalCard>
               <div className="flex flex-col items-center gap-7 text-center">
-                <motion.div
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ delay: 0.2, type: "spring", bounce: 0.5 }}
-                  className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-gold text-sm font-bold text-white shadow-gold"
-                >
+                <div className="flex h-10 w-10 items-center justify-center border border-primary/20 bg-[hsl(var(--cream))] font-display text-sm font-bold text-primary">
                   2
-                </motion.div>
+                </div>
 
                 <div>
                   <h2 className="font-display text-3xl font-bold tracking-tight text-foreground md:text-4xl">
@@ -194,7 +171,7 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
                 <label className="group cursor-pointer">
                   <motion.div
                     whileHover={{ scale: 1.03, y: -2 }}
-                    className="relative overflow-hidden rounded-2xl border border-primary/10 bg-white/[0.04] p-8 shadow-[0_4px_30px_-8px_hsl(0_0%_0%/0.12)] transition-all duration-300 group-hover:border-primary/25 group-hover:shadow-gold"
+                    className="relative overflow-hidden border border-border bg-[hsl(var(--cream))] p-8 transition-all duration-300 group-hover:border-primary/25 group-hover:shadow-gold"
                   >
                     {data.selfie ? (
                       <motion.img
@@ -202,19 +179,12 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
                         animate={{ scale: 1, opacity: 1 }}
                         src={data.selfie}
                         alt="Selfie"
-                        className="h-36 w-36 rounded-2xl object-cover shadow-elevated"
+                        className="h-36 w-36 object-cover shadow-elevated"
                       />
                     ) : (
                       <div className="flex flex-col items-center gap-4">
-                        <div className="relative">
-                          <div className="rounded-2xl bg-gradient-gold p-5 shadow-gold">
-                            <Camera className="h-7 w-7 text-white" />
-                          </div>
-                          <motion.div
-                            className="absolute inset-0 rounded-2xl"
-                            animate={{ boxShadow: ["0 0 0 0 hsl(40 45% 50% / 0.3)", "0 0 0 12px hsl(40 45% 50% / 0)", "0 0 0 0 hsl(40 45% 50% / 0)"] }}
-                            transition={{ duration: 2, repeat: Infinity }}
-                          />
+                        <div className="border border-primary/20 bg-background p-5">
+                          <Camera className="h-7 w-7 text-primary" />
                         </div>
                         <span className="font-body text-xs font-medium text-muted-foreground/70">
                           Tocca per scattare o caricare
@@ -229,23 +199,18 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
                   <SkipForward className="h-3 w-3" /> Salta questo passaggio
                 </button>
               </div>
-            </GlassCard>
+            </MinimalCard>
           </motion.div>
         );
 
       case 2:
         return (
           <motion.div key="age" variants={stepVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}>
-            <GlassCard>
+            <MinimalCard>
               <div className="flex flex-col items-center gap-7 text-center">
-                <motion.div
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ delay: 0.2, type: "spring", bounce: 0.5 }}
-                  className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-gold text-sm font-bold text-white shadow-gold"
-                >
+                <div className="flex h-10 w-10 items-center justify-center border border-primary/20 bg-[hsl(var(--cream))] font-display text-sm font-bold text-primary">
                   3
-                </motion.div>
+                </div>
 
                 <div>
                   <h2 className="font-display text-3xl font-bold tracking-tight text-foreground md:text-4xl">
@@ -265,12 +230,12 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
                     value={data.age}
                     onChange={(e) => setData({ ...data, age: e.target.value })}
                     placeholder="Età"
-                    className="w-36 rounded-xl border border-primary/15 bg-white/[0.06] px-6 py-4 text-center font-display text-3xl font-bold text-foreground shadow-[inset_0_1px_0_hsl(0_0%_100%/0.08),0_2px_16px_-4px_hsl(0_0%_0%/0.06)] backdrop-blur-sm placeholder:text-base placeholder:font-normal placeholder:text-muted-foreground/30 focus:border-primary/30 focus:outline-none focus:ring-2 focus:ring-primary/15 transition-all duration-300 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                    className="w-36 border border-border bg-background px-6 py-4 text-center font-display text-3xl font-bold text-foreground placeholder:text-base placeholder:font-normal placeholder:text-muted-foreground/30 focus:border-primary focus:outline-none transition-all duration-300 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                     autoFocus
                     onKeyDown={(e) => e.key === "Enter" && data.age && nextStep()}
                   />
                   <motion.div
-                    className="absolute -bottom-px left-1/2 h-px -translate-x-1/2 bg-gradient-gold"
+                    className="absolute -bottom-px left-1/2 h-px -translate-x-1/2 bg-primary"
                     initial={{ width: 0 }}
                     animate={{ width: data.age ? "80%" : "0%" }}
                     transition={{ duration: 0.4 }}
@@ -282,28 +247,23 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
                   whileTap={{ scale: 0.97 }}
                   onClick={nextStep}
                   disabled={!data.age}
-                  className="rounded-none bg-[hsl(var(--v2-amber))] px-10 py-3.5 font-body text-xs font-semibold uppercase tracking-[0.2em] text-white transition-all hover:bg-[hsl(var(--v2-amber-dark))] disabled:opacity-30"
+                  className="bg-[hsl(var(--v2-amber))] px-10 py-3.5 font-body text-xs font-semibold uppercase tracking-[0.2em] text-white transition-all hover:bg-[hsl(var(--v2-amber-dark))] disabled:opacity-30"
                 >
                   Continua <ChevronRight className="ml-1 inline h-4 w-4" />
                 </motion.button>
               </div>
-            </GlassCard>
+            </MinimalCard>
           </motion.div>
         );
 
       case 3:
         return (
           <motion.div key="time" variants={stepVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}>
-            <GlassCard>
+            <MinimalCard>
               <div className="flex flex-col items-center gap-7 text-center">
-                <motion.div
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ delay: 0.2, type: "spring", bounce: 0.5 }}
-                  className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-gold text-sm font-bold text-white shadow-gold"
-                >
+                <div className="flex h-10 w-10 items-center justify-center border border-primary/20 bg-[hsl(var(--cream))] font-display text-sm font-bold text-primary">
                   4
-                </motion.div>
+                </div>
 
                 <div>
                   <h2 className="font-display text-2xl font-bold tracking-tight text-foreground md:text-3xl">
@@ -327,41 +287,29 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
                         setData({ ...data, time: opt });
                         setTimeout(() => setStep(4), 400);
                       }}
-                      className={`relative overflow-hidden rounded-xl border px-5 py-4 font-body text-sm font-medium transition-all duration-300 ${
+                      className={`border px-5 py-4 font-body text-sm font-medium transition-all duration-300 ${
                         data.time === opt
-                          ? "border-primary/40 bg-gradient-gold text-white shadow-gold"
-                          : "border-white/[0.08] bg-white/[0.04] text-foreground shadow-[0_2px_12px_-4px_hsl(0_0%_0%/0.06)] hover:border-primary/20 hover:shadow-gold/30"
+                          ? "border-primary bg-primary text-white"
+                          : "border-border bg-background text-foreground hover:border-primary/30"
                       }`}
                     >
                       {opt}
-                      {data.time === opt && (
-                        <motion.div
-                          layoutId="timeHighlight"
-                          className="absolute inset-0 -z-10 rounded-xl bg-gradient-gold"
-                          transition={{ type: "spring", bounce: 0.2 }}
-                        />
-                      )}
                     </motion.button>
                   ))}
                 </div>
               </div>
-            </GlassCard>
+            </MinimalCard>
           </motion.div>
         );
 
       case 4:
         return (
           <motion.div key="skin" variants={stepVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}>
-            <GlassCard>
+            <MinimalCard>
               <div className="flex flex-col items-center gap-6 text-center">
-                <motion.div
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ delay: 0.2, type: "spring", bounce: 0.5 }}
-                  className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-gold text-sm font-bold text-white shadow-gold"
-                >
+                <div className="flex h-10 w-10 items-center justify-center border border-primary/20 bg-[hsl(var(--cream))] font-display text-sm font-bold text-primary">
                   5
-                </motion.div>
+                </div>
 
                 <div>
                   <h2 className="font-display text-2xl font-bold tracking-tight text-foreground md:text-3xl">
@@ -383,7 +331,7 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
                       whileHover={{ scale: 1.06, y: -1 }}
                       whileTap={{ scale: 0.95 }}
                       onClick={() => handleSuggestionClick(s)}
-                      className="rounded-full border border-primary/15 bg-white/[0.06] px-4 py-2 font-body text-[11px] font-medium text-muted-foreground shadow-[0_1px_8px_-2px_hsl(0_0%_0%/0.05)] backdrop-blur-sm transition-all duration-300 hover:border-primary/30 hover:text-foreground hover:shadow-gold/20"
+                      className="border border-border bg-background px-4 py-2 font-body text-[11px] font-medium text-muted-foreground transition-all duration-300 hover:border-primary/30 hover:text-foreground"
                     >
                       {s}
                     </motion.button>
@@ -395,7 +343,7 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
                     value={data.skinDescription}
                     onChange={(e) => setData({ ...data, skinDescription: e.target.value })}
                     placeholder="Es: Ho la pelle mista, con qualche imperfezione sulla zona T. Vorrei un effetto glow naturale..."
-                    className="h-32 w-full resize-none rounded-xl border border-primary/15 bg-white/[0.06] px-5 py-4 pr-12 font-body text-sm text-foreground shadow-[inset_0_1px_0_hsl(0_0%_100%/0.08),0_2px_16px_-4px_hsl(0_0%_0%/0.06)] backdrop-blur-sm placeholder:text-muted-foreground/35 focus:border-primary/30 focus:outline-none focus:ring-2 focus:ring-primary/15 transition-all duration-300"
+                    className="h-32 w-full resize-none border border-border bg-background px-5 py-4 pr-12 font-body text-sm text-foreground placeholder:text-muted-foreground/35 focus:border-primary focus:outline-none transition-all duration-300"
                     autoFocus
                   />
                   {/* AI enhance button */}
@@ -407,7 +355,7 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
                       whileTap={{ scale: 0.92 }}
                       onClick={enhanceWithAI}
                       disabled={isEnhancing}
-                      className="absolute bottom-3 right-3 flex items-center gap-1.5 rounded-full bg-gradient-gold px-3 py-1.5 font-body text-[10px] font-semibold text-white shadow-gold transition-all disabled:opacity-50"
+                      className="absolute bottom-3 right-3 flex items-center gap-1.5 bg-primary px-3 py-1.5 font-body text-[10px] font-semibold text-white transition-all disabled:opacity-50"
                       title="Migliora il testo con l'AI"
                     >
                       {isEnhancing ? (
@@ -425,12 +373,12 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
                   whileTap={{ scale: 0.97 }}
                   onClick={nextStep}
                   disabled={!data.skinDescription}
-                  className="rounded-none bg-[hsl(var(--v2-amber))] px-10 py-3.5 font-body text-xs font-semibold uppercase tracking-[0.2em] text-white transition-all hover:bg-[hsl(var(--v2-amber-dark))] disabled:opacity-30"
+                  className="bg-[hsl(var(--v2-amber))] px-10 py-3.5 font-body text-xs font-semibold uppercase tracking-[0.2em] text-white transition-all hover:bg-[hsl(var(--v2-amber-dark))] disabled:opacity-30"
                 >
                   Scopri la tua routine
                 </motion.button>
               </div>
-            </GlassCard>
+            </MinimalCard>
           </motion.div>
         );
 
@@ -442,35 +390,16 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
   const progress = ((step + 1) / 5) * 100;
 
   return (
-    <div className="relative flex min-h-screen flex-col items-center justify-center bg-background px-4 py-8">
+    <div className="relative flex min-h-screen flex-col items-center justify-center bg-[hsl(var(--cream))] px-4 py-8">
       {/* Logo */}
       <div className="absolute top-6 left-6 z-50">
         <BrandLogo size="md" />
       </div>
 
-      {/* Step background image with blur overlay */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={`img-${step}`}
-          initial={{ opacity: 0, scale: 1.05 }}
-          animate={{ opacity: 0.15, scale: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.8 }}
-          className="pointer-events-none absolute inset-0 overflow-hidden"
-        >
-          <img
-            src={stepImages[step]}
-            alt=""
-            className="h-full w-full object-cover"
-          />
-          <div className="absolute inset-0 bg-background/40 backdrop-blur-[2px]" />
-        </motion.div>
-      </AnimatePresence>
-
       {/* Progress bar */}
       <div className="fixed left-0 right-0 top-0 z-50 h-0.5 bg-muted/50">
         <motion.div
-          className="h-full bg-gradient-gold"
+          className="h-full bg-primary"
           animate={{ width: `${progress}%` }}
           transition={{ duration: 0.5, ease: "easeOut" }}
         />
@@ -482,7 +411,7 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
           initial={{ opacity: 0, x: -10 }}
           animate={{ opacity: 1, x: 0 }}
           onClick={prevStep}
-          className="fixed left-4 bottom-6 z-50 flex items-center gap-1.5 rounded-full border border-white/[0.08] bg-white/[0.04] px-3.5 py-2 font-body text-xs text-muted-foreground shadow-elegant backdrop-blur-xl transition-all hover:bg-white/[0.08] hover:text-foreground"
+          className="fixed left-4 bottom-6 z-50 flex items-center gap-1.5 border border-border bg-background px-3.5 py-2 font-body text-xs text-muted-foreground shadow-elegant transition-all hover:text-foreground"
         >
           <ChevronLeft className="h-3.5 w-3.5" />
           Indietro
@@ -496,7 +425,7 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
         </AnimatePresence>
       </div>
 
-      {/* Step indicator — elegant dots */}
+      {/* Step indicator — minimal lines */}
       <div className="mt-10 flex items-center gap-2.5">
         {[0, 1, 2, 3, 4].map((i) => (
           <motion.button
@@ -511,8 +440,7 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
                   ? "hsl(40 45% 50% / 0.4)"
                   : "hsl(0 0% 80% / 0.3)",
             }}
-            className="h-2 cursor-pointer rounded-full transition-colors"
-            whileHover={i < step ? { scale: 1.3 } : {}}
+            className="h-1 cursor-pointer transition-colors"
           />
         ))}
       </div>
