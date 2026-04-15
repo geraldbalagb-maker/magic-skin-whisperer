@@ -1,5 +1,7 @@
 import { motion } from "framer-motion";
-import { ScanFace, Sparkles, PackageCheck } from "lucide-react";
+import howStep01 from "@/assets/steps/how-step-01.jpg";
+import howStep02 from "@/assets/steps/how-step-02.jpg";
+import howStep03 from "@/assets/steps/how-step-03.jpg";
 
 const steps = [
   {
@@ -7,21 +9,21 @@ const steps = [
     title: "Racconta la tua pelle",
     description:
       "Rispondi a poche domande sulle tue abitudini, il tuo tipo di pelle e i risultati che desideri.",
-    icon: ScanFace,
+    image: howStep01,
   },
   {
     number: "02",
     title: "L'AI trova il match perfetto",
     description:
       "Il nostro algoritmo analizza le risposte e incrocia i dati con il catalogo per trovare i prodotti ideali.",
-    icon: Sparkles,
+    image: howStep02,
   },
   {
     number: "03",
     title: "Ricevi la tua routine",
     description:
       "Una skincare routine completa e personalizzata, pronta da acquistare con un click.",
-    icon: PackageCheck,
+    image: howStep03,
   },
 ];
 
@@ -53,7 +55,6 @@ const V2HowItWorks = () => (
       <div className="flex flex-col gap-10 md:gap-0">
         {steps.map((step, i) => {
           const isEven = i % 2 === 1;
-          const Icon = step.icon;
           return (
             <motion.div
               key={step.number}
@@ -65,11 +66,16 @@ const V2HowItWorks = () => (
                 isEven ? "md:flex-row-reverse" : ""
               }`}
             >
-              {/* Icon card — monochrome gold/black */}
-              <div className="flex h-44 w-full shrink-0 items-center justify-center border border-border bg-[hsl(var(--cream))] md:h-52 md:w-1/2">
-                <div className="flex h-20 w-20 items-center justify-center border border-primary/20 bg-background">
-                  <Icon className="h-9 w-9 text-primary" strokeWidth={1.5} />
-                </div>
+              {/* Image card */}
+              <div className="w-full shrink-0 overflow-hidden md:w-1/2">
+                <img
+                  src={step.image}
+                  alt={step.title}
+                  className="h-52 w-full object-cover md:h-64"
+                  loading="lazy"
+                  width={800}
+                  height={800}
+                />
               </div>
 
               {/* Text */}
