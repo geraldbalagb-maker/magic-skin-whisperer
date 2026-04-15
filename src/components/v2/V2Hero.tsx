@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
-import heroImage from "@/assets/hero-beauty.jpg";
+import heroImage from "@/assets/hero-beauty-v2.jpg";
 import logoMe from "@/assets/logo-me.png";
 
 interface V2HeroProps {
