@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import SectionHeader from "../landing/SectionHeader";
+import SectionHeader from "../shared/SectionHeader";
 
 interface AITip {
   title: string;

@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Star } from "lucide-react";
 import tonerImg from "@/assets/products/toner.jpg";
-import SectionHeader from "../landing/SectionHeader";
+import SectionHeader from "../shared/SectionHeader";
 
 const GiftProductShowcase = () => (
   <section className="border-b border-border bg-gradient-cream">
