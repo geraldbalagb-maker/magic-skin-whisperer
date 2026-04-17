@@ -5,12 +5,7 @@ const V2Header = () => (
   <header className="hidden md:block border-b border-border bg-background px-4 py-3">
     <div className="mx-auto flex max-w-7xl items-center justify-between">
       {/* Logo */}
-      <a
-        href="https://www.luxury-perfumes.net/"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="flex items-center gap-3"
-      >
+      <a href="/" className="flex items-center gap-3">
         <img src={logoMe} alt="Maison 22 Esthétique" className="h-24 w-auto object-contain" />
       </a>
 
