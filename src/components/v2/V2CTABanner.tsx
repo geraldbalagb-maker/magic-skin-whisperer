@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
 import { ArrowRight, Sparkles } from "lucide-react";
-import ctaBg from "@/assets/cta-banner-bg.jpg";
 
 interface V2CTABannerProps {
   onStartQuiz: () => void;
@@ -8,38 +7,23 @@ interface V2CTABannerProps {
 
 const V2CTABanner = ({ onStartQuiz }: V2CTABannerProps) => (
   <section className="relative overflow-hidden bg-[hsl(var(--charcoal))]">
-    {/* Background image */}
-    <div className="absolute inset-0">
-      <img
-        src={ctaBg}
-        alt=""
-        loading="lazy"
-        width={1920}
-        height={1080}
-        className="h-full w-full object-cover object-right opacity-90"
-      />
-      <div className="absolute inset-0 bg-gradient-to-r from-[hsl(var(--charcoal))] via-[hsl(var(--charcoal))]/85 to-transparent md:via-[hsl(var(--charcoal))]/70" />
-      <div className="absolute inset-0 bg-gradient-to-t from-[hsl(var(--charcoal))]/60 via-transparent to-[hsl(var(--charcoal))]/40" />
+    {/* Subtle decorative gold glow */}
+    <div className="pointer-events-none absolute inset-0 opacity-50">
+      <div className="absolute left-1/2 top-1/2 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/10 blur-[140px]" />
     </div>
 
-    {/* Decorative gold glow */}
-    <div className="pointer-events-none absolute inset-0 opacity-40">
-      <div className="absolute left-1/4 top-1/3 h-96 w-96 rounded-full bg-primary/10 blur-[120px]" />
-      <div className="absolute bottom-1/4 right-1/3 h-72 w-72 rounded-full bg-primary/15 blur-[100px]" />
-    </div>
-
-    <div className="relative z-10 mx-auto flex min-h-[90vh] max-w-6xl flex-col items-start justify-center px-6 py-24 md:min-h-[85vh] md:px-12 md:py-32 lg:py-40">
+    <div className="relative z-10 mx-auto flex min-h-[80vh] max-w-3xl flex-col items-center justify-center px-6 py-24 text-center md:py-32 lg:py-40">
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-100px" }}
         transition={{ duration: 0.8, ease: [0, 0, 0.2, 1] }}
-        className="max-w-2xl"
+        className="flex flex-col items-center"
       >
         {/* Eyebrow */}
         <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          whileInView={{ opacity: 1, x: 0 }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.1, duration: 0.6 }}
           className="mb-8 flex items-center gap-3"
@@ -48,6 +32,7 @@ const V2CTABanner = ({ onStartQuiz }: V2CTABannerProps) => (
           <span className="font-body text-[10px] font-semibold uppercase tracking-[0.4em] text-primary">
             Maison 22 Esthétique
           </span>
+          <span className="h-px w-12 bg-primary" />
         </motion.div>
 
         {/* Main headline */}
@@ -56,11 +41,9 @@ const V2CTABanner = ({ onStartQuiz }: V2CTABannerProps) => (
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.2, duration: 0.8 }}
-          className="font-display text-4xl font-bold leading-[1.05] text-white md:text-5xl lg:text-6xl"
+          className="font-display text-4xl font-bold leading-[1.1] text-white md:text-5xl lg:text-6xl"
         >
-          La bellezza
-          <br />
-          inizia con il{" "}
+          La bellezza inizia con il{" "}
           <span className="italic text-gradient-gold">protocollo giusto</span>.
         </motion.h2>
 
@@ -70,7 +53,7 @@ const V2CTABanner = ({ onStartQuiz }: V2CTABannerProps) => (
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.4, duration: 0.8 }}
-          className="mt-8 max-w-lg font-body text-base leading-relaxed text-white/70 md:text-lg"
+          className="mt-8 max-w-xl font-body text-base leading-relaxed text-white/70 md:text-lg"
         >
           Un'analisi avanzata della tua pelle per costruire una routine
           esclusiva, calibrata sulle tue esigenze reali.
@@ -82,16 +65,16 @@ const V2CTABanner = ({ onStartQuiz }: V2CTABannerProps) => (
           whileInView={{ scaleX: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.5, duration: 0.8 }}
-          className="mt-10 h-px w-24 origin-left bg-gradient-to-r from-primary to-transparent"
+          className="mt-10 h-px w-24 bg-gradient-to-r from-transparent via-primary to-transparent"
         />
 
-        {/* CTA + Meta */}
+        {/* CTA */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.6, duration: 0.8 }}
-          className="mt-10 flex flex-col items-start gap-6 sm:flex-row sm:items-center"
+          className="mt-10 flex flex-col items-center gap-6"
         >
           <motion.button
             whileHover={{ scale: 1.02 }}
@@ -105,7 +88,7 @@ const V2CTABanner = ({ onStartQuiz }: V2CTABannerProps) => (
             <ArrowRight className="relative h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
           </motion.button>
 
-          <div className="flex flex-col gap-1">
+          <div className="flex flex-col items-center gap-1">
             <span className="font-body text-[11px] uppercase tracking-widest text-primary/90">
               Gratuito · 60 secondi
             </span>
@@ -113,30 +96,6 @@ const V2CTABanner = ({ onStartQuiz }: V2CTABannerProps) => (
               Nessuna registrazione richiesta
             </span>
           </div>
-        </motion.div>
-
-        {/* Trust signals */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.9, duration: 0.8 }}
-          className="mt-16 flex flex-wrap items-center gap-x-10 gap-y-4 border-t border-white/10 pt-8"
-        >
-          {[
-            { value: "12.000+", label: "Donne soddisfatte" },
-            { value: "97%", label: "Risultati visibili" },
-            { value: "30", label: "Prodotti esclusivi" },
-          ].map((stat) => (
-            <div key={stat.label} className="flex flex-col">
-              <span className="font-display text-2xl font-bold text-white md:text-3xl">
-                {stat.value}
-              </span>
-              <span className="font-body text-[10px] uppercase tracking-widest text-white/50">
-                {stat.label}
-              </span>
-            </div>
-          ))}
         </motion.div>
       </motion.div>
     </div>
