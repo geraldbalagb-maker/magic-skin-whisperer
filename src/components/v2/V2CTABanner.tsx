@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ArrowRight, Sparkles } from "lucide-react";
+
 
 interface V2CTABannerProps {
   onStartQuiz: () => void;
@@ -83,9 +83,7 @@ const V2CTABanner = ({ onStartQuiz }: V2CTABannerProps) => (
             className="group relative inline-flex items-center gap-3 overflow-hidden bg-primary px-10 py-5 font-body text-xs font-semibold uppercase tracking-[0.3em] text-white shadow-gold-lg transition-all hover:shadow-[0_15px_60px_-10px_hsl(40_45%_50%/0.6)]"
           >
             <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-1000 group-hover:translate-x-full" />
-            <Sparkles className="h-4 w-4" strokeWidth={1.5} />
             <span className="relative">Inizia il tuo protocollo</span>
-            <ArrowRight className="relative h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
           </motion.button>
 
           <div className="flex flex-col items-center gap-1">
