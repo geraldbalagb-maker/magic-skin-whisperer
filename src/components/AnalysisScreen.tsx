@@ -242,11 +242,11 @@ const AnalysisScreen = ({ name, quizData, onComplete }: AnalysisScreenProps) => 
                       ) : isActive ? (
                         <motion.div key="active" className="relative flex h-5 w-5 items-center justify-center">
                           <motion.div className="absolute inset-0 rounded-full bg-primary/20" animate={{ scale: [1, 1.4, 1], opacity: [0.3, 0, 0.3] }} transition={{ duration: 1.5, repeat: Infinity }} />
-                          <span className="relative z-10 text-xs">{phase.icon}</span>
+                          <div className="relative z-10 h-1.5 w-1.5 rounded-full bg-primary" />
                         </motion.div>
                       ) : (
                         <motion.div key="pending" className="flex h-5 w-5 items-center justify-center rounded-full opacity-30">
-                          <span className="text-xs">{phase.icon}</span>
+                          <div className="h-1 w-1 rounded-full bg-primary-foreground/40" />
                         </motion.div>
                       )}
                     </AnimatePresence>
