@@ -10,7 +10,7 @@ interface AITipsGridProps {
   tips: AITip[] | string[];
 }
 
-const tipIcons = ["🧴", "🌙", "☀️", "💧", "🍃", "✨"];
+
 
 const AITipsGrid = ({ tips }: AITipsGridProps) => {
   if (!tips || tips.length === 0) return null;
@@ -48,8 +48,8 @@ const AITipsGrid = ({ tips }: AITipsGridProps) => {
 
               <div className="relative z-10">
                 <div className="mb-3 flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-gold shadow-gold">
-                    <span className="text-lg">{tipIcons[i % tipIcons.length]}</span>
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-gold font-display text-sm font-bold text-primary-foreground shadow-gold">
+                    {String(i + 1).padStart(2, "0")}
                   </div>
                   <h3 className="font-display text-sm font-semibold text-foreground">
                     {tip.title}

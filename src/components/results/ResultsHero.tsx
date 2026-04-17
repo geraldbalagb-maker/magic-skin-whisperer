@@ -85,10 +85,10 @@ const ResultsHero = ({ name, quizData, aiResult }: ResultsHeroProps) => (
         className="mx-auto mt-8 flex max-w-lg flex-wrap justify-center gap-3"
       >
         {[
-          { icon: "🎂", label: `${quizData.age} anni` },
-          { icon: "⏱", label: quizData.time },
+          { label: `${quizData.age} anni` },
+          { label: quizData.time },
           ...(quizData.skinDescription
-            ? [{ icon: "💬", label: `"${quizData.skinDescription.slice(0, 40)}…"` }]
+            ? [{ label: `"${quizData.skinDescription.slice(0, 40)}…"` }]
             : []),
         ].map((chip, i) => (
           <motion.span
@@ -98,7 +98,7 @@ const ResultsHero = ({ name, quizData, aiResult }: ResultsHeroProps) => (
             transition={{ delay: 0.9 + i * 0.1 }}
             className="rounded-full border border-primary/20 bg-primary/10 px-4 py-2 font-body text-xs text-primary-foreground/70 backdrop-blur-md"
           >
-            {chip.icon} {chip.label}
+            {chip.label}
           </motion.span>
         ))}
       </motion.div>

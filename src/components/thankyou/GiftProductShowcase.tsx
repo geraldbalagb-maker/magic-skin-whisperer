@@ -63,10 +63,10 @@ const GiftProductShowcase = () => (
 
           <div className="mt-6 flex flex-wrap justify-center gap-3 md:justify-start">
             {[
-              { icon: "💧", text: "Idratazione intensa" },
-              { icon: "✨", text: "Luminosità immediata" },
-              { icon: "🌿", text: "Ingredienti naturali" },
-            ].map((feat, i) => (
+              "Idratazione intensa",
+              "Luminosità immediata",
+              "Ingredienti naturali",
+            ].map((text, i) => (
               <motion.span
                 key={i}
                 initial={{ opacity: 0, y: 10 }}
@@ -75,7 +75,7 @@ const GiftProductShowcase = () => (
                 transition={{ delay: 0.3 + i * 0.1 }}
                 className="flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2 font-body text-xs text-muted-foreground"
               >
-                <span>{feat.icon}</span> {feat.text}
+                <span className="h-1 w-1 rounded-full bg-primary" /> {text}
               </motion.span>
             ))}
           </div>

@@ -101,7 +101,7 @@ const ReferralForm = ({
               <Gift className="mx-auto mb-4 h-12 w-12 text-primary" />
             </motion.div>
             <h2 className="font-display text-2xl font-bold text-foreground">
-              Un regalo esclusivo per te! 🎁
+              Un regalo esclusivo per te
             </h2>
             <p className="mt-3 font-body text-sm text-muted-foreground">
               Invita <strong>3 amiche</strong> a scoprire la loro beauty routine e riceverai in omaggio il nostro{" "}

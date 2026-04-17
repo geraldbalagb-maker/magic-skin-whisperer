@@ -30,11 +30,11 @@ interface AnalysisScreenProps {
 }
 
 const analysisPhases = [
-  { icon: "🔬", label: "Analisi del tipo di pelle", detail: "Scansione in corso..." },
-  { icon: "🧬", label: "Studio del profilo cutaneo", detail: "Elaborazione dati..." },
-  { icon: "💎", label: "Selezione ingredienti attivi", detail: "Matching prodotti..." },
-  { icon: "✨", label: "Creazione routine su misura", detail: "Personalizzazione AI..." },
-  { icon: "🪄", label: "Simulazione risultati", detail: "Quasi pronta..." },
+  { label: "Analisi del tipo di pelle", detail: "Scansione in corso..." },
+  { label: "Studio del profilo cutaneo", detail: "Elaborazione dati..." },
+  { label: "Selezione ingredienti attivi", detail: "Matching prodotti..." },
+  { label: "Creazione routine su misura", detail: "Personalizzazione AI..." },
+  { label: "Simulazione risultati", detail: "Quasi pronta..." },
 ];
 
 const AnalysisScreen = ({ name, quizData, onComplete }: AnalysisScreenProps) => {
@@ -125,7 +125,7 @@ const AnalysisScreen = ({ name, quizData, onComplete }: AnalysisScreenProps) => 
       <div className="relative flex min-h-screen flex-col items-center justify-center bg-background px-4">
         <div className="flex flex-col items-center gap-6 text-center">
           <h2 className="font-display text-2xl font-semibold text-foreground">
-            Oops, qualcosa è andato storto 😔
+            Oops, qualcosa è andato storto
           </h2>
           <p className="font-body text-sm text-muted-foreground max-w-sm">{error}</p>
           <button
@@ -242,11 +242,11 @@ const AnalysisScreen = ({ name, quizData, onComplete }: AnalysisScreenProps) => 
                       ) : isActive ? (
                         <motion.div key="active" className="relative flex h-5 w-5 items-center justify-center">
                           <motion.div className="absolute inset-0 rounded-full bg-primary/20" animate={{ scale: [1, 1.4, 1], opacity: [0.3, 0, 0.3] }} transition={{ duration: 1.5, repeat: Infinity }} />
-                          <span className="relative z-10 text-xs">{phase.icon}</span>
+                          <div className="relative z-10 h-1.5 w-1.5 rounded-full bg-primary" />
                         </motion.div>
                       ) : (
                         <motion.div key="pending" className="flex h-5 w-5 items-center justify-center rounded-full opacity-30">
-                          <span className="text-xs">{phase.icon}</span>
+                          <div className="h-1 w-1 rounded-full bg-primary-foreground/40" />
                         </motion.div>
                       )}
                     </AnimatePresence>
