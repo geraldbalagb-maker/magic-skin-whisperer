@@ -49,7 +49,7 @@ const FounderMessage = ({ name }: FounderMessageProps) => (
             </p>
             <p className="mt-4 font-body text-sm leading-relaxed text-muted-foreground md:text-base">
               Ricorda: la tua pelle è unica, e merita il meglio.
-              Non vedo l&apos;ora di vedere i tuoi risultati! 💛
+              Non vedo l&apos;ora di vedere i tuoi risultati.
             </p>
 
             {/* Signature */}

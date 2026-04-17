@@ -114,7 +114,7 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
                     Come ti chiami?
                   </h2>
                   <p className="mt-3 font-body text-sm text-muted-foreground">
-                    Vogliamo creare un'esperienza su misura per te ✨
+                    Vogliamo creare un'esperienza su misura per te
                   </p>
                 </div>
 
@@ -161,10 +161,10 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
 
                 <div>
                   <h2 className="font-display text-3xl font-bold tracking-tight text-foreground md:text-4xl">
-                    {data.name}, fatti un selfie! 📸
+                    {data.name}, fatti un selfie
                   </h2>
                   <p className="mt-3 max-w-sm font-body text-sm text-muted-foreground">
-                    Ci serve una foto per capire com'è fatta la tua pelle e poterti consigliare al meglio. Tranquilla, rimarrà tra noi 🤫
+                    Ci serve una foto per capire com'è fatta la tua pelle e poterti consigliare al meglio. Tranquilla, rimarrà tra noi.
                   </p>
                 </div>
 
@@ -214,7 +214,7 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
 
                 <div>
                   <h2 className="font-display text-3xl font-bold tracking-tight text-foreground md:text-4xl">
-                    {data.name}, quanti anni hai? 🌸
+                    {data.name}, quanti anni hai?
                   </h2>
                   <p className="mt-3 font-body text-sm text-muted-foreground">
                     Ogni età ha la sua bellezza, e la sua routine perfetta
@@ -313,7 +313,7 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
 
                 <div>
                   <h2 className="font-display text-2xl font-bold tracking-tight text-foreground md:text-3xl">
-                    Raccontaci di più, {data.name} 💫
+                    Raccontaci di più, {data.name}
                   </h2>
                   <p className="mt-3 max-w-sm font-body text-sm text-muted-foreground">
                     Com'è la tua pelle? Hai particolari esigenze? Che effetto vorresti ottenere?

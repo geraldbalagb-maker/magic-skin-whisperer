@@ -41,7 +41,7 @@ const GiftEnvelope = ({ onOpen }: GiftEnvelopeProps) => {
         transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
         className="font-body text-sm font-medium text-primary"
       >
-        Tocca il pacchetto per scoprire il tuo regalo ✨
+        Tocca il pacchetto per scoprire il tuo regalo
       </motion.p>
     </div>
   );

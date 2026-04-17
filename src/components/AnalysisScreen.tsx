@@ -30,11 +30,11 @@ interface AnalysisScreenProps {
 }
 
 const analysisPhases = [
-  { icon: "🔬", label: "Analisi del tipo di pelle", detail: "Scansione in corso..." },
-  { icon: "🧬", label: "Studio del profilo cutaneo", detail: "Elaborazione dati..." },
-  { icon: "💎", label: "Selezione ingredienti attivi", detail: "Matching prodotti..." },
-  { icon: "✨", label: "Creazione routine su misura", detail: "Personalizzazione AI..." },
-  { icon: "🪄", label: "Simulazione risultati", detail: "Quasi pronta..." },
+  { label: "Analisi del tipo di pelle", detail: "Scansione in corso..." },
+  { label: "Studio del profilo cutaneo", detail: "Elaborazione dati..." },
+  { label: "Selezione ingredienti attivi", detail: "Matching prodotti..." },
+  { label: "Creazione routine su misura", detail: "Personalizzazione AI..." },
+  { label: "Simulazione risultati", detail: "Quasi pronta..." },
 ];
 
 const AnalysisScreen = ({ name, quizData, onComplete }: AnalysisScreenProps) => {
@@ -125,7 +125,7 @@ const AnalysisScreen = ({ name, quizData, onComplete }: AnalysisScreenProps) => 
       <div className="relative flex min-h-screen flex-col items-center justify-center bg-background px-4">
         <div className="flex flex-col items-center gap-6 text-center">
           <h2 className="font-display text-2xl font-semibold text-foreground">
-            Oops, qualcosa è andato storto 😔
+            Oops, qualcosa è andato storto
           </h2>
           <p className="font-body text-sm text-muted-foreground max-w-sm">{error}</p>
           <button

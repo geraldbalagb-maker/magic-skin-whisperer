@@ -150,7 +150,7 @@ const FAQSection = () => {
               Unisciti a oltre 15.000 donne che hanno già scoperto la propria routine ideale con l'aiuto dell'intelligenza artificiale.
             </p>
             <p className="mt-6 font-body text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
-              Formulato in Italia 🇮🇹 · Dermatologicamente testato · Cruelty free
+              Formulato in Italia · Dermatologicamente testato · Cruelty free
             </p>
           </motion.div>
         </div>

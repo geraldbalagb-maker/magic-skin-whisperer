@@ -37,13 +37,7 @@ const CelebrationScreen = ({ name, showConfetti }: CelebrationScreenProps) => (
           transition={{ type: "spring", delay: 0.2 }}
           className="mx-auto mb-8 flex h-20 w-20 items-center justify-center rounded-full bg-gradient-gold shadow-gold-lg"
         >
-          <motion.span
-            animate={{ rotate: [0, 10, -10, 0] }}
-            transition={{ delay: 0.6, duration: 0.5 }}
-            className="text-4xl"
-          >
-            🎁
-          </motion.span>
+          <Gift className="h-9 w-9 text-primary-foreground" strokeWidth={1.5} />
         </motion.div>
 
         <motion.h1
@@ -134,7 +128,7 @@ const CelebrationScreen = ({ name, showConfetti }: CelebrationScreenProps) => (
         viewport={{ once: true }}
         className="mx-auto max-w-lg px-4"
       >
-        <span className="text-4xl">💛</span>
+        <div className="mx-auto h-0.5 w-12 rounded-full bg-gradient-gold" />
         <h3 className="mt-4 font-display text-xl font-bold text-primary-foreground md:text-2xl">
           La tua beauty routine ti aspetta
         </h3>
