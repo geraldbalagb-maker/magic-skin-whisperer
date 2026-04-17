@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ShoppingBag, Star, Check, ChevronDown } from "lucide-react";
 import type { Product, RoutineStep } from "@/data/products";
 import { products as allProducts } from "@/data/products";
-import SectionHeader from "../landing/SectionHeader";
+import SectionHeader from "../shared/SectionHeader";
 import routineCleansingImg from "@/assets/steps/routine-step-cleansing.png";
 import routineTonerImg from "@/assets/steps/routine-step-toner.png";
 import routineTreatmentImg from "@/assets/steps/routine-step-treatment.png";
