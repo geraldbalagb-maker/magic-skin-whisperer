@@ -40,9 +40,9 @@ Lista master delle modifiche da implementare. Aggiornare lo stato man mano: `[ ]
 
 ## 6. Extra / Strategici
 
-- [ ] **20. Foto obbligatoria** — rimuovere lo skip dell'upload foto (oppure A/B test).
-- [ ] **21. Valentina nei risultati** — aggiungere foto Valentina nella schermata finale (umanizzare la routine).
-- [ ] **22. Offerta/prezzo speciale via funnel** — sconto dedicato a chi compra dal funnel.
+- [x] **20. Foto obbligatoria** — rimosso lo skip, pulsante "Vai avanti" attivo solo con foto + microcopy esplicativo.
+- [ ] **21. Valentina nei risultati** — in attesa delle foto reali di Valentina.
+- [x] **22. Offerta/prezzo speciale via funnel** — bundle a -25% (era -20%) con badge "Offerta esclusiva funnel" e copy dedicato.
 - [x] **23. Rimuovere Header/Footer durante il flusso** — Quiz, Analisi, Risultati e Thank You ora sono fullscreen senza nav.
 
 ---
