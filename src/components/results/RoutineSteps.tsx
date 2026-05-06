@@ -115,9 +115,9 @@ const RoutineSteps = ({ routine, cart, onToggleCart }: RoutineStepsProps) => {
 
               <div className={`flex flex-col items-center gap-8 md:flex-row ${!isEven ? "md:flex-row-reverse" : ""}`}>
                 {/* Step Image */}
-                <motion.div whileHover={{ scale: 1.02 }} className="relative w-full md:w-5/12">
-                  <div className="relative overflow-hidden rounded-3xl border border-primary/10 bg-card shadow-sm">
-                    <div className="absolute top-4 left-4 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-gradient-gold font-display text-sm font-bold text-primary-foreground shadow-gold">
+                <motion.div whileHover={{ scale: 1.01 }} className="relative w-full md:w-5/12">
+                  <div className="relative overflow-hidden bg-foreground">
+                    <div className="absolute top-4 left-4 z-10 flex h-10 w-10 items-center justify-center bg-background font-display text-sm font-semibold text-foreground">
                       {step.order}
                     </div>
                     <div className="aspect-square p-6">
