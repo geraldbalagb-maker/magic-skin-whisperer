@@ -45,7 +45,7 @@ const BundleSection = ({
             >
               {/* Badge */}
               <span className="inline-block rounded-sm bg-foreground px-4 py-1.5 font-body text-[11px] font-bold uppercase tracking-[0.2em] text-background">
-                Exclusive Beauty Set
+                Offerta esclusiva funnel · -25%
               </span>
 
               {/* Headline */}
