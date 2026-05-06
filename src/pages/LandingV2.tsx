@@ -76,7 +76,6 @@ const LandingV2 = () => {
   return (
     <div className="min-h-screen bg-background">
       <V2TopBar />
-      <V2Header />
       <V2Hero onStartQuiz={handleStartQuiz} />
       <V2HowItWorks />
       <V2TrustBar />
