@@ -65,8 +65,8 @@ const V2CTABanner = ({ onStartQuiz }: V2CTABannerProps) => (
           whileInView={{ scaleX: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.5, duration: 0.8 }}
-          <span className="mt-10 h-px w-24 bg-white/30" />
-        </motion.div>
+          className="mt-10 h-px w-24 bg-white/30"
+        />
 
         {/* CTA */}
         <motion.div
