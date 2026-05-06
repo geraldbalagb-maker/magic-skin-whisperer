@@ -34,14 +34,14 @@ Lista master delle modifiche da implementare. Aggiornare lo stato man mano: `[ ]
 
 ## 5. Materiali e Richieste Cliente
 
-- [ ] **17. Sostituire foto AI con foto reali** — inserire foto di Valentina Tecchio (cercare su Google).
+- [x] **17. Sostituire foto AI con foto reali** — inserite due foto professionali di Valentina Tecchio (`valentina-portrait.jpg` nei risultati, `valentina-smile.jpg` nel thank you).
 - [ ] **18. Richiedere immagini proprietarie** — placeholder per immagini reali del cliente.
 - [ ] **19. Revisione testi finali** — raccogliere feedback cliente su testi e FAQ.
 
 ## 6. Extra / Strategici
 
 - [x] **20. Foto obbligatoria** — rimosso lo skip, pulsante "Vai avanti" attivo solo con foto + microcopy esplicativo.
-- [ ] **21. Valentina nei risultati** — in attesa delle foto reali di Valentina.
+- [x] **21. Valentina nei risultati** — aggiunta sezione "La Founder" con ritratto reale nei risultati e foto nel messaggio thank you.
 - [x] **22. Offerta/prezzo speciale via funnel** — bundle a -25% (era -20%) con badge "Offerta esclusiva funnel" e copy dedicato.
 - [x] **23. Rimuovere Header/Footer durante il flusso** — Quiz, Analisi, Risultati e Thank You ora sono fullscreen senza nav.
 
