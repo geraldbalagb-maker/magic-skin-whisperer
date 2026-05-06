@@ -254,12 +254,11 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
                   <PrimaryButton onClick={nextStep} disabled={!data.selfie}>
                     Vai avanti <ChevronRight className="ml-1 inline h-4 w-4" />
                   </PrimaryButton>
-                  <button
-                    onClick={nextStep}
-                    className="font-body text-[11px] text-muted-foreground/50 underline-offset-4 transition hover:text-muted-foreground hover:underline"
-                  >
-                    Salta questo passaggio
-                  </button>
+                  {!data.selfie && (
+                    <p className="font-body text-[11px] text-muted-foreground/70">
+                      La foto è necessaria per un'analisi accurata della tua pelle
+                    </p>
+                  )}
                 </div>
               </div>
             </MinimalCard>
