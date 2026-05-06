@@ -13,24 +13,24 @@ Lista master delle modifiche da implementare. Aggiornare lo stato man mano: `[ ]
 
 ## 2. Flusso Immagini (UX & Bug)
 
-- [ ] **5. Bug webcam mobile** — fix accesso webcam da smartphone.
-- [ ] **6. Scatta foto vs Carica foto** — separare/chiarire le due azioni (oggi tap fa solo upload).
-- [ ] **7. No auto-advance dopo upload** — l'utente non deve essere mandato allo step successivo automaticamente.
-- [ ] **8. Visualizzazione foto utente più grande** — meno croppata.
-- [ ] **9. Trigger "Vai avanti"** — pulsante esplicito di conferma; tap sulla foto permette di rifare/ricaricare.
-- [ ] **10. Riposizionare Prima/Dopo** — spostare la sezione in cima nella pagina dei risultati.
+- [x] **5. Bug webcam mobile** — input `capture="user"` separato da quello galleria; iOS/Android aprono direttamente la fotocamera.
+- [x] **6. Scatta foto vs Carica foto** — due bottoni distinti: "Scatta una foto" (camera) e "Carica dalla galleria" (file picker).
+- [x] **7. No auto-advance dopo upload** — la foto si mostra in preview, l'utente decide quando andare avanti.
+- [x] **8. Visualizzazione foto utente più grande** — preview a tutta larghezza della card (aspect-square w-full), molto meno croppata.
+- [x] **9. Trigger "Vai avanti"** — pulsante esplicito nero sotto la preview; tap sulla foto la rimuove per riscattare/ricaricare.
+- [x] **10. Riposizionare Prima/Dopo** — sezione spostata subito sotto l'hero risultati.
 
 ## 3. Logica, AI e Condizioni
 
-- [ ] **11. Routine modulata per tempo** — meno di 10 min = routine essenziale (meno prodotti).
-- [ ] **12. Precompilazione AI senza Markdown** — descrizione viso pulita, editabile dall'utente.
-- [ ] **13. Auto-selezione prodotti** — tutti i consigliati pre-checked di default; utente deseleziona ciò che non vuole.
+- [x] **11. Routine modulata per tempo** — ≤10 min = 3 step (Detersione, Idratante, Trattamento mirato); altrimenti 5 step.
+- [x] **12. Precompilazione AI senza Markdown** — prompt aggiornato + stripping server-side e client-side di `* _ # > -` e backtick.
+- [x] **13. Auto-selezione prodotti** — tutti i prodotti raccomandati pre-selezionati nel carrello; utente deseleziona.
 
 ## 4. Nuovi Step e Campi del Quiz
 
-- [ ] **14. Step "Come vorresti vedere la tua pelle?"** — opzioni: Più distesa, Senza macchie, Luminosa, Senza pori dilatati.
-- [ ] **15. Step "Cosa usi di solito?"** — checkbox multiple (Siero, Detergente, ecc. da elenco prodotti). Opzione "Beauty routine completa" che seleziona tutto.
-- [ ] **16. Step "Budget"** — Entro i 50€ / Fino a 100€ / Oltre i 100€.
+- [x] **14. Step "Come vorresti vedere la tua pelle?"** — multi-select: Più distesa / Senza macchie / Luminosa / Senza pori dilatati.
+- [x] **15. Step "Cosa usi di solito?"** — checkbox multiple con bottone "Beauty routine completa" che seleziona tutto.
+- [x] **16. Step "Budget"** — Entro i 50€ / Fino a 100€ / Oltre i 100€. Passato all'AI per la selezione prodotti.
 
 ## 5. Materiali e Richieste Cliente
 
@@ -43,7 +43,7 @@ Lista master delle modifiche da implementare. Aggiornare lo stato man mano: `[ ]
 - [ ] **20. Foto obbligatoria** — rimuovere lo skip dell'upload foto (oppure A/B test).
 - [ ] **21. Valentina nei risultati** — aggiungere foto Valentina nella schermata finale (umanizzare la routine).
 - [ ] **22. Offerta/prezzo speciale via funnel** — sconto dedicato a chi compra dal funnel.
-- [ ] **23. Rimuovere Header/Footer durante il flusso** — azzerare distrazioni: niente nav durante quiz/analisi/risultati/thankyou.
+- [x] **23. Rimuovere Header/Footer durante il flusso** — Quiz, Analisi, Risultati e Thank You ora sono fullscreen senza nav.
 
 ---
 

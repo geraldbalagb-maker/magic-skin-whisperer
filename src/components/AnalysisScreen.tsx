@@ -59,6 +59,9 @@ const AnalysisScreen = ({ name, quizData, onComplete }: AnalysisScreenProps) => 
             time: quizData.time,
             skinDescription: quizData.skinDescription,
             hasSelfie: !!quizData.selfie,
+            skinGoals: quizData.skinGoals,
+            currentProducts: quizData.currentProducts,
+            budget: quizData.budget,
           },
         });
 

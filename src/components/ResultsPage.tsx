@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Download } from "lucide-react";
 import type { Product, RoutineStep } from "@/data/products";
@@ -12,7 +12,6 @@ import BeforeAfterSection from "./BeforeAfterSection";
 import BundleSection from "./BundleSection";
 import ReviewsSection from "./ReviewsSection";
 import FAQSection from "./FAQSection";
-import PageShell from "./shared/PageShell";
 
 interface ResultsPageProps {
   name: string;
@@ -42,9 +41,16 @@ const ResultsPage = ({ name, quizData, aiResult, selfie, enhancedSelfie, onCheck
     }));
   }, [aiResult]);
 
-  const [cart, setCart] = useState<Set<string>>(new Set());
   const allProducts = routine.flatMap((s) => s.products);
   const uniqueProducts = Array.from(new Map(allProducts.map(p => [p.id, p])).values());
+
+  // Auto-seleziona tutti i prodotti raccomandati di default
+  const [cart, setCart] = useState<Set<string>>(() => new Set(uniqueProducts.map((p) => p.id)));
+  useEffect(() => {
+    setCart(new Set(uniqueProducts.map((p) => p.id)));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [aiResult]);
+
   const totalPrice = uniqueProducts.reduce((sum, p) => sum + p.price, 0);
   const bundlePrice = totalPrice * 0.8;
 
@@ -61,19 +67,20 @@ const ResultsPage = ({ name, quizData, aiResult, selfie, enhancedSelfie, onCheck
   };
 
   return (
-    <PageShell headerCenterLabel="La tua routine">
-      <div>
+    <div className="min-h-screen bg-background">
       <ResultsHero name={name} quizData={quizData} aiResult={aiResult} />
-      <div id="routine-section">
-        <AITipsGrid tips={aiResult.personalized_tips} />
-      </div>
-      <RoutineSteps routine={routine} cart={cart} onToggleCart={toggleCart} />
 
+      {/* Prima/Dopo in cima, subito dopo l'hero */}
       {selfie && enhancedSelfie && (
         <div className="border-t border-border">
           <BeforeAfterSection beforeImage={selfie} afterImage={enhancedSelfie} name={name} />
         </div>
       )}
+
+      <div id="routine-section">
+        <AITipsGrid tips={aiResult.personalized_tips} />
+      </div>
+      <RoutineSteps routine={routine} cart={cart} onToggleCart={toggleCart} />
 
       <BundleSection
         products={uniqueProducts}
@@ -96,9 +103,9 @@ const ResultsPage = ({ name, quizData, aiResult, selfie, enhancedSelfie, onCheck
           Scarica il PDF della tua routine
         </motion.button>
       </div>
-      </div>
-    </PageShell>
+    </div>
   );
 };
 
 export default ResultsPage;
+

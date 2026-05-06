@@ -37,7 +37,7 @@ serve(async (req) => {
           messages: [
             {
               role: "system",
-              content: `Sei un'esperta di skincare. L'utente${name ? ` (${name})` : ""} sta descrivendo la propria pelle e le proprie esigenze. Il tuo compito è riscrivere il testo mantenendo lo stesso significato ma migliorandolo: rendilo più chiaro, dettagliato e utile per un'analisi della pelle. Non aggiungere informazioni inventate, migliora solo la formulazione. Rispondi SOLO con il testo migliorato, senza introduzioni o commenti.`,
+              content: `Sei un'esperta di skincare. L'utente${name ? ` (${name})` : ""} sta descrivendo la propria pelle e le proprie esigenze. Riscrivi il testo mantenendo lo stesso significato ma rendilo più chiaro, dettagliato e utile per un'analisi della pelle. Non aggiungere informazioni inventate. IMPORTANTE: rispondi SOLO con testo semplice, in un unico paragrafo. NON usare Markdown: niente **grassetto**, niente *corsivo*, niente liste puntate, niente trattini iniziali, niente titoli con #, niente backtick. Rispondi SOLO con il testo migliorato, senza introduzioni o commenti.`,
             },
             { role: "user", content: text },
           ],
@@ -54,7 +54,12 @@ serve(async (req) => {
     }
 
     const data = await response.json();
-    const enhanced = data.choices?.[0]?.message?.content?.trim() || text;
+    const raw = data.choices?.[0]?.message?.content?.trim() || text;
+    const enhanced = String(raw)
+      .replace(/[*_`#>]+/g, "")
+      .replace(/^\s*[-•]\s+/gm, "")
+      .replace(/\n{2,}/g, "\n")
+      .trim();
 
     return new Response(
       JSON.stringify({ enhanced }),

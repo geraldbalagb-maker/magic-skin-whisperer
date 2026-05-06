@@ -44,10 +44,25 @@ serve(async (req) => {
   }
 
   try {
-    const { name, age, time, skinDescription, hasSelfie } = await req.json();
+    const { name, age, time, skinDescription, hasSelfie, skinGoals, currentProducts, budget } = await req.json();
 
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
+
+    // Determina lunghezza routine in base al tempo disponibile
+    const timeStr = String(time || "").toLowerCase();
+    const isQuick = timeStr.includes("5 min") || timeStr.includes("10 min");
+    const stepCount = isQuick ? 3 : 5;
+    const stepsHint = isQuick
+      ? "La routine deve avere ESATTAMENTE 3 step essenziali: Detersione, Crema Idratante, Trattamento mirato (siero o SPF). NON includere tonico, scrub o maschera."
+      : "La routine deve avere ESATTAMENTE 5 step nell'ordine: Detersione, Tonico, Trattamento, Crema Idratante, Esfoliazione/Maschera.";
+
+    // Budget cap in euro per filtrare prodotti troppo costosi nel ranking
+    const budgetStr = String(budget || "");
+    let budgetHint = "";
+    if (budgetStr.includes("50")) budgetHint = "Il budget complessivo della cliente è ENTRO i 50€: privilegia prodotti economici e necessari.";
+    else if (budgetStr.includes("100")) budgetHint = "Il budget complessivo della cliente è FINO a 100€: bilancia qualità e prezzo.";
+    else if (budgetStr.toLowerCase().includes("oltre")) budgetHint = "La cliente ha un budget OLTRE i 100€: puoi proporre prodotti premium.";
 
     const systemPrompt = `Sei un'esperta beauty consultant italiana specializzata in skincare.
 Hai a disposizione il seguente catalogo di prodotti reali:
@@ -58,12 +73,14 @@ Il tuo compito è analizzare le informazioni della cliente e creare una routine 
 
 REGOLE IMPORTANTI:
 - Devi selezionare SOLO prodotti dal catalogo fornito (usa gli ID esatti)
-- La routine deve avere esattamente 5 step nell'ordine: Detersione, Tonico, Trattamento, Crema Idratante, Esfoliazione/Maschera
+- ${stepsHint}
 - Per ogni step seleziona 1-2 prodotti dal catalogo come raccomandati
 - Per ogni step seleziona anche 1-2 prodotti ALTERNATIVI dalla stessa categoria o categoria simile (diversi da quelli raccomandati)
 - Fornisci una spiegazione personalizzata per ogni step basata sulle esigenze della cliente
 - Includi un'analisi generale della pelle della cliente
 - Fornisci 3-4 consigli personalizzati, ognuno con un TITOLO descrittivo e un testo di spiegazione
+- ${budgetHint}
+- IMPORTANTE: Tutti i testi (analisi, descrizioni, consigli) devono essere SOLO testo semplice. NON usare Markdown: niente **grassetto**, niente *corsivo*, niente #, niente -, niente liste puntate, niente backtick.
 
 RISPONDI ESCLUSIVAMENTE con una chiamata alla funzione fornita, senza testo aggiuntivo.`;
 
@@ -71,10 +88,13 @@ RISPONDI ESCLUSIVAMENTE con una chiamata alla funzione fornita, senza testo aggi
 - Nome: ${name}
 - Età: ${age}
 - Tempo disponibile per la routine: ${time}
+- Obiettivi pelle: ${Array.isArray(skinGoals) && skinGoals.length ? skinGoals.join(", ") : "non specificato"}
+- Prodotti che usa già: ${Array.isArray(currentProducts) && currentProducts.length ? currentProducts.join(", ") : "nessuno indicato"}
+- Budget: ${budget || "non specificato"}
 - Descrizione della pelle e desideri: ${skinDescription}
 - Ha caricato un selfie: ${hasSelfie ? "Sì" : "No"}
 
-Crea la routine beauty personalizzata perfetta per ${name}.`;
+Crea la routine beauty personalizzata perfetta per ${name} con ${stepCount} step.`;
 
     const response = await fetch(
       "https://ai.gateway.lovable.dev/v1/chat/completions",
