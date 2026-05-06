@@ -65,8 +65,8 @@ const V2CTABanner = ({ onStartQuiz }: V2CTABannerProps) => (
           whileInView={{ scaleX: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.5, duration: 0.8 }}
-          className="mt-10 h-px w-24 bg-gradient-to-r from-transparent via-primary to-transparent"
-        />
+          <span className="mt-10 h-px w-24 bg-white/30" />
+        </motion.div>
 
         {/* CTA */}
         <motion.div
@@ -80,7 +80,7 @@ const V2CTABanner = ({ onStartQuiz }: V2CTABannerProps) => (
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             onClick={onStartQuiz}
-            className="group relative inline-flex items-center gap-3 overflow-hidden bg-primary px-10 py-5 font-body text-xs font-semibold uppercase tracking-[0.3em] text-white shadow-gold-lg transition-all hover:shadow-[0_15px_60px_-10px_hsl(40_45%_50%/0.6)]"
+            className="group relative inline-flex items-center gap-3 overflow-hidden bg-white px-10 py-5 font-body text-xs font-semibold uppercase tracking-[0.3em] text-black transition-all hover:bg-white/90"
           >
             <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-1000 group-hover:translate-x-full" />
             <span className="relative">Inizia il tuo protocollo</span>
