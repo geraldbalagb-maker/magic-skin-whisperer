@@ -17,7 +17,7 @@ const V2Hero = ({ onStartQuiz }: V2HeroProps) => (
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1, duration: 0.5 }}
-          className="mb-8 flex justify-start"
+          className="mb-8 -ml-4 flex justify-start md:-ml-8 lg:-ml-12"
         >
           <a href="https://www.luxury-perfumes.net/" target="_blank" rel="noopener noreferrer">
             <img src={logoMe} alt="Maison 22 Esthétique" className="h-36 w-auto object-contain md:h-40" />
