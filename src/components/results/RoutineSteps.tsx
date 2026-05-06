@@ -31,41 +31,41 @@ const ProductCard = ({ product, cart, onToggleCart, isAlternative = false }: {
   isAlternative?: boolean;
 }) => (
   <motion.div
-    whileHover={{ y: -2, boxShadow: "0 8px 30px -10px hsl(38 55% 55% / 0.2)" }}
+    whileHover={{ y: -1 }}
     transition={{ duration: 0.2 }}
-    className={`group flex items-center gap-4 rounded-2xl border p-3.5 transition-colors ${
+    className={`group flex items-center gap-4 border p-3.5 transition-colors ${
       isAlternative
-        ? "border-dashed border-border/60 bg-card/60 hover:border-primary/15"
-        : "border-border bg-card hover:border-primary/20"
+        ? "border-dashed border-border/60 bg-background hover:border-foreground/30"
+        : "border-border bg-background hover:border-foreground/40"
     }`}
   >
-    <div className="flex h-[72px] w-[72px] flex-shrink-0 items-center justify-center overflow-hidden rounded-xl bg-background p-1.5">
-      <img src={product.image} alt={product.name} className="h-full w-full rounded-lg object-contain" />
+    <div className="flex h-[72px] w-[72px] flex-shrink-0 items-center justify-center overflow-hidden bg-secondary p-1.5">
+      <img src={product.image} alt={product.name} className="h-full w-full object-contain" />
     </div>
 
     <div className="min-w-0 flex-1">
       <p className="font-body text-[11px] font-medium uppercase tracking-wider text-muted-foreground/70">{product.brand}</p>
-      <p className="truncate font-display text-sm font-medium text-foreground">{product.name}</p>
+      <p className="truncate font-display text-base font-medium text-foreground">{product.name}</p>
       <p className="mt-0.5 line-clamp-2 font-body text-[11px] leading-snug text-muted-foreground/70">
         {product.description}
       </p>
       <div className="mt-1 flex items-center gap-2">
         <div className="flex items-center gap-0.5">
           {Array.from({ length: product.rating }).map((_, i) => (
-            <Star key={i} className="h-3 w-3 fill-primary text-primary" />
+            <Star key={i} className="h-3 w-3 fill-foreground text-foreground" />
           ))}
         </div>
-        <span className="font-display text-sm font-bold text-primary">{product.price.toFixed(2)}€</span>
+        <span className="font-display text-base font-semibold text-foreground">{product.price.toFixed(2)}€</span>
       </div>
     </div>
 
     <motion.button
-      whileTap={{ scale: 0.85 }}
+      whileTap={{ scale: 0.9 }}
       onClick={() => onToggleCart(product.id)}
-      className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full transition-all duration-200 ${
+      className={`flex h-10 w-10 flex-shrink-0 items-center justify-center transition-all duration-200 ${
         cart.has(product.id)
-          ? "bg-gradient-gold text-primary-foreground shadow-gold"
-          : "border border-border bg-background text-muted-foreground hover:border-primary/30 hover:text-primary"
+          ? "bg-foreground text-background"
+          : "border border-border bg-background text-muted-foreground hover:border-foreground hover:text-foreground"
       }`}
     >
       {cart.has(product.id) ? <Check className="h-4 w-4" /> : <ShoppingBag className="h-4 w-4" />}
