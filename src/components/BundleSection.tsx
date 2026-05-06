@@ -14,8 +14,8 @@ interface BundleSectionProps {
 }
 
 const benefits = [
+  "Sconto esclusivo -25% riservato al funnel",
   "Risultati clinicamente testati in 28 giorni",
-  "Risparmio immediato del 20%",
   "Spedizione Premium Gratuita",
   "Consulenza beauty coach inclusa",
 ];
@@ -45,7 +45,7 @@ const BundleSection = ({
             >
               {/* Badge */}
               <span className="inline-block rounded-sm bg-foreground px-4 py-1.5 font-body text-[11px] font-bold uppercase tracking-[0.2em] text-background">
-                Exclusive Beauty Set
+                Offerta esclusiva funnel · -25%
               </span>
 
               {/* Headline */}
@@ -58,8 +58,8 @@ const BundleSection = ({
               {/* Description */}
               <p className="mt-5 max-w-md font-body text-sm leading-relaxed text-muted-foreground md:text-base">
                 Abbiamo riunito i <strong className="text-foreground">{products.length} prodotti essenziali</strong> per
-                la tua pelle in un unico cofanetto di lusso. Acquistandoli insieme attivi la{" "}
-                <strong className="text-foreground">sinergia completa</strong> dei principi attivi e risparmi il 20%.
+                la tua pelle in un unico cofanetto di lusso. Solo per chi completa l'analisi:{" "}
+                <strong className="text-foreground">-25% riservato</strong>, non disponibile sul sito.
               </p>
 
               {/* Benefits */}
@@ -98,7 +98,7 @@ const BundleSection = ({
                   </p>
                 </div>
                 <span className="mb-1 rounded-sm bg-cta/10 px-2.5 py-1 font-body text-xs font-bold uppercase tracking-wider text-cta">
-                  -20% OFF
+                  -25% OFF
                 </span>
               </motion.div>
 
