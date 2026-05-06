@@ -28,9 +28,9 @@ const V2Hero = ({ onStartQuiz }: V2HeroProps) => (
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.7 }}
-          className="font-display text-3xl font-bold leading-tight text-foreground md:text-4xl lg:text-5xl"
+          className="font-display text-4xl font-normal leading-[1.05] tracking-tight text-foreground md:text-5xl lg:text-6xl"
         >
-          La tua routine su misura, <span className="text-primary">in 1 minuto</span>
+          La tua routine su misura, <span className="italic">in 1 minuto</span>
         </motion.h1>
 
         <motion.ul
