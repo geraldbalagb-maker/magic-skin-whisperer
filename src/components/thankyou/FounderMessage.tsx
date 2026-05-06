@@ -87,8 +87,5 @@ const FounderMessage = ({ name }: FounderMessageProps) => (
     </div>
   </section>
 );
-    </div>
-  </section>
-);
 
 export default FounderMessage;
