@@ -77,7 +77,7 @@ const FounderMessage = ({ name }: FounderMessageProps) => (
               />
               <div className="mt-2">
                 <p className="font-display text-base font-semibold text-foreground">Valentina Tecchio</p>
-                <p className="font-body text-xs text-muted-foreground">Founder &amp; CEO — Luxury Perfumes</p>
+                <p className="font-body text-xs text-muted-foreground">Founder — Maison 22 Esthétique</p>
               </div>
             </motion.div>
           </div>
