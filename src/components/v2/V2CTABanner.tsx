@@ -87,7 +87,7 @@ const V2CTABanner = ({ onStartQuiz }: V2CTABannerProps) => (
           </motion.button>
 
           <div className="flex flex-col items-center gap-1">
-            <span className="font-body text-[11px] uppercase tracking-widest text-primary/90">
+            <span className="font-body text-[11px] uppercase tracking-widest text-white/80">
               Gratuito · 60 secondi
             </span>
             <span className="font-body text-xs text-white/50">
