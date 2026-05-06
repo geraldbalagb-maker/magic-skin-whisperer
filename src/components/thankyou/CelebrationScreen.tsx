@@ -137,8 +137,7 @@ const CelebrationScreen = ({ name, showConfetti }: CelebrationScreenProps) => (
         <div className="mx-auto mt-6 h-0.5 w-16 rounded-full bg-gradient-gold opacity-40" />
       </motion.div>
     </section>
-    </div>
-  </PageShell>
+  </div>
 );
 
 export default CelebrationScreen;
