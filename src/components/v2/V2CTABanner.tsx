@@ -7,9 +7,9 @@ interface V2CTABannerProps {
 
 const V2CTABanner = ({ onStartQuiz }: V2CTABannerProps) => (
   <section className="relative overflow-hidden bg-[hsl(var(--charcoal))]">
-    {/* Subtle decorative gold glow */}
-    <div className="pointer-events-none absolute inset-0 opacity-50">
-      <div className="absolute left-1/2 top-1/2 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/10 blur-[140px]" />
+    {/* Subtle decorative glow */}
+    <div className="pointer-events-none absolute inset-0 opacity-40">
+      <div className="absolute left-1/2 top-1/2 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/5 blur-[140px]" />
     </div>
 
     <div className="relative z-10 mx-auto flex min-h-[80vh] max-w-3xl flex-col items-center justify-center px-6 py-24 text-center md:py-32 lg:py-40">
