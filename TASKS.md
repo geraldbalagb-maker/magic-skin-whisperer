@@ -6,10 +6,10 @@ Lista master delle modifiche da implementare. Aggiornare lo stato man mano: `[ ]
 
 ## 1. Design & UI (Stile, Colori e Tipografia)
 
-- [ ] **1. Stile bottoni "Maison Esthétique"** — base neutra (preferibilmente nero), variazione solo di colore. Riferimento: bottoni "AGGIUNGI AL CARRELLO" negli screenshot luxury-perfumes.
-- [ ] **2. Palette colori** — sostituire la sensazione marrone/amber dominante con il nero come colore predominante e per i bottoni. Mantenere accenti gold solo dove necessario.
-- [ ] **3. Tipografia** — sostituire i font attuali su titoli e accenti con il font indicato (verificare in revisione).
-- [ ] **4. UI risultati** — rimuovere il "boxettino" nella pagina routine finale, sostituirlo con sfondo/elemento nero più elegante.
+- [x] **1. Stile bottoni "Maison Esthétique"** — base nera (token `--v2-amber` ora 0% 0%), bottoni rettangolari, niente shadow amber.
+- [x] **2. Palette colori** — `--primary`, `--accent`, `--cta` portati a nero. Le utility `bg-gradient-gold` / `text-gradient-gold` / `bg-gradient-cta` ora rendono in nero (cascata su tutta l'app).
+- [x] **3. Tipografia** — display font sostituito con **Cormorant Garamond** (serif elegante stile Luxury Perfumes); body resta Karla. Esposto `font-display` / `font-serif` in Tailwind.
+- [x] **4. UI risultati** — Rimosso il "boxettino" (rounded-3xl + bordo gold) attorno a step image: ora pannello nero pieno con badge bianco. Card prodotto: rettangolare, niente gradient gold sul check, accent foreground.
 
 ## 2. Flusso Immagini (UX & Bug)
 
