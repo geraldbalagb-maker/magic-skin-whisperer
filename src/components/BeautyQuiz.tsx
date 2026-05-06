@@ -2,6 +2,7 @@ import { useState, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronRight, ChevronLeft, Sparkles, Loader2 } from "lucide-react";
 import BrandLogo from "@/components/shared/BrandLogo";
+import CameraCapture from "@/components/shared/CameraCapture";
 import { supabase } from "@/integrations/supabase/client";
 
 export interface QuizData {
