@@ -3,7 +3,6 @@ import { Gift, Truck, Shield, Package } from "lucide-react";
 import Confetti from "./Confetti";
 import GiftProductShowcase from "./GiftProductShowcase";
 import FounderMessage from "./FounderMessage";
-import PageShell from "@/components/shared/PageShell";
 
 interface CelebrationScreenProps {
   name: string;
@@ -11,8 +10,7 @@ interface CelebrationScreenProps {
 }
 
 const CelebrationScreen = ({ name, showConfetti }: CelebrationScreenProps) => (
-  <PageShell headerCenterLabel="Grazie!">
-    <div className="relative overflow-hidden">
+  <div className="relative min-h-screen overflow-hidden bg-background">
     {showConfetti && <Confetti />}
 
     {/* ─── Hero celebration ─── */}
