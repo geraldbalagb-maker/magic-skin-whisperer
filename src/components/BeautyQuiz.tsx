@@ -88,7 +88,7 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
     budget: "",
   });
   const [isEnhancing, setIsEnhancing] = useState(false);
-  const cameraInputRef = useRef<HTMLInputElement>(null);
+  const [cameraOpen, setCameraOpen] = useState(false);
   const galleryInputRef = useRef<HTMLInputElement>(null);
 
   const prevStep = () => step > 0 && setStep(step - 1);
