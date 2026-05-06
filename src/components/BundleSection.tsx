@@ -58,8 +58,8 @@ const BundleSection = ({
               {/* Description */}
               <p className="mt-5 max-w-md font-body text-sm leading-relaxed text-muted-foreground md:text-base">
                 Abbiamo riunito i <strong className="text-foreground">{products.length} prodotti essenziali</strong> per
-                la tua pelle in un unico cofanetto di lusso. Acquistandoli insieme attivi la{" "}
-                <strong className="text-foreground">sinergia completa</strong> dei principi attivi e risparmi il 20%.
+                la tua pelle in un unico cofanetto di lusso. Solo per chi completa l'analisi:{" "}
+                <strong className="text-foreground">-25% riservato</strong>, non disponibile sul sito.
               </p>
 
               {/* Benefits */}
