@@ -98,7 +98,7 @@ const BundleSection = ({
                   </p>
                 </div>
                 <span className="mb-1 rounded-sm bg-cta/10 px-2.5 py-1 font-body text-xs font-bold uppercase tracking-wider text-cta">
-                  -20% OFF
+                  -25% OFF
                 </span>
               </motion.div>
 
