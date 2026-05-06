@@ -2,6 +2,7 @@ import { useState, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronRight, ChevronLeft, Sparkles, Loader2 } from "lucide-react";
 import BrandLogo from "@/components/shared/BrandLogo";
+import CameraCapture from "@/components/shared/CameraCapture";
 import { supabase } from "@/integrations/supabase/client";
 
 export interface QuizData {
@@ -87,7 +88,7 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
     budget: "",
   });
   const [isEnhancing, setIsEnhancing] = useState(false);
-  const cameraInputRef = useRef<HTMLInputElement>(null);
+  const [cameraOpen, setCameraOpen] = useState(false);
   const galleryInputRef = useRef<HTMLInputElement>(null);
 
   const prevStep = () => step > 0 && setStep(step - 1);
@@ -219,7 +220,7 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
                   <div className="flex w-full max-w-sm flex-col gap-3">
                     <button
                       type="button"
-                      onClick={() => cameraInputRef.current?.click()}
+                      onClick={() => setCameraOpen(true)}
                       className="border border-primary bg-primary px-6 py-4 font-body text-xs font-semibold uppercase tracking-[0.2em] text-primary-foreground transition hover:bg-primary/90"
                     >
                       Scatta una foto
@@ -235,19 +236,17 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
                 )}
 
                 <input
-                  ref={cameraInputRef}
-                  type="file"
-                  accept="image/*"
-                  capture="user"
-                  onChange={handleSelfie}
-                  className="hidden"
-                />
-                <input
                   ref={galleryInputRef}
                   type="file"
                   accept="image/*"
                   onChange={handleSelfie}
                   className="hidden"
+                />
+
+                <CameraCapture
+                  open={cameraOpen}
+                  onClose={() => setCameraOpen(false)}
+                  onCapture={(dataUrl) => setData((p) => ({ ...p, selfie: dataUrl }))}
                 />
 
                 <div className="flex flex-col items-center gap-3 pt-2">
