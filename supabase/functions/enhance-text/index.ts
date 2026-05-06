@@ -54,7 +54,12 @@ serve(async (req) => {
     }
 
     const data = await response.json();
-    const enhanced = data.choices?.[0]?.message?.content?.trim() || text;
+    const raw = data.choices?.[0]?.message?.content?.trim() || text;
+    const enhanced = String(raw)
+      .replace(/[*_`#>]+/g, "")
+      .replace(/^\s*[-•]\s+/gm, "")
+      .replace(/\n{2,}/g, "\n")
+      .trim();
 
     return new Response(
       JSON.stringify({ enhanced }),
