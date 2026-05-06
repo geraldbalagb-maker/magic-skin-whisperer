@@ -40,15 +40,15 @@ const V2Hero = ({ onStartQuiz }: V2HeroProps) => (
           className="mt-6 flex max-w-md flex-col gap-2.5 font-body text-sm text-muted-foreground md:text-base"
         >
           <li className="flex items-start gap-2">
-            <span className="mt-0.5 text-primary">✦</span>
+            <span className="mt-1.5 inline-block h-1 w-3 bg-foreground" />
             Rispondi a poche domande sulla tua pelle
           </li>
           <li className="flex items-start gap-2">
-            <span className="mt-0.5 text-primary">✦</span>
+            <span className="mt-1.5 inline-block h-1 w-3 bg-foreground" />
             L'AI seleziona i prodotti ideali per te
           </li>
           <li className="flex items-start gap-2">
-            <span className="mt-0.5 text-primary">✦</span>
+            <span className="mt-1.5 inline-block h-1 w-3 bg-foreground" />
             Ricevi la tua routine personalizzata
           </li>
         </motion.ul>
