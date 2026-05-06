@@ -52,7 +52,8 @@ const ResultsPage = ({ name, quizData, aiResult, selfie, enhancedSelfie, onCheck
   }, [aiResult]);
 
   const totalPrice = uniqueProducts.reduce((sum, p) => sum + p.price, 0);
-  const bundlePrice = totalPrice * 0.8;
+  // Sconto esclusivo dedicato a chi completa il funnel: -25%
+  const bundlePrice = totalPrice * 0.75;
 
   const toggleCart = (id: string) => {
     setCart((prev) => {
