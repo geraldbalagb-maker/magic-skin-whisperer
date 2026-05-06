@@ -44,7 +44,7 @@ const V2CTABanner = ({ onStartQuiz }: V2CTABannerProps) => (
           className="font-display text-4xl font-bold leading-[1.1] text-white md:text-5xl lg:text-6xl"
         >
           La bellezza inizia con il{" "}
-          <span className="italic text-gradient-gold">protocollo giusto</span>.
+          <span className="italic text-white">protocollo giusto</span>.
         </motion.h2>
 
         {/* Subheading */}
