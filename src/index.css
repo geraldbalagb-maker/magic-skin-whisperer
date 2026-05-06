@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -15,7 +15,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 10%;
 
-    --primary: 40 45% 50%;
+    --primary: 0 0% 0%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 0 0% 96%;
@@ -24,7 +24,7 @@
     --muted: 0 0% 96%;
     --muted-foreground: 0 0% 45%;
 
-    --accent: 40 40% 48%;
+    --accent: 0 0% 0%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84.2% 60.2%;
@@ -32,26 +32,26 @@
 
     --border: 0 0% 91%;
     --input: 0 0% 91%;
-    --ring: 40 45% 50%;
+    --ring: 0 0% 0%;
 
-    --radius: 0.5rem;
+    --radius: 0.25rem;
 
-    /* Brand palette — Maison 22 */
+    /* Brand palette — Maison 22 (black-first) */
     --gold: 40 45% 50%;
     --gold-light: 42 50% 68%;
     --gold-dark: 38 42% 38%;
-    --cream: 40 20% 97%;
-    --cream-dark: 40 15% 94%;
+    --cream: 0 0% 98%;
+    --cream-dark: 0 0% 95%;
     --charcoal: 0 0% 8%;
     --rose: 350 40% 70%;
     --rose-light: 350 50% 85%;
-    --cta: 0 72% 51%;
+    --cta: 0 0% 0%;
     --cta-foreground: 0 0% 100%;
 
-    /* V2 — Luxury Perfumes aligned */
-    --v2-amber: 34 55% 54%;
-    --v2-amber-dark: 34 55% 42%;
-    --v2-topbar: 0 0% 12%;
+    /* V2 — Black-first to match Luxury Perfumes */
+    --v2-amber: 0 0% 0%;
+    --v2-amber-dark: 0 0% 15%;
+    --v2-topbar: 0 0% 0%;
     --v2-topbar-foreground: 0 0% 90%;
 
     --sidebar-background: 0 0% 98%;
@@ -63,7 +63,7 @@
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
 
-    --font-display: 'Karla', Arial, Helvetica, sans-serif;
+    --font-display: 'Cormorant Garamond', 'Times New Roman', serif;
     --font-body: 'Karla', Arial, Helvetica, sans-serif;
   }
 }
@@ -87,22 +87,19 @@
 
 @layer utilities {
   .text-gradient-gold {
-    background: linear-gradient(135deg, hsl(40 45% 50%), hsl(42 50% 68%), hsl(40 45% 50%));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: hsl(0 0% 0%);
   }
 
   .bg-gradient-gold {
-    background: linear-gradient(135deg, hsl(40 45% 50%), hsl(42 50% 68%));
+    background: hsl(0 0% 0%);
   }
 
   .bg-gradient-cream {
-    background: linear-gradient(180deg, hsl(40 20% 97%), hsl(40 15% 94%));
+    background: linear-gradient(180deg, hsl(0 0% 99%), hsl(0 0% 96%));
   }
 
   .bg-gradient-dark {
-    background: linear-gradient(135deg, hsl(0 0% 5%), hsl(0 0% 12%));
+    background: linear-gradient(135deg, hsl(0 0% 0%), hsl(0 0% 10%));
   }
 
   .bg-cta {
@@ -111,15 +108,16 @@
   }
 
   .bg-gradient-cta {
-    background: linear-gradient(135deg, hsl(0 72% 51%), hsl(355 75% 58%));
+    background: hsl(0 0% 0%);
+    color: hsl(0 0% 100%);
   }
 
   .shadow-gold {
-    box-shadow: 0 4px 30px -5px hsl(40 45% 50% / 0.25);
+    box-shadow: 0 4px 20px -5px hsl(0 0% 0% / 0.18);
   }
 
   .shadow-gold-lg {
-    box-shadow: 0 10px 50px -10px hsl(40 45% 50% / 0.35);
+    box-shadow: 0 10px 40px -10px hsl(0 0% 0% / 0.25);
   }
 
   .shadow-elegant {
@@ -131,24 +129,21 @@
   }
 
   .shadow-cta {
-    box-shadow: 0 6px 30px -5px hsl(0 72% 51% / 0.3);
+    box-shadow: 0 6px 25px -5px hsl(0 0% 0% / 0.25);
   }
 
   .border-gold {
-    border-color: hsl(40 45% 50% / 0.3);
+    border-color: hsl(0 0% 0% / 0.2);
   }
 
   .glow-gold {
-    box-shadow: 0 0 20px hsl(40 45% 50% / 0.3), 0 0 60px hsl(40 45% 50% / 0.1);
+    box-shadow: 0 0 20px hsl(0 0% 0% / 0.15);
   }
 
   .sparkle-text {
-    background: linear-gradient(90deg, hsl(40 45% 50%), hsl(42 50% 68%), hsl(350 40% 70%), hsl(40 45% 50%));
-    background-size: 200% auto;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    animation: sparkle-shift 3s ease-in-out infinite;
+    color: hsl(0 0% 100%);
+    background: none;
+    -webkit-text-fill-color: currentColor;
   }
 
   @keyframes sparkle-shift {
@@ -162,8 +157,8 @@
   }
 
   @keyframes pulse-glow {
-    0%, 100% { box-shadow: 0 0 20px hsl(40 45% 50% / 0.2); }
-    50% { box-shadow: 0 0 40px hsl(40 45% 50% / 0.5); }
+    0%, 100% { box-shadow: 0 0 20px hsl(0 0% 0% / 0.15); }
+    50% { box-shadow: 0 0 30px hsl(0 0% 0% / 0.3); }
   }
 
   @keyframes shimmer {
@@ -180,7 +175,7 @@
   }
 
   .animate-shimmer {
-    background: linear-gradient(90deg, transparent 0%, hsl(40 45% 50% / 0.06) 50%, transparent 100%);
+    background: linear-gradient(90deg, transparent 0%, hsl(0 0% 0% / 0.04) 50%, transparent 100%);
     background-size: 200% 100%;
     animation: shimmer 3s ease-in-out infinite;
   }
