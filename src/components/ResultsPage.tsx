@@ -12,6 +12,7 @@ import BeforeAfterSection from "./BeforeAfterSection";
 import BundleSection from "./BundleSection";
 import ReviewsSection from "./ReviewsSection";
 import FAQSection from "./FAQSection";
+import FounderIntro from "./results/FounderIntro";
 
 interface ResultsPageProps {
   name: string;
@@ -92,6 +93,7 @@ const ResultsPage = ({ name, quizData, aiResult, selfie, enhancedSelfie, onCheck
         onAddAll={addAllToCart}
         onCheckout={onCheckout}
       />
+      <FounderIntro />
       <ReviewsSection />
       <FAQSection />
 

@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import founderSignatureImg from "@/assets/founder-signature.png";
+import valentinaSmile from "@/assets/valentina-smile.jpg";
 
 interface FounderMessageProps {
   name: string;
@@ -21,6 +22,15 @@ const FounderMessage = ({ name }: FounderMessageProps) => (
           style={{ background: "radial-gradient(circle at 100% 0%, hsl(38 55% 55%), transparent 70%)" }}
         />
 
+        <div className="grid gap-0 md:grid-cols-[260px_1fr]">
+          <div className="relative h-64 md:h-auto">
+            <img
+              src={valentinaSmile}
+              alt="Valentina Tecchio, Founder Maison 22 Esthétique"
+              className="h-full w-full object-cover grayscale"
+              loading="lazy"
+            />
+          </div>
         <div className="relative z-10 p-8 md:p-12 lg:p-16">
           {/* Quote mark */}
           <motion.span
@@ -67,9 +77,10 @@ const FounderMessage = ({ name }: FounderMessageProps) => (
               />
               <div className="mt-2">
                 <p className="font-display text-base font-semibold text-foreground">Valentina Tecchio</p>
-                <p className="font-body text-xs text-muted-foreground">Founder &amp; CEO — Luxury Perfumes</p>
+                <p className="font-body text-xs text-muted-foreground">Founder — Maison 22 Esthétique</p>
               </div>
             </motion.div>
+          </div>
           </div>
         </div>
       </motion.div>
