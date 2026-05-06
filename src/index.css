@@ -15,7 +15,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 10%;
 
-    --primary: 40 45% 50%;
+    --primary: 0 0% 0%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 0 0% 96%;
@@ -24,7 +24,7 @@
     --muted: 0 0% 96%;
     --muted-foreground: 0 0% 45%;
 
-    --accent: 40 40% 48%;
+    --accent: 0 0% 0%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84.2% 60.2%;
@@ -32,26 +32,26 @@
 
     --border: 0 0% 91%;
     --input: 0 0% 91%;
-    --ring: 40 45% 50%;
+    --ring: 0 0% 0%;
 
-    --radius: 0.5rem;
+    --radius: 0.25rem;
 
-    /* Brand palette — Maison 22 */
+    /* Brand palette — Maison 22 (black-first) */
     --gold: 40 45% 50%;
     --gold-light: 42 50% 68%;
     --gold-dark: 38 42% 38%;
-    --cream: 40 20% 97%;
-    --cream-dark: 40 15% 94%;
+    --cream: 0 0% 98%;
+    --cream-dark: 0 0% 95%;
     --charcoal: 0 0% 8%;
     --rose: 350 40% 70%;
     --rose-light: 350 50% 85%;
-    --cta: 0 72% 51%;
+    --cta: 0 0% 0%;
     --cta-foreground: 0 0% 100%;
 
-    /* V2 — Luxury Perfumes aligned */
-    --v2-amber: 34 55% 54%;
-    --v2-amber-dark: 34 55% 42%;
-    --v2-topbar: 0 0% 12%;
+    /* V2 — Black-first to match Luxury Perfumes */
+    --v2-amber: 0 0% 0%;
+    --v2-amber-dark: 0 0% 15%;
+    --v2-topbar: 0 0% 0%;
     --v2-topbar-foreground: 0 0% 90%;
 
     --sidebar-background: 0 0% 98%;
@@ -63,7 +63,7 @@
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
 
-    --font-display: 'Karla', Arial, Helvetica, sans-serif;
+    --font-display: 'Cormorant Garamond', 'Times New Roman', serif;
     --font-body: 'Karla', Arial, Helvetica, sans-serif;
   }
 }
