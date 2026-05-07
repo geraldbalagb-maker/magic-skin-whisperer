@@ -93,7 +93,7 @@ const CameraCapture = ({ open, onClose, onCapture }: CameraCaptureProps) => {
           type="button"
           onClick={onClose}
           aria-label="Chiudi"
-          className="absolute -top-2 right-0 text-white/80 hover:text-white"
+          className="self-end text-white/80 hover:text-white"
         >
           <X className="h-6 w-6" />
         </button>
