@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { X, RefreshCw, Camera as CameraIcon } from "lucide-react";
 
 interface CameraCaptureProps {
