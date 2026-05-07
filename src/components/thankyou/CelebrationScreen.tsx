@@ -75,9 +75,9 @@ const CelebrationScreen = ({ name, showConfetti }: CelebrationScreenProps) => (
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 transition={{ delay: 0.9 + i * 0.15, type: "spring" }}
-                className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/20"
+                className="flex h-6 w-6 items-center justify-center rounded-full bg-primary-foreground/15 ring-1 ring-primary-foreground/30"
               >
-                <span className="text-xs text-primary">✓</span>
+                <span className="text-xs font-bold text-primary-foreground">✓</span>
               </motion.div>
               <span className="font-body text-sm text-primary-foreground/60">{text}</span>
             </motion.div>
