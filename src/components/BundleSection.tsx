@@ -90,14 +90,20 @@ const BundleSection = ({
                 className="mt-10 inline-flex items-end gap-4 rounded-sm border border-border bg-card p-6"
               >
                 <div>
-                  <p className="font-body text-xs text-muted-foreground line-through">
+                  <p className="font-display text-2xl font-medium text-muted-foreground line-through md:text-3xl">
                     {totalPrice.toFixed(2)}€
                   </p>
-                  <p className="font-display text-4xl font-bold text-foreground">
+                  <p className="mt-1 font-display text-4xl font-bold text-foreground md:text-5xl">
                     {bundlePrice.toFixed(2)}€
                   </p>
                 </div>
-                <span className="mb-1 rounded-sm bg-cta/10 px-2.5 py-1 font-body text-xs font-bold uppercase tracking-wider text-cta">
+                <span
+                  className="mb-2 rounded-sm px-3 py-1.5 font-body text-xs font-extrabold uppercase tracking-wider text-white shadow-sm"
+                  style={{
+                    backgroundImage:
+                      "linear-gradient(90deg, hsl(280 70% 75%) 0%, hsl(350 85% 65%) 50%, hsl(25 95% 65%) 100%)",
+                  }}
+                >
                   -25% OFF
                 </span>
               </motion.div>
