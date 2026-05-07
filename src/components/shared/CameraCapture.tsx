@@ -96,8 +96,8 @@ const CameraCapture = ({ open, onClose, onCapture }: CameraCaptureProps) => {
 
   if (!open) return null;
 
-  return (
-    <div className="fixed inset-0 z-[100] flex flex-col bg-black overflow-hidden" style={{ height: "100dvh" }}>
+  return createPortal(
+    <div className="fixed inset-0 z-[9999] flex flex-col bg-black overflow-hidden" style={{ height: "100dvh", width: "100vw" }}>
       <div className="flex items-center justify-end p-3 shrink-0">
         <button
           type="button"
@@ -145,7 +145,8 @@ const CameraCapture = ({ open, onClose, onCapture }: CameraCaptureProps) => {
           <CameraIcon className="h-4 w-4" /> Scatta
         </button>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };
 
