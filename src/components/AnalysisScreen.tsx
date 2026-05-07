@@ -30,11 +30,11 @@ interface AnalysisScreenProps {
 }
 
 const analysisPhases = [
-  { label: "Analisi del tipo di pelle", detail: "Scansione in corso..." },
-  { label: "Studio del profilo cutaneo", detail: "Elaborazione dati..." },
-  { label: "Selezione ingredienti attivi", detail: "Matching prodotti..." },
-  { label: "Creazione routine su misura", detail: "Personalizzazione AI..." },
-  { label: "Simulazione risultati", detail: "Quasi pronta..." },
+  { label: "Analisi del tipo di pelle" },
+  { label: "Studio del profilo cutaneo" },
+  { label: "Selezione ingredienti attivi" },
+  { label: "Creazione routine su misura" },
+  { label: "Simulazione risultati" },
 ];
 
 const AnalysisScreen = ({ name, quizData, onComplete }: AnalysisScreenProps) => {
@@ -45,7 +45,6 @@ const AnalysisScreen = ({ name, quizData, onComplete }: AnalysisScreenProps) => 
   const resultRef = useRef<AnalysisResult | null>(null);
   const hasCalledAI = useRef(false);
 
-  // Call AI edge functions in parallel
   useEffect(() => {
     if (hasCalledAI.current) return;
     hasCalledAI.current = true;
@@ -94,7 +93,6 @@ const AnalysisScreen = ({ name, quizData, onComplete }: AnalysisScreenProps) => 
     callAI();
   }, [quizData]);
 
-  // Progress animation
   useEffect(() => {
     const interval = setInterval(() => {
       setProgress((p) => {
@@ -102,7 +100,7 @@ const AnalysisScreen = ({ name, quizData, onComplete }: AnalysisScreenProps) => 
           if (p >= 100) {
             clearInterval(interval);
             setReadyToReveal(true);
-            setTimeout(() => onComplete(resultRef.current!), 1500);
+            setTimeout(() => onComplete(resultRef.current!), 1200);
             return 100;
           }
           return p + 3;
@@ -133,7 +131,7 @@ const AnalysisScreen = ({ name, quizData, onComplete }: AnalysisScreenProps) => 
           <p className="font-body text-sm text-muted-foreground max-w-sm">{error}</p>
           <button
             onClick={() => window.location.reload()}
-            className="bg-gradient-cta rounded-sm px-8 py-3 font-body text-sm font-medium text-cta-foreground shadow-cta"
+            className="bg-foreground px-8 py-3 font-body text-sm font-medium uppercase tracking-[0.2em] text-background"
           >
             Riprova
           </button>
@@ -144,130 +142,156 @@ const AnalysisScreen = ({ name, quizData, onComplete }: AnalysisScreenProps) => 
 
   return (
     <motion.div
-      className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-gradient-dark px-4"
-      animate={readyToReveal ? { opacity: 0, scale: 1.1 } : {}}
-      transition={{ duration: 0.8, ease: "easeInOut" }}
+      className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-background px-4 py-10"
+      animate={readyToReveal ? { opacity: 0 } : {}}
+      transition={{ duration: 0.6, ease: "easeInOut" }}
     >
-      {/* Logo */}
       <div className="absolute top-6 left-6 z-50">
         <BrandLogo size="md" />
       </div>
 
-      {/* Animated background */}
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-          className="absolute left-1/2 top-1/2 h-[150%] w-[150%] -translate-x-1/2 -translate-y-1/2 opacity-[0.04]"
-          style={{ background: "conic-gradient(from 0deg, hsl(38 55% 55%), transparent, hsl(40 60% 75%), transparent, hsl(38 55% 55%))" }}
-        />
-      </div>
+      <div className="relative z-10 flex w-full max-w-3xl flex-col items-center gap-10 md:flex-row md:items-center md:gap-14">
 
-      {/* Desktop: two columns / Mobile: stacked compact */}
-      <div className="relative z-10 flex w-full max-w-4xl flex-col items-center gap-8 md:flex-row md:items-center md:gap-12">
-        
-        {/* Left: Large selfie */}
+        {/* Selfie con cornice AI */}
         {quizData.selfie && (
           <motion.div
-            initial={{ opacity: 0, scale: 0.5 }}
+            initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ type: "spring", bounce: 0.4 }}
+            transition={{ duration: 0.5 }}
             className="relative flex-shrink-0"
           >
-            <div className="relative h-64 w-64 overflow-hidden rounded-2xl border-2 border-primary/30 md:h-80 md:w-80">
-              <img
-                src={quizData.selfie}
-                alt="Il tuo selfie"
-                className="h-full w-full object-cover"
-              />
-              {/* Scanning overlay */}
-              <motion.div
-                className="absolute inset-0"
-                style={{
-                  background: "linear-gradient(180deg, transparent, hsl(38 55% 55% / 0.15), transparent)",
-                  backgroundSize: "100% 60px",
-                }}
-                animate={{ backgroundPosition: ["0 -60px", "0 350px"] }}
-                transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-              />
-              {/* Corner brackets */}
-              <svg className="absolute inset-0 h-full w-full" viewBox="0 0 100 100">
-                <motion.path d="M 15,5 L 5,5 L 5,15" fill="none" stroke="hsl(38 55% 55%)" strokeWidth="1.5" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ delay: 0.5, duration: 0.6 }} />
-                <motion.path d="M 85,5 L 95,5 L 95,15" fill="none" stroke="hsl(38 55% 55%)" strokeWidth="1.5" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ delay: 0.7, duration: 0.6 }} />
-                <motion.path d="M 15,95 L 5,95 L 5,85" fill="none" stroke="hsl(38 55% 55%)" strokeWidth="1.5" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ delay: 0.9, duration: 0.6 }} />
-                <motion.path d="M 85,95 L 95,95 L 95,85" fill="none" stroke="hsl(38 55% 55%)" strokeWidth="1.5" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ delay: 1.1, duration: 0.6 }} />
-              </svg>
+            <div className="ai-border">
+              <div className="relative h-56 w-56 overflow-hidden bg-background sm:h-64 sm:w-64 md:h-72 md:w-72">
+                <img
+                  src={quizData.selfie}
+                  alt="Il tuo selfie"
+                  className="h-full w-full object-cover"
+                />
+                {/* Scan line */}
+                <motion.div
+                  className="pointer-events-none absolute inset-x-0 h-12"
+                  style={{
+                    background: "linear-gradient(180deg, transparent, hsl(var(--foreground) / 0.18), transparent)",
+                  }}
+                  animate={{ y: ["-15%", "115%"] }}
+                  transition={{ duration: 2.2, repeat: Infinity, ease: "linear" }}
+                />
+                {/* Corner brackets */}
+                <svg className="absolute inset-0 h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+                  <path d="M 10,3 L 3,3 L 3,10" fill="none" stroke="hsl(var(--foreground))" strokeWidth="0.6" />
+                  <path d="M 90,3 L 97,3 L 97,10" fill="none" stroke="hsl(var(--foreground))" strokeWidth="0.6" />
+                  <path d="M 10,97 L 3,97 L 3,90" fill="none" stroke="hsl(var(--foreground))" strokeWidth="0.6" />
+                  <path d="M 90,97 L 97,97 L 97,90" fill="none" stroke="hsl(var(--foreground))" strokeWidth="0.6" />
+                </svg>
+              </div>
             </div>
           </motion.div>
         )}
 
-        {/* Right: Info column */}
-        <div className="flex flex-col items-center gap-6 md:items-start">
-          {/* Title */}
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="text-center md:text-left">
-            <h2 className="font-display text-2xl font-bold text-primary-foreground md:text-3xl">
-              Stiamo analizzando
+        {/* Info column */}
+        <div className="flex w-full flex-col items-center gap-7 text-center md:items-start md:text-left">
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.15 }}
+          >
+            <p className="font-body text-[10px] uppercase tracking-[0.3em] text-muted-foreground">
+              Analisi AI in corso
+            </p>
+            <h2 className="mt-3 font-display text-3xl font-bold leading-tight text-foreground md:text-4xl">
+              Stiamo creando la tua
               <br />
-              <span className="sparkle-text">la tua pelle, {name}</span>
+              routine, <span className="sparkle-text">{name}</span>
             </h2>
           </motion.div>
 
-          {/* Progress ring + percentage */}
-          <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.5 }} className="relative">
-            <svg width="80" height="80" className="drop-shadow-lg">
-              <circle cx="40" cy="40" r="34" fill="none" stroke="hsl(0 0% 100% / 0.08)" strokeWidth="4" />
-              <motion.circle cx="40" cy="40" r="34" fill="none" stroke="url(#progressGrad)" strokeWidth="4" strokeLinecap="round" strokeDasharray={214} strokeDashoffset={214 - (progress / 100) * 214} transform="rotate(-90 40 40)" />
-              <defs>
-                <linearGradient id="progressGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="hsl(38 55% 55%)" />
-                  <stop offset="100%" stopColor="hsl(40 60% 75%)" />
-                </linearGradient>
-              </defs>
-            </svg>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <span className="font-display text-lg font-bold text-primary">{Math.floor(progress)}%</span>
+          {/* Progress bar minimal */}
+          <div className="flex w-full max-w-xs flex-col gap-2">
+            <div className="flex items-baseline justify-between">
+              <span className="font-body text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
+                Avanzamento
+              </span>
+              <span className="font-display text-base font-bold text-foreground tabular-nums">
+                {Math.floor(progress)}%
+              </span>
             </div>
-          </motion.div>
+            <div className="relative h-[2px] w-full overflow-hidden bg-border">
+              <motion.div
+                className="absolute inset-y-0 left-0 bg-foreground"
+                style={{ width: `${progress}%` }}
+                transition={{ ease: "linear" }}
+              />
+            </div>
+          </div>
 
-          {/* Phase steps - compact on mobile */}
-          <div className="w-full max-w-xs space-y-2">
+          {/* Phase steps */}
+          <div className="w-full max-w-xs space-y-2.5">
             {analysisPhases.map((phase, i) => {
               const isCompleted = i < currentPhase;
               const isActive = i === currentPhase;
               return (
-                <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.6 + i * 0.15 }} className="flex items-center gap-2.5">
-                  <div className="relative flex h-6 w-6 flex-shrink-0 items-center justify-center">
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.3 + i * 0.1 }}
+                  className="flex items-center gap-3"
+                >
+                  <div className="relative flex h-5 w-5 flex-shrink-0 items-center justify-center">
                     <AnimatePresence mode="wait">
                       {isCompleted ? (
-                        <motion.div key="check" initial={{ scale: 0 }} animate={{ scale: 1 }} className="flex h-5 w-5 items-center justify-center rounded-full bg-primary/20">
-                          <Check className="h-3 w-3 text-primary" />
+                        <motion.div
+                          key="check"
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          className="flex h-5 w-5 items-center justify-center bg-foreground"
+                        >
+                          <Check className="h-3 w-3 text-background" strokeWidth={3} />
                         </motion.div>
                       ) : isActive ? (
-                        <motion.div key="active" className="relative flex h-5 w-5 items-center justify-center">
-                          <motion.div className="absolute inset-0 rounded-full bg-primary/20" animate={{ scale: [1, 1.4, 1], opacity: [0.3, 0, 0.3] }} transition={{ duration: 1.5, repeat: Infinity }} />
-                          <div className="relative z-10 h-1.5 w-1.5 rounded-full bg-primary" />
+                        <motion.div
+                          key="active"
+                          className="relative flex h-5 w-5 items-center justify-center border border-foreground"
+                        >
+                          <motion.div
+                            className="h-1.5 w-1.5 bg-foreground"
+                            animate={{ opacity: [0.3, 1, 0.3] }}
+                            transition={{ duration: 1.2, repeat: Infinity }}
+                          />
                         </motion.div>
                       ) : (
-                        <motion.div key="pending" className="flex h-5 w-5 items-center justify-center rounded-full opacity-30">
-                          <div className="h-1 w-1 rounded-full bg-primary-foreground/40" />
-                        </motion.div>
+                        <motion.div
+                          key="pending"
+                          className="flex h-5 w-5 items-center justify-center border border-border"
+                        />
                       )}
                     </AnimatePresence>
                   </div>
-                  <p className={`font-body text-xs transition-all duration-500 ${isActive ? "font-medium text-primary-foreground" : isCompleted ? "text-primary-foreground/50" : "text-primary-foreground/25"}`}>
+                  <p
+                    className={`font-body text-sm transition-colors ${
+                      isActive
+                        ? "font-medium text-foreground"
+                        : isCompleted
+                        ? "text-foreground/60"
+                        : "text-muted-foreground/50"
+                    }`}
+                  >
                     {phase.label}
                   </p>
                   {isActive && (
-                    <motion.div animate={{ opacity: [0.3, 1, 0.3] }} transition={{ duration: 1, repeat: Infinity }}>
-                      <Loader2 className="h-3 w-3 animate-spin text-primary" />
-                    </motion.div>
+                    <Loader2 className="h-3 w-3 animate-spin text-foreground" />
                   )}
                 </motion.div>
               );
             })}
           </div>
 
-          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.5 }} className="font-body text-[11px] text-primary-foreground/30">
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.2 }}
+            className="font-body text-[11px] uppercase tracking-[0.2em] text-muted-foreground"
+          >
             L'intelligenza artificiale sta lavorando per te
           </motion.p>
         </div>
