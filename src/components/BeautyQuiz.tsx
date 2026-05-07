@@ -123,14 +123,35 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
     }));
   };
 
-  const handleSuggestionClick = (suggestion: string) => {
-    setData((prev) => ({
-      ...prev,
-      skinDescription: prev.skinDescription
-        ? `${prev.skinDescription}, ${suggestion.toLowerCase()}`
-        : suggestion,
-    }));
-  };
+  const analyzeSelfie = useCallback(async () => {
+    if (!data.selfie || isAnalyzingSelfie) return;
+    setIsAnalyzingSelfie(true);
+    try {
+      const res = await supabase.functions.invoke("analyze-selfie", {
+        body: { selfie: data.selfie, name: data.name, age: data.age },
+      });
+      if (res.data?.analysis) {
+        setData((prev) => ({ ...prev, skinDescription: String(res.data.analysis) }));
+        setSelfieAnalysisDone(true);
+      } else if (res.error) {
+        console.warn("Selfie analysis failed:", res.error);
+        setSelfieAnalysisDone(true);
+      }
+    } catch (err) {
+      console.warn("Selfie analysis failed:", err);
+      setSelfieAnalysisDone(true);
+    } finally {
+      setIsAnalyzingSelfie(false);
+    }
+  }, [data.selfie, data.name, data.age, isAnalyzingSelfie]);
+
+  // Trigger AI analysis quando si entra nello step 7 con selfie disponibile
+  useEffect(() => {
+    if (step === 7 && data.selfie && !selfieAnalysisDone && !isAnalyzingSelfie) {
+      analyzeSelfie();
+    }
+  }, [step, data.selfie, selfieAnalysisDone, isAnalyzingSelfie, analyzeSelfie]);
+
 
   const enhanceWithAI = useCallback(async () => {
     if (!data.skinDescription.trim() || isEnhancing) return;
