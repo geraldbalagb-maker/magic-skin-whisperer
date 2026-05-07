@@ -520,8 +520,10 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
                         Modifica
                       </button>
                     </div>
-                    <div className="border border-border bg-[hsl(var(--cream))] px-5 py-4 text-left">
-                      <p className="font-body text-sm leading-relaxed text-foreground">{data.skinDescription}</p>
+                    <div className="ai-border">
+                      <div className="bg-[hsl(var(--cream))] px-5 py-4 text-left">
+                        <p className="font-body text-sm leading-relaxed text-foreground">{data.skinDescription}</p>
+                      </div>
                     </div>
                     <p className="mt-2 text-left font-body text-[11px] text-muted-foreground">
                       Questa è una prima impressione automatica. Se vuoi, modificala per aggiungere dettagli.
