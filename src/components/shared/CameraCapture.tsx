@@ -108,23 +108,21 @@ const CameraCapture = ({ open, onClose, onCapture }: CameraCaptureProps) => {
         </button>
       </div>
 
-      <div className="relative flex-1 min-h-0 w-full overflow-hidden bg-black">
-        <div className="absolute inset-0 flex items-center justify-center p-3">
-          <div className="relative aspect-square h-full max-h-full w-auto max-w-full overflow-hidden border border-white/20 bg-black">
-            {error ? (
-              <div className="flex h-full w-full items-center justify-center p-6 text-center">
-                <p className="font-body text-sm text-white/80">{error}</p>
-              </div>
-            ) : (
-              <video
-                ref={videoRef}
-                playsInline
-                muted
-                autoPlay
-                className={`h-full w-full object-cover ${facingMode === "user" ? "scale-x-[-1]" : ""}`}
-              />
-            )}
-          </div>
+      <div className="relative flex-1 min-h-0 w-full overflow-hidden bg-black px-3">
+        <div className="relative h-full w-full overflow-hidden border border-white/20 bg-black">
+          {error ? (
+            <div className="flex h-full w-full items-center justify-center p-6 text-center">
+              <p className="font-body text-sm text-white/80">{error}</p>
+            </div>
+          ) : (
+            <video
+              ref={videoRef}
+              playsInline
+              muted
+              autoPlay
+              className={`h-full w-full object-cover ${facingMode === "user" ? "scale-x-[-1]" : ""}`}
+            />
+          )}
         </div>
       </div>
 
