@@ -87,13 +87,13 @@ const CameraCapture = ({ open, onClose, onCapture }: CameraCaptureProps) => {
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-4">
-      <div className="relative flex w-full max-w-md flex-col items-center gap-4">
+    <div className="fixed inset-0 z-[100] flex items-start justify-center overflow-y-auto bg-black/90 p-4 sm:items-center">
+      <div className="relative my-auto flex w-full max-w-md flex-col items-center gap-4 py-6">
         <button
           type="button"
           onClick={onClose}
           aria-label="Chiudi"
-          className="absolute -top-2 right-0 text-white/80 hover:text-white"
+          className="self-end text-white/80 hover:text-white"
         >
           <X className="h-6 w-6" />
         </button>

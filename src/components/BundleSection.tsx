@@ -73,8 +73,8 @@ const BundleSection = ({
                     transition={{ delay: 0.1 * i, duration: 0.4 }}
                     className="flex items-center gap-3"
                   >
-                    <div className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-primary/10">
-                      <Check className="h-3.5 w-3.5 text-primary" />
+                    <div className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-foreground">
+                      <Check className="h-3.5 w-3.5 text-background" strokeWidth={3} />
                     </div>
                     <span className="font-body text-sm text-foreground">{b}</span>
                   </motion.li>
