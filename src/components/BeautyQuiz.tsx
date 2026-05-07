@@ -1,6 +1,6 @@
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronRight, ChevronLeft, Sparkles, Loader2 } from "lucide-react";
+import { ChevronRight, ChevronLeft, Sparkles, Loader2, Pencil } from "lucide-react";
 import BrandLogo from "@/components/shared/BrandLogo";
 import CameraCapture from "@/components/shared/CameraCapture";
 import { supabase } from "@/integrations/supabase/client";
@@ -26,12 +26,6 @@ const stepVariants = {
   exit: { opacity: 0, y: -30, filter: "blur(6px)" },
 };
 
-const skinSuggestions = [
-  "Pelle secca e disidratata",
-  "Pelle grassa con pori dilatati",
-  "Rughe e segni del tempo",
-  "Acne e imperfezioni",
-];
 
 const skinGoalsOptions = ["Più distesa", "Senza macchie", "Luminosa", "Senza pori dilatati"];
 
@@ -89,6 +83,9 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
   });
   const [isEnhancing, setIsEnhancing] = useState(false);
   const [cameraOpen, setCameraOpen] = useState(false);
+  const [isAnalyzingSelfie, setIsAnalyzingSelfie] = useState(false);
+  const [selfieAnalysisDone, setSelfieAnalysisDone] = useState(false);
+  const [isEditingDescription, setIsEditingDescription] = useState(false);
   const galleryInputRef = useRef<HTMLInputElement>(null);
 
   const prevStep = () => step > 0 && setStep(step - 1);
