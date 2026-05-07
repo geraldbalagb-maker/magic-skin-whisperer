@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { X, RefreshCw, Camera as CameraIcon } from "lucide-react";
 
 interface CameraCaptureProps {
@@ -95,8 +96,8 @@ const CameraCapture = ({ open, onClose, onCapture }: CameraCaptureProps) => {
 
   if (!open) return null;
 
-  return (
-    <div className="fixed inset-0 z-[100] flex flex-col bg-black overflow-hidden" style={{ height: "100dvh" }}>
+  return createPortal(
+    <div className="fixed inset-0 z-[9999] flex flex-col bg-black overflow-hidden" style={{ height: "100dvh", width: "100vw" }}>
       <div className="flex items-center justify-end p-3 shrink-0">
         <button
           type="button"
@@ -108,23 +109,21 @@ const CameraCapture = ({ open, onClose, onCapture }: CameraCaptureProps) => {
         </button>
       </div>
 
-      <div className="relative flex-1 min-h-0 w-full overflow-hidden bg-black">
-        <div className="absolute inset-0 flex items-center justify-center p-3">
-          <div className="relative aspect-square h-full max-h-full w-auto max-w-full overflow-hidden border border-white/20 bg-black">
-            {error ? (
-              <div className="flex h-full w-full items-center justify-center p-6 text-center">
-                <p className="font-body text-sm text-white/80">{error}</p>
-              </div>
-            ) : (
-              <video
-                ref={videoRef}
-                playsInline
-                muted
-                autoPlay
-                className={`h-full w-full object-cover ${facingMode === "user" ? "scale-x-[-1]" : ""}`}
-              />
-            )}
-          </div>
+      <div className="relative flex-1 min-h-0 w-full overflow-hidden bg-black px-3">
+        <div className="relative h-full w-full overflow-hidden border border-white/20 bg-black">
+          {error ? (
+            <div className="flex h-full w-full items-center justify-center p-6 text-center">
+              <p className="font-body text-sm text-white/80">{error}</p>
+            </div>
+          ) : (
+            <video
+              ref={videoRef}
+              playsInline
+              muted
+              autoPlay
+              className={`h-full w-full object-cover ${facingMode === "user" ? "scale-x-[-1]" : ""}`}
+            />
+          )}
         </div>
       </div>
 
@@ -146,7 +145,8 @@ const CameraCapture = ({ open, onClose, onCapture }: CameraCaptureProps) => {
           <CameraIcon className="h-4 w-4" /> Scatta
         </button>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };
 
