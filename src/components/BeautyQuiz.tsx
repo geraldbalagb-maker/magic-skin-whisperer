@@ -477,8 +477,9 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
           </motion.div>
         );
 
-      // 7 — SKIN DESCRIPTION
-      case 7:
+      // 7 — SKIN DESCRIPTION (con analisi AI del selfie)
+      case 7: {
+        const showTextarea = !data.selfie || isEditingDescription || (selfieAnalysisDone && !data.skinDescription.trim());
         return (
           <motion.div key="skin" variants={stepVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.5 }}>
             <MinimalCard>
@@ -489,50 +490,86 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
                     Raccontaci di più, {data.name}
                   </h2>
                   <p className="mt-3 max-w-sm font-body text-sm text-muted-foreground">
-                    Com'è la tua pelle? Hai particolari esigenze? Che effetto vorresti ottenere?
+                    {data.selfie
+                      ? "Abbiamo fatto una prima analisi AI del tuo selfie. Puoi modificarla per aggiungere ciò che senti."
+                      : "Com'è la tua pelle? Hai particolari esigenze? Che effetto vorresti ottenere?"}
                   </p>
                 </div>
 
-                <div className="flex max-w-md flex-wrap justify-center gap-2">
-                  {skinSuggestions.map((s) => (
-                    <button
-                      key={s}
-                      onClick={() => handleSuggestionClick(s)}
-                      className="border border-border bg-background px-4 py-2 font-body text-[11px] font-medium text-muted-foreground transition hover:border-primary/40 hover:text-foreground"
-                    >
-                      {s}
-                    </button>
-                  ))}
-                </div>
+                {/* Stato 1: AI sta analizzando */}
+                {data.selfie && isAnalyzingSelfie && (
+                  <div className="flex w-full max-w-md flex-col items-center gap-3 border border-border bg-[hsl(var(--cream))] px-5 py-8">
+                    <Loader2 className="h-5 w-5 animate-spin text-primary" />
+                    <p className="font-body text-sm text-foreground">L'AI sta analizzando il tuo selfie…</p>
+                    <p className="font-body text-[11px] text-muted-foreground">Pochi secondi</p>
+                  </div>
+                )}
 
-                <div className="relative w-full max-w-md">
-                  <textarea
-                    value={data.skinDescription}
-                    onChange={(e) => setData({ ...data, skinDescription: e.target.value })}
-                    placeholder="Es: Ho la pelle mista, con qualche imperfezione sulla zona T. Vorrei un effetto glow naturale..."
-                    className="h-32 w-full resize-none border border-border bg-background px-5 py-4 pr-12 font-body text-sm text-foreground placeholder:text-muted-foreground/35 focus:border-primary focus:outline-none"
-                    autoFocus
-                  />
-                  {data.skinDescription.trim().length > 10 && (
-                    <button
-                      onClick={enhanceWithAI}
-                      disabled={isEnhancing}
-                      className="absolute bottom-3 right-3 flex items-center gap-1.5 bg-primary px-3 py-1.5 font-body text-[10px] font-semibold uppercase tracking-wider text-primary-foreground transition disabled:opacity-50"
-                      title="Migliora il testo con l'AI"
-                    >
-                      {isEnhancing ? <Loader2 className="h-3 w-3 animate-spin" /> : <Sparkles className="h-3 w-3" />}
-                      {isEnhancing ? "..." : "Migliora con AI"}
-                    </button>
-                  )}
-                </div>
+                {/* Stato 2: AI ha finito — mostra analisi in card con possibilità di modifica */}
+                {data.selfie && !isAnalyzingSelfie && !showTextarea && data.skinDescription.trim() && (
+                  <div className="w-full max-w-md">
+                    <div className="mb-2 flex items-center justify-between">
+                      <span className="inline-flex items-center gap-1.5 bg-foreground px-2.5 py-1 font-body text-[10px] font-semibold uppercase tracking-[0.18em] text-background">
+                        <Sparkles className="h-3 w-3" /> Analisi AI
+                      </span>
+                      <button
+                        onClick={() => setIsEditingDescription(true)}
+                        className="inline-flex items-center gap-1.5 font-body text-[11px] font-medium uppercase tracking-wider text-muted-foreground transition hover:text-foreground"
+                      >
+                        <Pencil className="h-3 w-3" />
+                        Modifica
+                      </button>
+                    </div>
+                    <div className="border border-border bg-[hsl(var(--cream))] px-5 py-4 text-left">
+                      <p className="font-body text-sm leading-relaxed text-foreground">{data.skinDescription}</p>
+                    </div>
+                    <p className="mt-2 text-left font-body text-[11px] text-muted-foreground">
+                      Questa è una prima impressione automatica. Se vuoi, modificala per aggiungere dettagli.
+                    </p>
+                  </div>
+                )}
 
-                <PrimaryButton onClick={nextStep} disabled={!data.skinDescription}>
+                {/* Stato 3: textarea (selfie assente, oppure utente in modifica) */}
+                {showTextarea && (
+                  <div className="relative w-full max-w-md">
+                    <textarea
+                      value={data.skinDescription}
+                      onChange={(e) => setData({ ...data, skinDescription: e.target.value })}
+                      placeholder="Es: Ho la pelle mista, con qualche imperfezione sulla zona T. Vorrei un effetto glow naturale..."
+                      className="h-32 w-full resize-none border border-border bg-background px-5 py-4 pr-12 font-body text-sm text-foreground placeholder:text-muted-foreground/35 focus:border-primary focus:outline-none"
+                      autoFocus
+                    />
+                    {data.skinDescription.trim().length > 10 && (
+                      <button
+                        onClick={enhanceWithAI}
+                        disabled={isEnhancing}
+                        className="absolute bottom-3 right-3 flex items-center gap-1.5 bg-primary px-3 py-1.5 font-body text-[10px] font-semibold uppercase tracking-wider text-primary-foreground transition disabled:opacity-50"
+                        title="Migliora il testo con l'AI"
+                      >
+                        {isEnhancing ? <Loader2 className="h-3 w-3 animate-spin" /> : <Sparkles className="h-3 w-3" />}
+                        {isEnhancing ? "..." : "Migliora con AI"}
+                      </button>
+                    )}
+                    {data.selfie && isEditingDescription && (
+                      <button
+                        onClick={() => setIsEditingDescription(false)}
+                        className="mt-2 font-body text-[11px] uppercase tracking-wider text-muted-foreground transition hover:text-foreground"
+                      >
+                        Annulla modifica
+                      </button>
+                    )}
+                  </div>
+                )}
+
+                <PrimaryButton onClick={nextStep} disabled={!data.skinDescription || isAnalyzingSelfie}>
                   Scopri la tua routine
                 </PrimaryButton>
               </div>
             </MinimalCard>
           </motion.div>
         );
+      }
+
 
       default:
         return null;
