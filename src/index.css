@@ -157,31 +157,16 @@
 
   .ai-border {
     position: relative;
-    background: hsl(var(--background));
     z-index: 0;
-  }
-  .ai-border::before {
-    content: "";
-    position: absolute;
-    inset: -2px;
-    z-index: -1;
-    border-radius: inherit;
-    background: conic-gradient(from 0deg, hsl(280 70% 60%), hsl(350 85% 55%), hsl(25 95% 55%), hsl(200 85% 55%), hsl(280 70% 60%));
-    background-size: 200% 200%;
-    animation: ai-border-spin 4s linear infinite;
-  }
-  .ai-border::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    background: hsl(var(--cream));
-    border-radius: inherit;
+    padding: 2px;
+    background: linear-gradient(90deg, hsl(280 70% 60%), hsl(350 85% 55%), hsl(25 95% 55%), hsl(200 85% 55%), hsl(280 70% 60%));
+    background-size: 300% 100%;
+    animation: ai-border-shift 4s linear infinite;
   }
 
-  @keyframes ai-border-spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+  @keyframes ai-border-shift {
+    0% { background-position: 0% center; }
+    100% { background-position: 300% center; }
   }
 
   @keyframes float {
