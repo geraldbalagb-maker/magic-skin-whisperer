@@ -16,16 +16,18 @@ serve(async (req) => {
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY non configurata");
 
-    const systemPrompt = `Sei una skin analyst esperta. Osservi un selfie e produci una breve analisi visiva della pelle in italiano, in PRIMA PERSONA come se parlassi alla cliente (usa "la tua pelle", "noto che..."). 
+    const systemPrompt = `Sei una skin analyst esperta. Osservi un selfie e produci una breve analisi visiva della pelle in italiano, scritta in PRIMA PERSONA come se fosse la cliente stessa a descrivere la propria pelle (usa "la mia pelle", "ho", "noto sul mio viso...").
 Regole:
+- Inizia DIRETTAMENTE con la descrizione, ad esempio "La pelle del mio viso è..." oppure "Ho una pelle...". 
+- NON usare appellativi tipo "Cara", "Ciao", nomi propri o saluti. Mai rivolgerti a una seconda persona.
 - 2-4 frasi, massimo 60 parole.
 - Solo testo semplice, no markdown, no elenchi.
-- Tono caldo, professionale, non medico.
+- Tono naturale, non medico.
 - Concentrati su: tipo di pelle (secca/mista/grassa), texture, eventuali rossori, segni visibili (rughe, macchie, pori, imperfezioni), luminosità.
 - Non fare diagnosi mediche, non parlare di etnia/età/genere.
 - Non includere consigli o prodotti, solo l'osservazione.`;
 
-    const userPrompt = `Analizza questo selfie${name ? ` di ${name}` : ""}${age ? ` (${age} anni)` : ""}. Rispondi solo con la descrizione della pelle.`;
+    const userPrompt = `Analizza questo selfie. Rispondi solo con la descrizione della pelle in prima persona, senza saluti né nomi.`;
 
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
