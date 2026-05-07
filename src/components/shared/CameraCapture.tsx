@@ -84,21 +84,33 @@ const CameraCapture = ({ open, onClose, onCapture }: CameraCaptureProps) => {
     onClose();
   };
 
+  useEffect(() => {
+    if (!open) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [open]);
+
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-start justify-center overflow-y-auto bg-black/90 p-4 sm:items-center">
-      <div className="relative my-auto flex w-full max-w-md flex-col items-center gap-4 py-6">
+    <div className="fixed inset-0 z-[100] flex flex-col bg-black overflow-hidden" style={{ height: "100dvh" }}>
+      <div className="flex items-center justify-end p-3 shrink-0">
         <button
           type="button"
           onClick={onClose}
           aria-label="Chiudi"
-          className="self-end text-white/80 hover:text-white"
+          className="text-white/80 hover:text-white"
         >
           <X className="h-6 w-6" />
         </button>
+      </div>
 
-        <div className="relative aspect-square w-full overflow-hidden border border-white/20 bg-black">
+      <div className="relative flex-1 min-h-0 w-full overflow-hidden bg-black">
+        <div className="absolute inset-0 flex items-center justify-center p-3">
+          <div className="relative aspect-square h-full max-h-full w-auto max-w-full overflow-hidden border border-white/20 bg-black">
           {error ? (
             <div className="flex h-full w-full items-center justify-center p-6 text-center">
               <p className="font-body text-sm text-white/80">{error}</p>
