@@ -19,7 +19,7 @@ const V2Hero = ({ onStartQuiz }: V2HeroProps) => (
           transition={{ delay: 0.1, duration: 0.5 }}
           className="mb-8 flex justify-start"
         >
-          <img src={logoMe} alt="Maison 22 Esthétique" className="h-36 w-auto object-contain md:h-40" />
+          <img src={logoMe} alt="Maison 22 Esthétique" className="h-36 w-auto object-contain md:h-40 -ml-[5px]" />
         </motion.div>
 
         <motion.h1
