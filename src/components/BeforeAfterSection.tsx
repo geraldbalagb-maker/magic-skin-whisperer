@@ -120,10 +120,7 @@ const BeforeAfterSection = ({ beforeImage, afterImage, name }: BeforeAfterSectio
       >
         <div className="flex items-start gap-3 rounded-xl border border-gold/20 bg-card p-4">
           <div>
-            <p className="font-body text-xs font-medium text-foreground">
-              Immagine a scopo illustrativo
-            </p>
-            <p className="mt-1 font-body text-[11px] leading-relaxed text-muted-foreground">
+            <p className="font-body text-[11px] leading-relaxed text-muted-foreground">
               La simulazione "dopo" è generata dall'intelligenza artificiale a titolo esemplificativo e non rappresenta 
               una garanzia di risultato. I risultati reali possono variare in base al tipo di pelle, alla costanza 
               nell'applicazione e ad altri fattori individuali. Consulta sempre un dermatologo per esigenze specifiche.
