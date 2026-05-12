@@ -45,7 +45,7 @@ const BundleSection = ({
             >
               {/* Badge */}
               <span className="inline-block rounded-sm bg-foreground px-4 py-1.5 font-body text-[11px] font-bold uppercase tracking-[0.2em] text-background">
-                Offerta esclusiva funnel · -25%
+                Offerta esclusiva · -10%
               </span>
 
               {/* Headline */}
@@ -59,7 +59,7 @@ const BundleSection = ({
               <p className="mt-5 max-w-md font-body text-sm leading-relaxed text-muted-foreground md:text-base">
                 Abbiamo riunito i <strong className="text-foreground">{products.length} prodotti essenziali</strong> per
                 la tua pelle in un unico cofanetto di lusso. Solo per chi completa l'analisi:{" "}
-                <strong className="text-foreground">-25% riservato</strong>, non disponibile sul sito.
+                <strong className="text-foreground">-10% riservato</strong>, non disponibile sul sito.
               </p>
 
               {/* Benefits */}
