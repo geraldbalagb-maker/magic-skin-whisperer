@@ -96,7 +96,7 @@ const ResultsHero = ({ name, quizData, aiResult }: ResultsHeroProps) => (
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.9 + i * 0.1 }}
-            className="rounded-full border border-primary/20 bg-primary/10 px-4 py-2 font-body text-xs text-primary-foreground/70 backdrop-blur-md"
+            className="rounded-full border border-primary/25 bg-primary/10 px-5 py-2.5 font-body text-sm text-primary-foreground/85 backdrop-blur-md md:text-base"
           >
             {chip.label}
           </motion.span>
