@@ -354,8 +354,8 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
             <MinimalCard>
               <div className="flex flex-col items-center gap-7 text-center">
                 <StepBadge n={5} />
-                <div>
-                  <h2 className="font-display text-2xl font-bold tracking-tight text-foreground md:text-3xl">
+                <div className="max-w-xs">
+                  <h2 className="font-display text-2xl font-bold leading-tight tracking-tight text-foreground md:text-3xl">
                     Come vorresti vedere la tua pelle?
                   </h2>
                   <p className="mt-3 font-body text-sm text-muted-foreground">Seleziona uno o più obiettivi (puoi sceglierne anche più di uno)</p>
