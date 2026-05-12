@@ -224,7 +224,7 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
                   <div className="flex w-full flex-col items-center gap-4">
                     <button
                       type="button"
-                      onClick={() => setData((p) => ({ ...p, selfie: null }))}
+                      onClick={() => { setData((p) => ({ ...p, selfie: null, skinDescription: "" })); setSelfieAnalysisDone(false); }}
                       title="Tocca per rifare/ricaricare"
                       className="relative w-full max-w-sm overflow-hidden border border-border bg-[hsl(var(--cream))] p-2 transition hover:border-primary/40"
                     >
