@@ -104,7 +104,7 @@ const BundleSection = ({
                       "linear-gradient(90deg, hsl(280 70% 75%) 0%, hsl(350 85% 65%) 50%, hsl(25 95% 65%) 100%)",
                   }}
                 >
-                  -25% OFF
+                  -10% OFF
                 </span>
               </motion.div>
 
