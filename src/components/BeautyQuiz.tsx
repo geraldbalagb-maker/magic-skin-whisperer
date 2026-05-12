@@ -145,12 +145,12 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
     }
   }, [data.selfie, data.name, data.age, isAnalyzingSelfie]);
 
-  // Trigger AI analysis quando si entra nello step 7 con selfie disponibile
+  // Trigger AI analysis appena viene caricato il selfie (in background)
   useEffect(() => {
-    if (step === 7 && data.selfie && !selfieAnalysisDone && !isAnalyzingSelfie) {
+    if (data.selfie && !selfieAnalysisDone && !isAnalyzingSelfie) {
       analyzeSelfie();
     }
-  }, [step, data.selfie, selfieAnalysisDone, isAnalyzingSelfie, analyzeSelfie]);
+  }, [data.selfie, selfieAnalysisDone, isAnalyzingSelfie, analyzeSelfie]);
 
 
   const enhanceWithAI = useCallback(async () => {
@@ -224,11 +224,11 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
                   <div className="flex w-full flex-col items-center gap-4">
                     <button
                       type="button"
-                      onClick={() => setData((p) => ({ ...p, selfie: null }))}
+                      onClick={() => { setData((p) => ({ ...p, selfie: null, skinDescription: "" })); setSelfieAnalysisDone(false); }}
                       title="Tocca per rifare/ricaricare"
                       className="relative w-full max-w-sm overflow-hidden border border-border bg-[hsl(var(--cream))] p-2 transition hover:border-primary/40"
                     >
-                      <img src={data.selfie} alt="Selfie" className="aspect-square w-full object-cover" />
+                      <img src={data.selfie} alt="Selfie" className="aspect-[4/5] w-full bg-[hsl(var(--cream))] object-contain" />
                       <span className="absolute bottom-3 left-1/2 -translate-x-1/2 bg-foreground/80 px-3 py-1 font-body text-[10px] uppercase tracking-[0.2em] text-background">
                         Tocca per cambiare
                       </span>
@@ -354,8 +354,8 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
             <MinimalCard>
               <div className="flex flex-col items-center gap-7 text-center">
                 <StepBadge n={5} />
-                <div>
-                  <h2 className="font-display text-2xl font-bold tracking-tight text-foreground md:text-3xl">
+                <div className="max-w-xs">
+                  <h2 className="font-display text-2xl font-bold leading-tight tracking-tight text-foreground md:text-3xl">
                     Come vorresti vedere la tua pelle?
                   </h2>
                   <p className="mt-3 font-body text-sm text-muted-foreground">Seleziona uno o più obiettivi (puoi sceglierne anche più di uno)</p>

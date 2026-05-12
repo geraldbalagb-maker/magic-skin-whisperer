@@ -292,7 +292,7 @@ const AnalysisScreen = ({ name, quizData, onComplete }: AnalysisScreenProps) => 
             transition={{ delay: 1.2 }}
             className="font-body text-[11px] uppercase tracking-[0.2em] text-muted-foreground"
           >
-            L'intelligenza artificiale sta lavorando per te
+            <span className="font-semibold text-foreground">Beaut-AI</span> sta lavorando per te
           </motion.p>
         </div>
       </div>

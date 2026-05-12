@@ -130,7 +130,6 @@ const RoutineSteps = ({ routine, cart, onToggleCart }: RoutineStepsProps) => {
                 <div className="w-full md:w-7/12">
                   <div className="mb-5">
                     <div className="mb-1 flex items-center gap-2">
-                      <span className="text-xl">{step.icon}</span>
                       <span className="font-body text-[11px] font-medium uppercase tracking-[0.2em] text-primary">
                         Step {step.order}
                       </span>

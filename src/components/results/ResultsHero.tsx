@@ -71,7 +71,7 @@ const ResultsHero = ({ name, quizData, aiResult }: ResultsHeroProps) => (
               Analisi AI
             </span>
           </div>
-          <p className="font-body text-sm leading-relaxed text-primary-foreground/80 md:text-base">
+          <p className="font-body text-base leading-relaxed text-primary-foreground/85 md:text-lg">
             {aiResult.skin_analysis}
           </p>
         </div>
@@ -96,7 +96,7 @@ const ResultsHero = ({ name, quizData, aiResult }: ResultsHeroProps) => (
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.9 + i * 0.1 }}
-            className="rounded-full border border-primary/20 bg-primary/10 px-4 py-2 font-body text-xs text-primary-foreground/70 backdrop-blur-md"
+            className="rounded-full border border-primary/25 bg-primary/10 px-5 py-2.5 font-body text-sm text-primary-foreground/85 backdrop-blur-md md:text-base"
           >
             {chip.label}
           </motion.span>
@@ -116,10 +116,10 @@ const ResultsHero = ({ name, quizData, aiResult }: ResultsHeroProps) => (
           className="flex cursor-pointer flex-col items-center gap-2"
           onClick={() => document.getElementById("routine-section")?.scrollIntoView({ behavior: "smooth" })}
         >
-          <span className="font-body text-[10px] uppercase tracking-widest text-primary-foreground/40">
+          <span className="font-body text-[10px] uppercase tracking-widest text-primary-foreground/70">
             Scopri la tua routine
           </span>
-          <ChevronRight className="h-4 w-4 rotate-90 text-primary/50" />
+          <ChevronRight className="h-5 w-5 rotate-90 text-primary-foreground/80" />
         </motion.div>
       </motion.div>
     </div>

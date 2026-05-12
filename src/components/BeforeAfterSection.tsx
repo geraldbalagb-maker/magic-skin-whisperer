@@ -102,11 +102,11 @@ const BeforeAfterSection = ({ beforeImage, afterImage, name }: BeforeAfterSectio
         </div>
 
         {/* Labels */}
-        <div className="absolute top-4 left-4 z-20 rounded-full bg-foreground/70 px-3 py-1 backdrop-blur-sm">
-          <span className="font-body text-xs font-medium text-background">Prima</span>
+        <div className="absolute top-4 left-4 z-20 rounded-full bg-background/90 px-3 py-1 backdrop-blur-sm">
+          <span className="font-body text-xs font-medium text-foreground">Prima</span>
         </div>
-        <div className="absolute top-4 right-4 z-20 rounded-full bg-gold/80 px-3 py-1 backdrop-blur-sm">
-          <span className="font-body text-xs font-medium text-primary-foreground">Dopo</span>
+        <div className="absolute top-4 right-4 z-20 rounded-full bg-foreground/85 px-3 py-1 backdrop-blur-sm">
+          <span className="font-body text-xs font-medium text-background">Dopo</span>
         </div>
       </div>
 
@@ -120,10 +120,7 @@ const BeforeAfterSection = ({ beforeImage, afterImage, name }: BeforeAfterSectio
       >
         <div className="flex items-start gap-3 rounded-xl border border-gold/20 bg-card p-4">
           <div>
-            <p className="font-body text-xs font-medium text-foreground">
-              Immagine a scopo illustrativo
-            </p>
-            <p className="mt-1 font-body text-[11px] leading-relaxed text-muted-foreground">
+            <p className="font-body text-[11px] leading-relaxed text-muted-foreground">
               La simulazione "dopo" è generata dall'intelligenza artificiale a titolo esemplificativo e non rappresenta 
               una garanzia di risultato. I risultati reali possono variare in base al tipo di pelle, alla costanza 
               nell'applicazione e ad altri fattori individuali. Consulta sempre un dermatologo per esigenze specifiche.

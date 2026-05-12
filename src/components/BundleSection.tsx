@@ -14,7 +14,7 @@ interface BundleSectionProps {
 }
 
 const benefits = [
-  "Sconto esclusivo -25% riservato al funnel",
+  "Sconto esclusivo -10% riservato",
   "Risultati clinicamente testati in 28 giorni",
   "Spedizione Premium Gratuita",
   "Consulenza beauty coach inclusa",
@@ -45,7 +45,7 @@ const BundleSection = ({
             >
               {/* Badge */}
               <span className="inline-block rounded-sm bg-foreground px-4 py-1.5 font-body text-[11px] font-bold uppercase tracking-[0.2em] text-background">
-                Offerta esclusiva funnel · -25%
+                Offerta esclusiva · -10%
               </span>
 
               {/* Headline */}
@@ -59,7 +59,7 @@ const BundleSection = ({
               <p className="mt-5 max-w-md font-body text-sm leading-relaxed text-muted-foreground md:text-base">
                 Abbiamo riunito i <strong className="text-foreground">{products.length} prodotti essenziali</strong> per
                 la tua pelle in un unico cofanetto di lusso. Solo per chi completa l'analisi:{" "}
-                <strong className="text-foreground">-25% riservato</strong>, non disponibile sul sito.
+                <strong className="text-foreground">-10% riservato</strong>, non disponibile sul sito.
               </p>
 
               {/* Benefits */}
@@ -104,7 +104,7 @@ const BundleSection = ({
                       "linear-gradient(90deg, hsl(280 70% 75%) 0%, hsl(350 85% 65%) 50%, hsl(25 95% 65%) 100%)",
                   }}
                 >
-                  -25% OFF
+                  -10% OFF
                 </span>
               </motion.div>
 

@@ -25,7 +25,8 @@ Regole:
 - Tono naturale, non medico.
 - Concentrati su: tipo di pelle (secca/mista/grassa), texture, eventuali rossori, segni visibili (rughe, macchie, pori, imperfezioni), luminosità.
 - Non fare diagnosi mediche, non parlare di etnia/età/genere.
-- Non includere consigli o prodotti, solo l'osservazione.`;
+- Non includere consigli o prodotti, solo l'osservazione.
+- SCRIVI SOLO IN ITALIANO. È VIETATO usare parole o avverbi inglesi (no "Overall", "Overall,", "Anyway", "However", "Indeed", "In summary", "Actually", "Basically", ecc.). Usa equivalenti italiani ("In generale", "Nel complesso", "Tuttavia", ecc.) oppure ometti del tutto.`;
 
     const userPrompt = `Analizza questo selfie. Rispondi solo con la descrizione della pelle in prima persona, senza saluti né nomi.`;
 

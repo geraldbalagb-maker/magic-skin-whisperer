@@ -28,11 +28,11 @@ const V2CTABanner = ({ onStartQuiz }: V2CTABannerProps) => (
           transition={{ delay: 0.1, duration: 0.6 }}
           className="mb-8 flex items-center gap-3"
         >
-          <span className="h-px w-12 bg-white/40" />
-          <span className="font-body text-[10px] font-semibold uppercase tracking-[0.4em] text-white/80">
+          <span className="h-px w-12 bg-[hsl(var(--gold-light))]" />
+          <span className="font-body text-[10px] font-semibold uppercase tracking-[0.4em] text-[hsl(var(--gold-light))]">
             Maison 22 Esthétique
           </span>
-          <span className="h-px w-12 bg-white/40" />
+          <span className="h-px w-12 bg-[hsl(var(--gold-light))]" />
         </motion.div>
 
         {/* Main headline */}
@@ -83,7 +83,7 @@ const V2CTABanner = ({ onStartQuiz }: V2CTABannerProps) => (
             className="group relative inline-flex items-center gap-3 overflow-hidden bg-white px-10 py-5 font-body text-xs font-semibold uppercase tracking-[0.3em] text-black transition-all hover:bg-white/90"
           >
             <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-1000 group-hover:translate-x-full" />
-            <span className="relative">Inizia il tuo protocollo</span>
+            <span className="relative">Inizia la tua Beauty Routine</span>
           </motion.button>
 
           <div className="flex flex-col items-center gap-1">
