@@ -71,7 +71,7 @@ const ResultsHero = ({ name, quizData, aiResult }: ResultsHeroProps) => (
               Analisi AI
             </span>
           </div>
-          <p className="font-body text-sm leading-relaxed text-primary-foreground/80 md:text-base">
+          <p className="font-body text-base leading-relaxed text-primary-foreground/85 md:text-lg">
             {aiResult.skin_analysis}
           </p>
         </div>
