@@ -28,11 +28,11 @@ const V2CTABanner = ({ onStartQuiz }: V2CTABannerProps) => (
           transition={{ delay: 0.1, duration: 0.6 }}
           className="mb-8 flex items-center gap-3"
         >
-          <span className="h-px w-12 bg-white/40" />
-          <span className="font-body text-[10px] font-semibold uppercase tracking-[0.4em] text-white/80">
+          <span className="h-px w-12 bg-[hsl(var(--gold-light))]" />
+          <span className="font-body text-[10px] font-semibold uppercase tracking-[0.4em] text-[hsl(var(--gold-light))]">
             Maison 22 Esthétique
           </span>
-          <span className="h-px w-12 bg-white/40" />
+          <span className="h-px w-12 bg-[hsl(var(--gold-light))]" />
         </motion.div>
 
         {/* Main headline */}
