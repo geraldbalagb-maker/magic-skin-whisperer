@@ -145,12 +145,12 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
     }
   }, [data.selfie, data.name, data.age, isAnalyzingSelfie]);
 
-  // Trigger AI analysis quando si entra nello step 7 con selfie disponibile
+  // Trigger AI analysis appena viene caricato il selfie (in background)
   useEffect(() => {
-    if (step === 7 && data.selfie && !selfieAnalysisDone && !isAnalyzingSelfie) {
+    if (data.selfie && !selfieAnalysisDone && !isAnalyzingSelfie) {
       analyzeSelfie();
     }
-  }, [step, data.selfie, selfieAnalysisDone, isAnalyzingSelfie, analyzeSelfie]);
+  }, [data.selfie, selfieAnalysisDone, isAnalyzingSelfie, analyzeSelfie]);
 
 
   const enhanceWithAI = useCallback(async () => {
