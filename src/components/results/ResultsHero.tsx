@@ -116,10 +116,10 @@ const ResultsHero = ({ name, quizData, aiResult }: ResultsHeroProps) => (
           className="flex cursor-pointer flex-col items-center gap-2"
           onClick={() => document.getElementById("routine-section")?.scrollIntoView({ behavior: "smooth" })}
         >
-          <span className="font-body text-[10px] uppercase tracking-widest text-primary-foreground/40">
+          <span className="font-body text-[10px] uppercase tracking-widest text-primary-foreground/70">
             Scopri la tua routine
           </span>
-          <ChevronRight className="h-4 w-4 rotate-90 text-primary/50" />
+          <ChevronRight className="h-5 w-5 rotate-90 text-primary-foreground/80" />
         </motion.div>
       </motion.div>
     </div>
