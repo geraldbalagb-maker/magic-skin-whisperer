@@ -14,7 +14,7 @@ interface BundleSectionProps {
 }
 
 const benefits = [
-  "Sconto esclusivo -25% riservato al funnel",
+  "Sconto esclusivo -10% riservato",
   "Risultati clinicamente testati in 28 giorni",
   "Spedizione Premium Gratuita",
   "Consulenza beauty coach inclusa",
