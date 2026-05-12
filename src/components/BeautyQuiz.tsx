@@ -228,7 +228,7 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
                       title="Tocca per rifare/ricaricare"
                       className="relative w-full max-w-sm overflow-hidden border border-border bg-[hsl(var(--cream))] p-2 transition hover:border-primary/40"
                     >
-                      <img src={data.selfie} alt="Selfie" className="aspect-square w-full object-cover" />
+                      <img src={data.selfie} alt="Selfie" className="aspect-[4/5] w-full bg-[hsl(var(--cream))] object-contain" />
                       <span className="absolute bottom-3 left-1/2 -translate-x-1/2 bg-foreground/80 px-3 py-1 font-body text-[10px] uppercase tracking-[0.2em] text-background">
                         Tocca per cambiare
                       </span>
