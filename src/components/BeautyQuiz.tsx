@@ -321,7 +321,7 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
               <div className="flex flex-col items-center gap-7 text-center">
                 <StepBadge n={4} />
                 <div>
-                  <h2 className="font-display text-2xl font-bold tracking-tight text-foreground md:text-3xl">
+                  <h2 className="text-balance font-display text-xl font-bold leading-tight tracking-tight text-foreground md:text-3xl">
                     Sappiamo che hai mille impegni, {data.name}
                   </h2>
                   <p className="mt-3 font-body text-sm text-muted-foreground">Quanto tempo hai ogni giorno per la tua beauty routine?</p>
@@ -331,7 +331,7 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
                     <button
                       key={opt}
                       onClick={() => setData({ ...data, time: opt })}
-                      className={`border px-5 py-4 font-body text-sm font-medium transition ${
+                      className={`text-balance border px-3 py-4 font-body text-sm font-medium leading-tight transition ${
                         data.time === opt
                           ? "border-primary bg-primary text-primary-foreground"
                           : "border-border bg-background text-foreground hover:border-primary/40"
@@ -533,33 +533,35 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
 
                 {/* Stato 3: textarea (selfie assente, oppure utente in modifica) */}
                 {showTextarea && (
-                  <div className="relative w-full max-w-md">
+                  <div className="w-full max-w-md">
                     <textarea
                       value={data.skinDescription}
                       onChange={(e) => setData({ ...data, skinDescription: e.target.value })}
                       placeholder="Es: Ho la pelle mista, con qualche imperfezione sulla zona T. Vorrei un effetto glow naturale..."
-                      className="h-32 w-full resize-none border border-border bg-background px-5 py-4 pr-12 font-body text-sm text-foreground placeholder:text-muted-foreground/35 focus:border-primary focus:outline-none"
+                      className="h-32 w-full resize-none border border-border bg-background px-5 py-4 font-body text-sm text-foreground placeholder:text-muted-foreground/35 focus:border-primary focus:outline-none"
                       autoFocus
                     />
-                    {data.skinDescription.trim().length > 10 && (
-                      <button
-                        onClick={enhanceWithAI}
-                        disabled={isEnhancing}
-                        className="absolute bottom-3 right-3 flex items-center gap-1.5 bg-primary px-3 py-1.5 font-body text-[10px] font-semibold uppercase tracking-wider text-primary-foreground transition disabled:opacity-50"
-                        title="Migliora il testo con l'AI"
-                      >
-                        {isEnhancing ? <Loader2 className="h-3 w-3 animate-spin" /> : <Sparkles className="h-3 w-3" />}
-                        {isEnhancing ? "..." : "Migliora con AI"}
-                      </button>
-                    )}
-                    {data.selfie && isEditingDescription && (
-                      <button
-                        onClick={() => setIsEditingDescription(false)}
-                        className="mt-2 font-body text-[11px] uppercase tracking-wider text-muted-foreground transition hover:text-foreground"
-                      >
-                        Annulla modifica
-                      </button>
-                    )}
+                    <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
+                      {data.selfie && isEditingDescription ? (
+                        <button
+                          onClick={() => setIsEditingDescription(false)}
+                          className="font-body text-[11px] uppercase tracking-wider text-muted-foreground transition hover:text-foreground"
+                        >
+                          Annulla modifica
+                        </button>
+                      ) : <span />}
+                      {data.skinDescription.trim().length > 10 && (
+                        <button
+                          onClick={enhanceWithAI}
+                          disabled={isEnhancing}
+                          className="ml-auto inline-flex items-center gap-1.5 bg-primary px-3 py-2 font-body text-[10px] font-semibold uppercase tracking-wider text-primary-foreground transition disabled:opacity-50"
+                          title="Migliora il testo con l'AI"
+                        >
+                          {isEnhancing ? <Loader2 className="h-3 w-3 animate-spin" /> : <Sparkles className="h-3 w-3" />}
+                          {isEnhancing ? "..." : "Migliora con AI"}
+                        </button>
+                      )}
+                    </div>
                   </div>
                 )}
 

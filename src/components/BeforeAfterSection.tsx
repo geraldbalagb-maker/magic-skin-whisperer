@@ -118,14 +118,15 @@ const BeforeAfterSection = ({ beforeImage, afterImage, name }: BeforeAfterSectio
         transition={{ delay: 0.3 }}
         className="mx-auto mt-6 max-w-md"
       >
-        <div className="flex items-start gap-3 rounded-xl border border-gold/20 bg-card p-4">
-          <div>
-            <p className="font-body text-[11px] leading-relaxed text-muted-foreground">
-              La simulazione "dopo" è generata dall'intelligenza artificiale a titolo esemplificativo e non rappresenta 
-              una garanzia di risultato. I risultati reali possono variare in base al tipo di pelle, alla costanza 
-              nell'applicazione e ad altri fattori individuali. Consulta sempre un dermatologo per esigenze specifiche.
-            </p>
-          </div>
+        <div className="rounded-xl border border-border bg-card p-5">
+          <p className="mb-2 font-display text-base font-semibold text-foreground md:text-lg">
+            Immagine a scopo illustrativo
+          </p>
+          <p className="font-body text-sm leading-relaxed text-muted-foreground">
+            La simulazione "dopo" è generata dall'intelligenza artificiale a titolo esemplificativo e non rappresenta
+            una garanzia di risultato. I risultati reali possono variare in base al tipo di pelle, alla costanza
+            nell'applicazione e ad altri fattori individuali. Consulta sempre un dermatologo per esigenze specifiche.
+          </p>
         </div>
       </motion.div>
     </motion.section>
