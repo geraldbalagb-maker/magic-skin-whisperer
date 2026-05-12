@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ShoppingBag, Star, Check, ChevronDown } from "lucide-react";
+import { toast } from "sonner";
 import type { Product, RoutineStep } from "@/data/products";
 import { products as allProducts } from "@/data/products";
 import SectionHeader from "../shared/SectionHeader";
@@ -60,8 +61,20 @@ const ProductCard = ({ product, cart, onToggleCart, isAlternative = false }: {
     </div>
 
     <motion.button
-      whileTap={{ scale: 0.9 }}
-      onClick={() => onToggleCart(product.id)}
+      whileTap={{ scale: 0.85 }}
+      animate={cart.has(product.id) ? { scale: [1, 1.15, 1] } : { scale: 1 }}
+      transition={{ duration: 0.35 }}
+      onClick={() => {
+        const wasInCart = cart.has(product.id);
+        onToggleCart(product.id);
+        if (!wasInCart) {
+          toast.success(`${product.name} aggiunto`, {
+            description: isAlternative ? "Alternativa selezionata per questo step" : "Aggiunto alla tua routine",
+          });
+        } else {
+          toast(`${product.name} rimosso`);
+        }
+      }}
       className={`flex h-10 w-10 flex-shrink-0 items-center justify-center transition-all duration-200 ${
         cart.has(product.id)
           ? "bg-foreground text-background"

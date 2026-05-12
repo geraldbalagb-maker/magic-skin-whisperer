@@ -27,7 +27,8 @@ const FounderMessage = ({ name }: FounderMessageProps) => (
             <img
               src={valentinaSmile}
               alt="Valentina Tecchio, Founder Maison 22 Esthétique"
-              className="h-full w-full object-cover grayscale"
+              className="h-full w-full object-cover object-top grayscale"
+              style={{ objectPosition: "50% 20%" }}
               loading="lazy"
             />
           </div>
