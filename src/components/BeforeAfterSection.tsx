@@ -102,11 +102,11 @@ const BeforeAfterSection = ({ beforeImage, afterImage, name }: BeforeAfterSectio
         </div>
 
         {/* Labels */}
-        <div className="absolute top-4 left-4 z-20 rounded-full bg-foreground/70 px-3 py-1 backdrop-blur-sm">
-          <span className="font-body text-xs font-medium text-background">Prima</span>
+        <div className="absolute top-4 left-4 z-20 rounded-full bg-background/90 px-3 py-1 backdrop-blur-sm">
+          <span className="font-body text-xs font-medium text-foreground">Prima</span>
         </div>
-        <div className="absolute top-4 right-4 z-20 rounded-full bg-gold/80 px-3 py-1 backdrop-blur-sm">
-          <span className="font-body text-xs font-medium text-primary-foreground">Dopo</span>
+        <div className="absolute top-4 right-4 z-20 rounded-full bg-foreground/85 px-3 py-1 backdrop-blur-sm">
+          <span className="font-body text-xs font-medium text-background">Dopo</span>
         </div>
       </div>
 
