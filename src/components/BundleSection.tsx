@@ -123,15 +123,17 @@ const BundleSection = ({
                   Aggiungi al Carrello
                 </motion.button>
 
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.97 }}
-                  onClick={() => onCheckout(products.filter((p) => cart.has(p.id)))}
-                  disabled={cart.size === 0}
-                  className="flex items-center justify-center gap-2 rounded-none border border-border px-8 py-4 font-body text-xs font-medium uppercase tracking-wider text-foreground transition-all hover:border-foreground disabled:opacity-40"
-                >
-                  Acquista selezionati ({cart.size})
-                </motion.button>
+                {cart.size < products.length && (
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.97 }}
+                    onClick={() => onCheckout(products.filter((p) => cart.has(p.id)))}
+                    disabled={cart.size === 0}
+                    className="flex items-center justify-center gap-2 rounded-none border border-border px-8 py-4 font-body text-xs font-medium uppercase tracking-wider text-foreground transition-all hover:border-foreground disabled:opacity-40"
+                  >
+                    Acquista selezionati ({cart.size})
+                  </motion.button>
+                )}
               </div>
 
               {/* Urgency */}
