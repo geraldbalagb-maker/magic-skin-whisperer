@@ -68,33 +68,18 @@ const ResultsPage = ({ name, quizData, aiResult, selfie, enhancedSelfie, onCheck
     setCart(new Set(uniqueProducts.map((p) => p.id)));
   };
 
-  const handleDownloadPdf = () => {
-    try {
-      generateRoutinePdf({ name, aiResult, productsMap });
-      toast.success("PDF generato — controlla i tuoi download");
-    } catch (e) {
-      console.error(e);
-      toast.error("Impossibile generare il PDF");
-    }
-  };
-
   const scrollToBundle = () => {
     document.getElementById("bundle-section")?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   // Mostra il FAB solo dopo aver superato la sezione bundle (carrello)
-  // e nascondilo quando si raggiunge la sezione finale del download PDF
   const [showCartFab, setShowCartFab] = useState(false);
   useEffect(() => {
     const onScroll = () => {
       const bundle = document.getElementById("bundle-section");
-      const pdf = document.getElementById("pdf-download-section");
       if (!bundle) return;
       const bundleBottom = bundle.getBoundingClientRect().bottom;
-      const pastBundle = bundleBottom < 0;
-      const pdfTop = pdf?.getBoundingClientRect().top ?? Infinity;
-      const pdfVisible = pdfTop < window.innerHeight;
-      setShowCartFab(pastBundle && !pdfVisible);
+      setShowCartFab(bundleBottom < 0);
     };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
