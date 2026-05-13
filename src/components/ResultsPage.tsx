@@ -118,18 +118,6 @@ const ResultsPage = ({ name, quizData, aiResult, selfie, enhancedSelfie, onCheck
         />
       </div>
       <FounderIntro />
-      <ReviewsSection />
-      <FAQSection />
-
-      <div id="pdf-download-section" className="border-t border-border bg-background py-8 text-center">
-        <button
-          onClick={handleDownloadPdf}
-          className="mx-auto flex items-center justify-center gap-2 font-body text-xs text-muted-foreground transition-colors hover:text-foreground"
-        >
-          <Download className="h-3.5 w-3.5" />
-          Scarica il PDF della tua routine
-        </button>
-      </div>
 
       {/* FAB sticky — appare solo dopo il carrello, nascosto nella sezione PDF */}
       <AnimatePresence>
