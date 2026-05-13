@@ -67,7 +67,7 @@ const AnalysisScreen = ({ name, quizData, onComplete }: AnalysisScreenProps) => 
         const selfiePromise: Promise<string | null> = quizData.selfie
           ? import("@/lib/beautyFilter")
               .then(({ applyBeautyFilter }) =>
-                applyBeautyFilter(quizData.selfie!, { strength: 0.55 }),
+                applyBeautyFilter(quizData.selfie!, { strength: 0.42 }),
               )
               .catch((e) => {
                 console.warn("beauty filter failed:", e);
