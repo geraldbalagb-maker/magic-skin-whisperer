@@ -3,7 +3,7 @@ import founderImg from "@/assets/founder-valentina.jpg";
 
 const FounderIntro = () => (
   <section className="bg-background border-t border-border">
-    <div className="mx-auto max-w-5xl px-4 py-16 md:py-24">
+    <div className="mx-auto max-w-5xl px-4 pt-16 pb-40 md:pt-24 md:pb-48">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
