@@ -43,37 +43,39 @@ serve(async (req) => {
                 content: [
                   {
                     type: "text",
-                    text: `Use the provided image as the ONLY source of truth. Your task is to enhance this selfie to show a subtle, believable "after skincare routine" result while strictly preserving the original identity.
+                    text: `Use the provided image as the ONLY source of truth. Apply an EXTREMELY SUBTLE skin enhancement — the result must be barely noticeable at first glance, like a "before/after 2 weeks of light skincare", NOT a dramatic transformation.
+
+CRITICAL — EXPOSURE & LIGHT:
+- DO NOT brighten the image globally. Keep the EXACT same exposure, white balance, and ambient lighting of the original.
+- DO NOT add any glow, bloom, highlight boost, HDR effect, or "luminosity".
+- DO NOT lift shadows or recover highlights. Keep the original light direction and contrast intact.
+- The output must have the SAME overall brightness histogram as the input. If in doubt, do LESS.
 
 MANDATORY RULES:
-1. DO NOT alter, reinterpret, or redesign any element in the image
-   - Keep IDENTICAL composition, framing, proportions, and perspective
-   - Preserve every facial feature, expression, bone structure, and detail exactly as they are
-   - Do NOT add or remove elements (no makeup, no accessories, no artistic filters)
-   - Keep the background, hair, clothing, and all non-face areas EXACTLY the same
+1. Identity & composition — IDENTICAL to the original
+   - Same framing, proportions, perspective, pose, expression
+   - Same bone structure, eyes, nose, mouth, eyebrows, hairline
+   - Same background, hair, clothing, accessories (glasses included), every non-face element pixel-faithful
+   - No makeup, no filters, no stylization, no retouching of features
 
-2. Perform high-end skin enhancement ONLY on the facial area
-   - Make the skin look slightly smoother, more hydrated, and with a natural healthy glow
-   - Subtly reduce visible redness, uneven tone, and minor blemishes
-   - Add a soft, natural luminosity as if the skin is well-nourished and healthy
-   - Keep pores and natural skin texture visible — do NOT create a "plastic" or airbrushed look
-   - The improvement should look like the result of 4-6 weeks of a consistent skincare routine
+2. Skin work — MINIMAL and LOCAL to the face only
+   - Very lightly even out the most obvious redness or blotchiness (max ~20% reduction, never full removal)
+   - Soften only the most visible blemishes; keep moles, freckles, scars, stubble, beard hair
+   - PRESERVE pores, fine lines, natural skin texture and grain — no smoothing, no airbrush, no "porcelain" look
+   - DO NOT add shine, highlights, or glow to cheeks/forehead/nose
+   - Skin tone, saturation and warmth must match the original almost exactly
 
-3. Enhance image quality
-   - Increase sharpness and micro-details (especially eyes, eyebrows, hair)
-   - Remove noise, blur, and compression artifacts
-   - Improve lighting balance and clarity ONLY if it reflects the original scene
+3. Quality
+   - Match the original sharpness — do not over-sharpen
+   - Do not denoise aggressively; keep the natural sensor grain
+   - No color grading, no cinematic LUT, no warm/cool shift
 
-4. Maintain photographic realism
-   - No artistic filters, no cinematic grading, no stylization
-   - Result must look like a real high-resolution photograph, not AI-generated
-   - Do NOT add makeup effects of any kind
+4. Realism check
+   - The result must look like the SAME photo taken on the SAME day in the SAME light, just with skin in slightly better condition
+   - A casual viewer should need a side-by-side comparison to notice the difference
+   - If unsure between "more change" or "less change", always choose LESS
 
-5. Respect original imperfections where relevant
-   - Do not over-clean to the point of losing authenticity
-   - Preserve natural grain if it contributes to realism
-
-FINAL OUTPUT: A ultra-detailed, photorealistic, faithful enhancement of the original selfie with visibly healthier, glowing skin — as if captured with a modern high-end camera after weeks of skincare — without altering identity in any way.`
+FINAL OUTPUT: a photorealistic, near-identical version of the original selfie with only a very subtle, natural skin improvement. Same exposure, same light, same identity. No glow, no brightening, no overexposure.`
                   },
                   { type: "image_url", image_url: { url: selfieBase64 } }
                 ]
