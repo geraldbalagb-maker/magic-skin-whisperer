@@ -622,6 +622,7 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
           />
         ))}
       </div>
+      </div>
     </div>
   );
 };
