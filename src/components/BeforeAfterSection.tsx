@@ -64,11 +64,12 @@ const BeforeAfterSection = ({ beforeImage, afterImage, name }: BeforeAfterSectio
         onPointerUp={handlePointerUp}
         style={{ touchAction: "none" }}
       >
-        {/* After image (full background) */}
+        {/* After image (full background) — filtro per accentuare l'effetto AI */}
         <img
           src={afterImage}
           alt="Dopo la routine"
           className="absolute inset-0 h-full w-full object-cover"
+          style={{ filter: "brightness(1.08) contrast(1.12) saturate(1.18)" }}
           draggable={false}
         />
 
@@ -119,13 +120,9 @@ const BeforeAfterSection = ({ beforeImage, afterImage, name }: BeforeAfterSectio
         className="mx-auto mt-6 max-w-md"
       >
         <div className="rounded-xl border border-border bg-card p-5">
-          <p className="mb-2 font-display text-base font-semibold text-foreground md:text-lg">
-            Immagine a scopo illustrativo
-          </p>
           <p className="font-body text-sm leading-relaxed text-muted-foreground">
             La simulazione "dopo" è generata dall'intelligenza artificiale a titolo esemplificativo e non rappresenta
-            una garanzia di risultato. I risultati reali possono variare in base al tipo di pelle, alla costanza
-            nell'applicazione e ad altri fattori individuali. Consulta sempre un dermatologo per esigenze specifiche.
+            una garanzia di risultato.
           </p>
         </div>
       </motion.div>
