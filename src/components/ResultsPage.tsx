@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Download, ShoppingBag } from "lucide-react";
+import { ShoppingBag } from "lucide-react";
 import type { Product, RoutineStep } from "@/data/products";
 import { products } from "@/data/products";
 import type { QuizData } from "./BeautyQuiz";
@@ -13,8 +13,6 @@ import BundleSection from "./BundleSection";
 import ReviewsSection from "./ReviewsSection";
 import FAQSection from "./FAQSection";
 import FounderIntro from "./results/FounderIntro";
-import { generateRoutinePdf } from "@/lib/generateRoutinePdf";
-import { toast } from "sonner";
 
 interface ResultsPageProps {
   name: string;
