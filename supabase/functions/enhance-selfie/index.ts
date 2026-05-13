@@ -126,7 +126,10 @@ FINAL OUTPUT: A ultra-detailed, photorealistic, faithful enhancement of the orig
 
     if (!enhancedImageUrl) {
       console.error("No image in AI response:", JSON.stringify(data).slice(0, 500));
-      throw new Error("No enhanced image returned from AI");
+      return new Response(
+        JSON.stringify({ success: false, error: "Nessuna immagine generata dall'AI" }),
+        { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
     }
 
     return new Response(
