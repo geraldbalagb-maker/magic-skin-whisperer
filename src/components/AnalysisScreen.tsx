@@ -142,15 +142,16 @@ const AnalysisScreen = ({ name, quizData, onComplete }: AnalysisScreenProps) => 
 
   return (
     <motion.div
-      className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-background px-4 py-10"
+      className="relative flex min-h-screen flex-col overflow-hidden bg-background"
       animate={readyToReveal ? { opacity: 0 } : {}}
       transition={{ duration: 0.6, ease: "easeInOut" }}
     >
-      <div className="absolute top-6 left-6 z-50">
+      {/* Header brand bar — bianco, pulito, senza bordi */}
+      <header className="flex w-full items-center justify-center bg-background px-4 py-5">
         <BrandLogo size="md" />
-      </div>
+      </header>
 
-      <div className="relative z-10 flex w-full max-w-3xl flex-col items-center gap-10 md:flex-row md:items-center md:gap-14">
+      <div className="relative z-10 mx-auto flex w-full max-w-3xl flex-1 flex-col items-center justify-center gap-10 px-4 py-8 md:flex-row md:items-center md:gap-14">
 
         {/* Selfie con cornice AI */}
         {quizData.selfie && (

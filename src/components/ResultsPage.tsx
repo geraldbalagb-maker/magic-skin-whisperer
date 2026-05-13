@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect } from "react";
-import { motion } from "framer-motion";
-import { Download } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Download, ShoppingBag } from "lucide-react";
 import type { Product, RoutineStep } from "@/data/products";
 import { products } from "@/data/products";
 import type { QuizData } from "./BeautyQuiz";
@@ -13,6 +13,8 @@ import BundleSection from "./BundleSection";
 import ReviewsSection from "./ReviewsSection";
 import FAQSection from "./FAQSection";
 import FounderIntro from "./results/FounderIntro";
+import { generateRoutinePdf } from "@/lib/generateRoutinePdf";
+import { toast } from "sonner";
 
 interface ResultsPageProps {
   name: string;
@@ -68,6 +70,20 @@ const ResultsPage = ({ name, quizData, aiResult, selfie, enhancedSelfie, onCheck
     setCart(new Set(uniqueProducts.map((p) => p.id)));
   };
 
+  const handleDownloadPdf = () => {
+    try {
+      generateRoutinePdf({ name, aiResult, productsMap });
+      toast.success("PDF generato — controlla i tuoi download");
+    } catch (e) {
+      console.error(e);
+      toast.error("Impossibile generare il PDF");
+    }
+  };
+
+  const scrollToBundle = () => {
+    document.getElementById("bundle-section")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <ResultsHero name={name} quizData={quizData} aiResult={aiResult} />
@@ -84,28 +100,43 @@ const ResultsPage = ({ name, quizData, aiResult, selfie, enhancedSelfie, onCheck
       </div>
       <RoutineSteps routine={routine} cart={cart} onToggleCart={toggleCart} />
 
-      <BundleSection
-        products={uniqueProducts}
-        cart={cart}
-        totalPrice={totalPrice}
-        bundlePrice={bundlePrice}
-        onToggleCart={toggleCart}
-        onAddAll={addAllToCart}
-        onCheckout={onCheckout}
-      />
+      <div id="bundle-section">
+        <BundleSection
+          products={uniqueProducts}
+          cart={cart}
+          totalPrice={totalPrice}
+          bundlePrice={bundlePrice}
+          onToggleCart={toggleCart}
+          onAddAll={addAllToCart}
+          onCheckout={onCheckout}
+        />
+      </div>
       <FounderIntro />
       <ReviewsSection />
       <FAQSection />
 
       <div className="border-t border-border bg-background py-8 text-center">
-        <motion.button
-          whileHover={{ scale: 1.02 }}
+        <button
+          onClick={handleDownloadPdf}
           className="mx-auto flex items-center justify-center gap-2 font-body text-xs text-muted-foreground transition-colors hover:text-foreground"
         >
           <Download className="h-3.5 w-3.5" />
           Scarica il PDF della tua routine
-        </motion.button>
+        </button>
       </div>
+
+      {/* FAB sticky — torna al carrello senza scrollare */}
+      <motion.button
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 1 }}
+        onClick={scrollToBundle}
+        className="fixed bottom-5 right-5 z-50 flex items-center gap-2 rounded-sm bg-foreground px-5 py-3 font-body text-[11px] font-bold uppercase tracking-[0.15em] text-background shadow-elevated transition-opacity hover:opacity-90 md:bottom-8 md:right-8"
+        aria-label="Torna al carrello"
+      >
+        <ShoppingBag className="h-4 w-4" />
+        Torna al carrello
+      </motion.button>
     </div>
   );
 };

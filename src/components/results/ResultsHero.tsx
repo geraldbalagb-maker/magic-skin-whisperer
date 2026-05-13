@@ -87,9 +87,6 @@ const ResultsHero = ({ name, quizData, aiResult }: ResultsHeroProps) => (
         {[
           { label: `${quizData.age} anni` },
           { label: quizData.time },
-          ...(quizData.skinDescription
-            ? [{ label: `"${quizData.skinDescription.slice(0, 40)}…"` }]
-            : []),
         ].map((chip, i) => (
           <motion.span
             key={i}
