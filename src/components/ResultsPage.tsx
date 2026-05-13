@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Download, ShoppingBag } from "lucide-react";
+import { ShoppingBag } from "lucide-react";
 import type { Product, RoutineStep } from "@/data/products";
 import { products } from "@/data/products";
 import type { QuizData } from "./BeautyQuiz";
@@ -13,8 +13,6 @@ import BundleSection from "./BundleSection";
 import ReviewsSection from "./ReviewsSection";
 import FAQSection from "./FAQSection";
 import FounderIntro from "./results/FounderIntro";
-import { generateRoutinePdf } from "@/lib/generateRoutinePdf";
-import { toast } from "sonner";
 
 interface ResultsPageProps {
   name: string;
@@ -70,33 +68,18 @@ const ResultsPage = ({ name, quizData, aiResult, selfie, enhancedSelfie, onCheck
     setCart(new Set(uniqueProducts.map((p) => p.id)));
   };
 
-  const handleDownloadPdf = () => {
-    try {
-      generateRoutinePdf({ name, aiResult, productsMap });
-      toast.success("PDF generato — controlla i tuoi download");
-    } catch (e) {
-      console.error(e);
-      toast.error("Impossibile generare il PDF");
-    }
-  };
-
   const scrollToBundle = () => {
     document.getElementById("bundle-section")?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   // Mostra il FAB solo dopo aver superato la sezione bundle (carrello)
-  // e nascondilo quando si raggiunge la sezione finale del download PDF
   const [showCartFab, setShowCartFab] = useState(false);
   useEffect(() => {
     const onScroll = () => {
       const bundle = document.getElementById("bundle-section");
-      const pdf = document.getElementById("pdf-download-section");
       if (!bundle) return;
       const bundleBottom = bundle.getBoundingClientRect().bottom;
-      const pastBundle = bundleBottom < 0;
-      const pdfTop = pdf?.getBoundingClientRect().top ?? Infinity;
-      const pdfVisible = pdfTop < window.innerHeight;
-      setShowCartFab(pastBundle && !pdfVisible);
+      setShowCartFab(bundleBottom < 0);
     };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -135,18 +118,6 @@ const ResultsPage = ({ name, quizData, aiResult, selfie, enhancedSelfie, onCheck
         />
       </div>
       <FounderIntro />
-      <ReviewsSection />
-      <FAQSection />
-
-      <div id="pdf-download-section" className="border-t border-border bg-background py-8 text-center">
-        <button
-          onClick={handleDownloadPdf}
-          className="mx-auto flex items-center justify-center gap-2 font-body text-xs text-muted-foreground transition-colors hover:text-foreground"
-        >
-          <Download className="h-3.5 w-3.5" />
-          Scarica il PDF della tua routine
-        </button>
-      </div>
 
       {/* FAB sticky — appare solo dopo il carrello, nascosto nella sezione PDF */}
       <AnimatePresence>
