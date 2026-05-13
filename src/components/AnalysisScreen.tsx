@@ -64,21 +64,24 @@ const AnalysisScreen = ({ name, quizData, onComplete }: AnalysisScreenProps) => 
           },
         });
 
-        const selfiePromise = quizData.selfie
-          ? supabase.functions.invoke("enhance-selfie", {
-              body: { selfieBase64: quizData.selfie },
-            })
-          : Promise.resolve({ data: null, error: null });
+        const selfiePromise: Promise<string | null> = quizData.selfie
+          ? import("@/lib/beautyFilter")
+              .then(({ applyBeautyFilter }) =>
+                applyBeautyFilter(quizData.selfie!, { strength: 0.55 }),
+              )
+              .catch((e) => {
+                console.warn("beauty filter failed:", e);
+                return null;
+              })
+          : Promise.resolve(null);
 
-        const [routineRes, selfieRes] = await Promise.all([routinePromise, selfiePromise]);
+        const [routineRes, enhancedSelfie] = await Promise.all([
+          routinePromise,
+          selfiePromise,
+        ]);
 
         if (routineRes.error) throw new Error(routineRes.error.message);
         if (!routineRes.data?.success) throw new Error(routineRes.data?.error || "Errore nell'analisi");
-
-        let enhancedSelfie: string | null = null;
-        if (selfieRes.data?.success && selfieRes.data?.enhancedImage) {
-          enhancedSelfie = selfieRes.data.enhancedImage;
-        }
 
         resultRef.current = {
           routine: routineRes.data.routine,
