@@ -84,6 +84,29 @@ const ResultsPage = ({ name, quizData, aiResult, selfie, enhancedSelfie, onCheck
     document.getElementById("bundle-section")?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
+  // Mostra il FAB solo dopo aver superato la sezione bundle (carrello)
+  // e nascondilo quando si raggiunge la sezione finale del download PDF
+  const [showCartFab, setShowCartFab] = useState(false);
+  useEffect(() => {
+    const onScroll = () => {
+      const bundle = document.getElementById("bundle-section");
+      const pdf = document.getElementById("pdf-download-section");
+      if (!bundle) return;
+      const bundleBottom = bundle.getBoundingClientRect().bottom;
+      const pastBundle = bundleBottom < 0;
+      const pdfTop = pdf?.getBoundingClientRect().top ?? Infinity;
+      const pdfVisible = pdfTop < window.innerHeight;
+      setShowCartFab(pastBundle && !pdfVisible);
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, []);
+
   return (
     <div className="min-h-screen bg-background">
       <ResultsHero name={name} quizData={quizData} aiResult={aiResult} />
@@ -115,7 +138,7 @@ const ResultsPage = ({ name, quizData, aiResult, selfie, enhancedSelfie, onCheck
       <ReviewsSection />
       <FAQSection />
 
-      <div className="border-t border-border bg-background py-8 text-center">
+      <div id="pdf-download-section" className="border-t border-border bg-background py-8 text-center">
         <button
           onClick={handleDownloadPdf}
           className="mx-auto flex items-center justify-center gap-2 font-body text-xs text-muted-foreground transition-colors hover:text-foreground"
@@ -125,18 +148,23 @@ const ResultsPage = ({ name, quizData, aiResult, selfie, enhancedSelfie, onCheck
         </button>
       </div>
 
-      {/* FAB sticky — torna al carrello senza scrollare */}
-      <motion.button
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1 }}
-        onClick={scrollToBundle}
-        className="fixed bottom-5 right-5 z-50 flex items-center gap-2 rounded-sm bg-foreground px-5 py-3 font-body text-[11px] font-bold uppercase tracking-[0.15em] text-background shadow-elevated transition-opacity hover:opacity-90 md:bottom-8 md:right-8"
-        aria-label="Torna al carrello"
-      >
-        <ShoppingBag className="h-4 w-4" />
-        Torna al carrello
-      </motion.button>
+      {/* FAB sticky — appare solo dopo il carrello, nascosto nella sezione PDF */}
+      <AnimatePresence>
+        {showCartFab && (
+          <motion.button
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            transition={{ duration: 0.25 }}
+            onClick={scrollToBundle}
+            className="fixed bottom-5 right-5 z-50 flex items-center gap-2 rounded-sm bg-foreground px-5 py-3 font-body text-[11px] font-bold uppercase tracking-[0.15em] text-background shadow-elevated transition-opacity hover:opacity-90 md:bottom-8 md:right-8"
+            aria-label="Torna al carrello"
+          >
+            <ShoppingBag className="h-4 w-4" />
+            Torna al carrello
+          </motion.button>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
