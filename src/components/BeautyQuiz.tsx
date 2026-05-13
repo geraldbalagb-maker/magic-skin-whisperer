@@ -583,16 +583,18 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
   const progress = ((step + 1) / TOTAL_STEPS) * 100;
 
   return (
-    <div className="relative flex min-h-screen flex-col items-center justify-center bg-[hsl(var(--cream))] px-4 py-8">
-      {/* Logo */}
-      <div className="absolute top-6 left-6 z-50">
-        <BrandLogo size="md" />
-      </div>
-
+    <div className="relative flex min-h-screen flex-col bg-[hsl(var(--cream))]">
       {/* Progress bar */}
       <div className="fixed left-0 right-0 top-0 z-50 h-0.5 bg-muted/50">
         <motion.div className="h-full bg-primary" animate={{ width: `${progress}%` }} transition={{ duration: 0.5, ease: "easeOut" }} />
       </div>
+
+      {/* Header brand bar — bianco, pulito, senza bordi */}
+      <header className="flex w-full items-center justify-center bg-[hsl(var(--cream))] px-4 pt-6 pb-2">
+        <BrandLogo size="md" />
+      </header>
+
+      <div className="flex flex-1 flex-col items-center justify-center px-4 py-6">
 
       {/* Back button */}
       {step > 0 && (
@@ -619,6 +621,7 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
             className={`h-1 transition-all ${i === step ? "w-8 bg-primary" : i < step ? "w-2 bg-primary/40" : "w-2 bg-muted"}`}
           />
         ))}
+      </div>
       </div>
     </div>
   );
