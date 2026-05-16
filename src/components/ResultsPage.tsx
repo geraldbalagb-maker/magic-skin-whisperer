@@ -73,15 +73,32 @@ const ResultsPage = ({ name, quizData, aiResult, selfie, enhancedSelfie, onCheck
   };
 
   // Mostra il FAB solo dopo aver superato la sezione bundle (carrello)
+  // Usa hysteresis + rAF throttling per evitare flicker al threshold
   const [showCartFab, setShowCartFab] = useState(false);
   useEffect(() => {
-    const onScroll = () => {
+    let ticking = false;
+    let visible = false;
+    const SHOW_OFFSET = -80; // appare quando il bundle è già 80px sopra il viewport
+    const HIDE_OFFSET = 40;  // scompare solo quando il bundle rientra di 40px
+    const update = () => {
+      ticking = false;
       const bundle = document.getElementById("bundle-section");
       if (!bundle) return;
       const bundleBottom = bundle.getBoundingClientRect().bottom;
-      setShowCartFab(bundleBottom < 0);
+      if (!visible && bundleBottom < SHOW_OFFSET) {
+        visible = true;
+        setShowCartFab(true);
+      } else if (visible && bundleBottom > HIDE_OFFSET) {
+        visible = false;
+        setShowCartFab(false);
+      }
     };
-    onScroll();
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(update);
+    };
+    update();
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll);
     return () => {
