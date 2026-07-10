@@ -27,7 +27,14 @@ const stepVariants = {
 };
 
 
-const skinGoalsOptions = ["Più distesa", "Senza macchie", "Luminosa", "Senza pori dilatati"];
+const skinGoalsOptions = [
+  "Più distesa e rilassata",
+  "Meno macchie e discromie",
+  "Più luminosa e uniforme",
+  "Pori meno visibili",
+  "Meno rossori",
+  "Grana più fine",
+];
 
 const productOptions = [
   "Detergente",
