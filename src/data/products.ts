@@ -146,18 +146,6 @@ export const products: Product[] = [
     link: 'https://www.luxury-perfumes.net/prodotto/rigenera-xaikonix-retynol-me/'
   },
   {
-    id: '10',
-    name: 'Crema Anti Age SPF50',
-    brand: 'Rigenera 0.8',
-    description: 'Crema anti età con protezione solare alta',
-    price: 52.00,
-    image: spfCreamImg,
-    category: 'crema',
-    tags: ['anti-età', 'SPF', 'protezione', 'quotidiano'],
-    rating: 5,
-    link: 'https://www.luxury-perfumes.net/prodotto/rigenera-0-8-crema-anti-age-spf50/'
-  },
-  {
     id: '12',
     name: 'Luminor Recovery Cream',
     brand: 'Face+',
