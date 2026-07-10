@@ -16,7 +16,7 @@ const PRODUCTS_KB = [
   { id: "11", name: "Pinky Tonix", brand: "Face+ Sensation", category: "tonico", tags: ["lenitivo", "delicato", "pelle sensibile"], price: 39.9 },
   { id: "5", name: "Hama Cream", brand: "Face+ Sensation", category: "crema", tags: ["idratante", "nutriente", "quotidiano", "acido ialuronico"], price: 56.9 },
   { id: "6", name: "Retynol.me", brand: "Rigenera Xaikonix", category: "crema", tags: ["anti-età", "notte", "rigenerante", "retinolo"], price: 94.9 },
-  { id: "10", name: "Crema Anti Age SPF50", brand: "Rigenera 0.8", category: "crema", tags: ["anti-età", "SPF", "protezione", "quotidiano"], price: 52.0 },
+  
   { id: "12", name: "Luminor Recovery Cream", brand: "Face+", category: "crema", tags: ["anti-radicali", "recupero", "rigenerante"], price: 64.9 },
   { id: "15", name: "Mosqueta's Soft Cream", brand: "Face+ SeboKey", category: "crema", tags: ["nutriente", "rosa mosqueta", "pelle secca"], price: 54.9 },
   { id: "22", name: "Hydra.me", brand: "Rigenera Xaikonix", category: "crema", tags: ["idratante", "profonda", "pelle secca", "disidratata"], price: 79.9 },

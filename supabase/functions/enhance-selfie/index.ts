@@ -43,26 +43,29 @@ serve(async (req) => {
                 content: [
                   {
                     type: "text",
-                    text: `Use the provided image as the ONLY source of truth. Apply an EXTREMELY SUBTLE skin enhancement — the result must be barely noticeable at first glance, like a "before/after 2 weeks of light skincare", NOT a dramatic transformation.
+                    text: `Use the provided image as the ONLY source of truth. Produce a REALISTIC "after skincare" version of the same photo where the skin looks VISIBLY MORE EVEN than the original, but the person, the light and the setting are unmistakably the same.
 
-CRITICAL — EXPOSURE & LIGHT:
+CRITICAL — EXPOSURE & LIGHT (do NOT change):
 - DO NOT brighten the image globally. Keep the EXACT same exposure, white balance, and ambient lighting of the original.
 - DO NOT add any glow, bloom, highlight boost, HDR effect, or "luminosity".
 - DO NOT lift shadows or recover highlights. Keep the original light direction and contrast intact.
-- The output must have the SAME overall brightness histogram as the input. If in doubt, do LESS.
+- The overall brightness histogram must stay essentially the same as the input. The improvement must come from SKIN EVENNESS, not from light.
 
 MANDATORY RULES:
 1. Identity & composition — IDENTICAL to the original
    - Same framing, proportions, perspective, pose, expression
-   - Same bone structure, eyes, nose, mouth, eyebrows, hairline
+   - Same bone structure, eyes, nose, mouth, eyebrows, hairline, jawline — no rejuvenation, no reshaping
    - Same background, hair, clothing, accessories (glasses included), every non-face element pixel-faithful
-   - No makeup, no filters, no stylization, no retouching of features
+   - No makeup, no filters, no stylization
+   - Preserve moles, freckles, beauty marks, scars, stubble, beard hair — they are part of the identity
 
-2. Skin work — MINIMAL and LOCAL to the face only
-   - Very lightly even out the most obvious redness or blotchiness (max ~20% reduction, never full removal)
-   - Soften only the most visible blemishes; keep moles, freckles, scars, stubble, beard hair
-   - PRESERVE pores, fine lines, natural skin texture and grain — no smoothing, no airbrush, no "porcelain" look
-   - DO NOT add shine, highlights, or glow to cheeks/forehead/nose
+2. Skin work — VISIBLE but REALISTIC, local to the face only
+   - Reduce diffuse redness and blotchiness on cheeks, nose wings and chin by roughly 40–50% (not full removal — a natural undertone must remain)
+   - Even out patchy discoloration and small dark spots by ~40–50%
+   - Soften visible blemishes, small pimples and post-acne marks — leave the skin looking clean but still human
+   - Slightly attenuate under-eye darkness / mild dark circles (max ~40% lighter, never fully erased)
+   - Make skin texture MORE UNIFORM: reduce the most irregular bumps and rough patches, but PRESERVE pores, fine lines and natural skin grain — no smoothing, no airbrush, no porcelain / plastic look
+   - DO NOT add shine, highlights or glow to cheeks / forehead / nose
    - Skin tone, saturation and warmth must match the original almost exactly
 
 3. Quality
@@ -71,11 +74,11 @@ MANDATORY RULES:
    - No color grading, no cinematic LUT, no warm/cool shift
 
 4. Realism check
-   - The result must look like the SAME photo taken on the SAME day in the SAME light, just with skin in slightly better condition
-   - A casual viewer should need a side-by-side comparison to notice the difference
-   - If unsure between "more change" or "less change", always choose LESS
+   - The "after" must show SKIN THAT IS VISIBLY MORE EVEN than the "before" — a viewer should recognize the difference immediately without a side-by-side comparison, and describe it as "her skin looks calmer and more uniform", NOT as "the photo is brighter".
+   - The result must look like the SAME photo taken on the SAME day in the SAME light, just with the skin in noticeably better condition after a skincare routine.
+   - If unsure between "more change" or "less change", prioritize EVENNESS OF SKIN TONE over global brightness, and always keep identity and light untouched.
 
-FINAL OUTPUT: a photorealistic, near-identical version of the original selfie with only a very subtle, natural skin improvement. Same exposure, same light, same identity. No glow, no brightening, no overexposure.`
+FINAL OUTPUT: a photorealistic, near-identical version of the original selfie in which the skin is visibly more even, calmer and more uniform — same exposure, same light, same identity, same background. No glow, no brightening, no overexposure, no smoothing to porcelain.`
                   },
                   { type: "image_url", image_url: { url: selfieBase64 } }
                 ]
