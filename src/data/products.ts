@@ -8,7 +8,7 @@ import nightCreamImg from '@/assets/products/night-cream.jpg';
 import scrubImg from '@/assets/products/scrub.jpg';
 import maskImg from '@/assets/products/mask.jpg';
 import sensationSweetyOilMilkyImg from '@/assets/products/sensation-sweety-oil-milky.jpg';
-import spfCreamImg from '@/assets/products/spf-cream.jpg';
+
 import tonerImg from '@/assets/products/toner.jpg';
 import luminorRecoveryCreamImg from '@/assets/products/luminor-recovery-cream.jpg';
 import sebokeyAcnEndImg from '@/assets/products/sebokey-acn-end.jpg';
