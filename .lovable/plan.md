@@ -1,100 +1,62 @@
-## Problema
+# Piano correzioni feedback Cristiana
 
-L'enhancement attuale è affidato a Gemini (`enhance-selfie`), un modello di image-generation che:
-- non controlla con precisione l'esposizione → produce sovraesposizione e cambi di luce
-- altera i connotati (occhi che cambiano, glow innaturale, sfondo modificato)
-- è imprevedibile: ogni run dà un risultato diverso, spesso pessimo
-- è lento e costoso (chiamata server, ~10s, gateway 502)
+Quattro interventi mirati sui punti segnalati. Nessuna revisione strutturale delle pagine.
 
-Per un effetto "Instagram beauty" leggero ma visibile servono **algoritmi deterministici di image-processing**, non un modello generativo.
+## 1. Testo inestetismi nel quiz (step "Come vorresti vedere la tua pelle?")
 
-## Approccio scelto: frequency separation + face mask (in-browser)
+File: `src/components/BeautyQuiz.tsx`
 
-È la stessa tecnica che usano Instagram, FaceApp, Snapchat (versione "soft"):
+Riscrivere le 4 opzioni con copy più chiaro e brand-consistent:
+- "Più distesa" → **"Più distesa e rilassata"**
+- "Senza macchie" → **"Meno macchie e discromie"**
+- "Luminosa" → **"Più luminosa e uniforme"**
+- "Senza pori dilatati" → **"Pori meno visibili"**
 
-```text
-foto originale
-    │
-    ├─► rilevamento volto (468 landmark)
-    │       │
-    │       └─► maschera pelle = ovale del viso
-    │            MENO occhi, sopracciglia, bocca, narici, capelli
-    │
-    ├─► copia 1: low-frequency  (Gaussian blur forte)  → toni & colori uniformi
-    ├─► copia 2: high-frequency (originale − low)      → pori, peli, dettagli
-    │
-    └─► composito finale:
-        skin_mask × ( low + high × 0.65 )    ← pelle ammorbidita ma con texture
-        + (1 − skin_mask) × originale         ← occhi/bocca/sfondo INTATTI
-```
+Aggiungere anche due opzioni mancanti tra gli inestetismi ricorrenti:
+- **"Meno rossori"**
+- **"Grana più fine"**
 
-Risultato: rughe attenuate (~40-50%), tono più uniforme, pori ancora visibili, occhi e bocca nitidissimi, sfondo identico, esposizione identica.
+(La label "Senza infrazioni" vista nello screenshot è l'auto-traduzione di Safari attivata sull'iPhone — nel codice l'originale è "Senza macchie". Riscrivendo le stringhe la traduzione automatica non altererà più il senso.)
 
-## Stack
+## 2. Analisi AI del viso in prima persona
 
-- **MediaPipe Tasks Vision** (`@mediapipe/tasks-vision`) — FaceLandmarker, 468 punti, caricato lazy via CDN solo quando serve. Modello ~3MB.
-- **Canvas 2D** per la pipeline (blur, mask, blend). Niente WebGL custom: la `canvas2d.filter = "blur(Npx)"` di Chrome/Safari è hardware-accelerata e basta.
-- 100% client-side: nessuna edge function, nessuna chiamata di rete dopo il caricamento del modello.
+File: `supabase/functions/analyze-selfie/index.ts`
 
-## Modifiche al codice
+Il tono attuale è troppo poetico/generico ("appare un po' più delicata", "grana piuttosto fine", "piena luminosità e vitalità"). Riscriviamo il system prompt così:
 
-### 1. Nuovo modulo `src/lib/beautyFilter.ts`
-Espone:
-```ts
-export async function applyBeautyFilter(
-  base64Image: string,
-  opts?: { strength?: number } // 0..1, default 0.55
-): Promise<string>  // ritorna base64 PNG dell'immagine ritoccata
-```
-Internamente:
-1. Carica `FaceLandmarker` (singleton, lazy, da CDN jsDelivr)
-2. Decodifica base64 → ImageBitmap
-3. Rileva landmark; se nessun volto → ritorna l'immagine originale
-4. Costruisce skin mask su un canvas off-screen:
-   - poligono `FACE_OVAL` (36 punti) riempito di bianco
-   - sottrae con `globalCompositeOperation = "destination-out"` i poligoni di occhi (LEFT_EYE, RIGHT_EYE), sopracciglia, labbra (LIPS), narici
-   - applica `feather` (blur ~8px) ai bordi della maschera per transizione naturale
-5. Crea `lowFreq` = canvas con `ctx.filter = "blur(6px) saturate(0.97)"` sull'originale
-6. Crea `highFreq` = differenza `originale − lowFreq` (via `difference` blend mode + offset 128 trick) — mantenuto al 65%
-7. Compone `softened = lowFreq + highFreq × 0.65`
-8. Blend finale: `originale × (1 − mask × strength) + softened × (mask × strength)`
-9. Ritorna `canvas.toDataURL("image/jpeg", 0.92)`
+- Sempre in prima persona, ma **più concreto e osservazionale**.
+- Aggancio a **elementi visibili specifici** (rossori localizzati su guance/naso, pori sulla zona T, macchie/discromie, occhiaie, texture, secchezza, lucidità della zona T) — l'AI deve nominare 2-3 osservazioni concrete, non frasi vaghe.
+- Vietare aggettivi troppo lirici ("piena luminosità e vitalità", "dolcezza", "delicata del solito", "un po' più… del solito").
+- Vietare comparativi non verificabili ("più del solito", "a volte sento mancare").
+- Mantenere 3-5 frasi, prima persona, chiusura con desiderio propositivo — ma il desiderio deve essere collegato agli inestetismi osservati.
 
-`strength` default 0.55 = effetto chiaramente visibile ma naturale (riduce ~45% delle rughe e arrossamenti, mantiene texture).
+Aggiungere anche esempi in-prompt di output "buono" vs "scartato" per ancorare lo stile.
 
-### 2. `src/components/AnalysisScreen.tsx`
-- Rimuovo la chiamata a `supabase.functions.invoke('enhance-selfie', …)`
-- La sostituisco con `applyBeautyFilter(selfieBase64)`
-- Mantiene lo stesso state finale `enhancedSelfie` → nessun cambio nel resto del flow
+## 3. Prima/Dopo — enhancement più visibile ma realistico
 
-### 3. Edge function `enhance-selfie`
-La marco come deprecata (commento in cima). Non la cancello subito per non rompere eventuali chiamate in cache, ma non viene più invocata.
+File: `supabase/functions/enhance-selfie/index.ts`
 
-### 4. Memory
-Aggiorno la memoria `mem://tech/ai-selfie-enhancement-prompt` per riflettere il nuovo approccio (algoritmico in-browser, non Gemini).
+Il prompt attuale forza un effetto "barely noticeable" e vieta esplicitamente qualunque cambio su rossori/texture oltre ~20%. Da qui l'impressione che sia solo un aumento di luminosità.
 
-## Perché funziona meglio del prompt Gemini
+Modifiche al prompt:
+- Alzare l'intensità dell'intervento su **inestetismi mirati** (rossori diffusi, macchie, piccole imperfezioni, texture irregolare, leggere occhiaie) — target ~40-50% di riduzione anziché ~20%, senza però toccare identità/lineamenti/nei/lentiggini.
+- Mantenere il divieto esplicito su: brightening globale, glow, effetto porcellana, ringiovanimento, modifica dei tratti, cambio esposizione/bilanciamento bianco.
+- Aggiungere una regola positiva: "il 'dopo' deve mostrare una pelle **visibilmente più uniforme** rispetto al 'prima', non solo più luminosa. La differenza deve essere riconoscibile senza confronto affiancato, restando fotorealistica."
+- Rimuovere la clausola "if in doubt, do LESS" (attualmente spinge il modello verso il no-op) e sostituirla con "if in doubt, prioritize evenness of skin tone over global brightness".
 
-| Criterio | Gemini | Frequency separation + mask |
-|---|---|---|
-| Esposizione invariata | ❌ random | ✅ matematicamente garantita |
-| Connotati invariati | ❌ rischio | ✅ mask esclude occhi/bocca |
-| Sfondo invariato | ❌ spesso ridipinto | ✅ mask esclude fuori-volto |
-| Texture pelle (pori) | ❌ "plastico" | ✅ high-freq preservato |
-| Determinismo | ❌ ogni run diverso | ✅ identico ogni volta |
-| Costo per richiesta | $$ + latency | 0 (locale) |
-| Tempo elaborazione | 8-12s | 0.3-1s |
+## 4. Prodotto errato nel catalogo
 
-## File toccati
+File: `src/data/products.ts` + `supabase/functions/analyze-skin/index.ts`
 
-- `src/lib/beautyFilter.ts` — NEW
-- `src/components/AnalysisScreen.tsx` — sostituisce la chiamata edge
-- `supabase/functions/enhance-selfie/index.ts` — solo commento di deprecazione
-- `mem://tech/ai-selfie-enhancement-prompt` — aggiornamento
+Il prodotto id `10` — *"Crema Anti Age SPF50" — Rigenera 0.8 — 52,00 €* non è un prodotto Maison 22 Esthétique valido secondo Cristiana.
 
-## Aspetti tecnici secondari
+Azione:
+- **Rimuoverlo** da `src/data/products.ts` (import immagine incluso) e dalla KB in `supabase/functions/analyze-skin/index.ts`.
+- Rimuovere anche eventuali riferimenti al suo id in altri file (`rg "'10'"` sul repo per sicurezza).
+- Nella chat, chiedere a Cristiana di confermare se altri prodotti tra i 30 in catalogo vanno rimossi o corretti (nome/prezzo/link), così facciamo una passata unica.
 
-- **MediaPipe loading**: usato `FilesetResolver.forVisionTasks("https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.x/wasm")` — niente bundling pesante. Modello scaricato una sola volta, cache browser.
-- **Fallback se nessun volto rilevato**: ritorno l'originale (UI mostra solo "Prima" senza Dopo).
-- **iOS Safari**: `ctx.filter` supportato da Safari 18.0+; per versioni vecchie eseguo blur via downscale+upscale (separable Gaussian fallback).
-- **Memory leak**: tutti i canvas off-screen vengono dereferenziati esplicitamente.
+## Note tecniche
+
+- Nessuna modifica al DB, nessuna migrazione.
+- Edge Functions redeployate automaticamente al salvataggio dei file.
+- Il fix del prodotto è retro-compatibile: se un'analisi precedente ne aveva salvato l'id, verrà semplicemente ignorato dal `productsMap.get(id)` filter già presente in `ResultsPage.tsx`.
