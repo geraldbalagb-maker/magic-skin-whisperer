@@ -8,7 +8,7 @@ import nightCreamImg from '@/assets/products/night-cream.jpg';
 import scrubImg from '@/assets/products/scrub.jpg';
 import maskImg from '@/assets/products/mask.jpg';
 import sensationSweetyOilMilkyImg from '@/assets/products/sensation-sweety-oil-milky.jpg';
-import spfCreamImg from '@/assets/products/spf-cream.jpg';
+
 import tonerImg from '@/assets/products/toner.jpg';
 import luminorRecoveryCreamImg from '@/assets/products/luminor-recovery-cream.jpg';
 import sebokeyAcnEndImg from '@/assets/products/sebokey-acn-end.jpg';
@@ -144,18 +144,6 @@ export const products: Product[] = [
     tags: ['anti-età', 'notte', 'rigenerante', 'retinolo'],
     rating: 5,
     link: 'https://www.luxury-perfumes.net/prodotto/rigenera-xaikonix-retynol-me/'
-  },
-  {
-    id: '10',
-    name: 'Crema Anti Age SPF50',
-    brand: 'Rigenera 0.8',
-    description: 'Crema anti età con protezione solare alta',
-    price: 52.00,
-    image: spfCreamImg,
-    category: 'crema',
-    tags: ['anti-età', 'SPF', 'protezione', 'quotidiano'],
-    rating: 5,
-    link: 'https://www.luxury-perfumes.net/prodotto/rigenera-0-8-crema-anti-age-spf50/'
   },
   {
     id: '12',
