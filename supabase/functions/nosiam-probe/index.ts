@@ -1,6 +1,6 @@
 import { corsHeaders } from 'npm:@supabase/supabase-js@2/cors';
 
-const ENDPOINT = 'https://www.luxury-perfumes.net/wp-json/nosiam/v1/catalog?limit=2&page=1';
+const ENDPOINT = 'https://www.luxury-perfumes.net/wp-json/nosiam/v1/catalog?limit=1&page=1';
 
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders });
