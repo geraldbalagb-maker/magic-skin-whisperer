@@ -33,7 +33,7 @@ Deno.serve(async (req) => {
         status: r.status,
         ok: r.ok,
         contentType: r.headers.get('content-type'),
-        bodyPreview: text.slice(0, 500),
+        bodyPreview: text.slice(0, 4000),
       });
       if (r.ok && text.trim().startsWith('{') || text.trim().startsWith('[')) {
         // stop at first JSON success
