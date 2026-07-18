@@ -6,18 +6,20 @@ export interface WcCheckoutOptions {
   coupon?: string;
 }
 
+export interface WcCheckoutResult {
+  ok: boolean;
+  reason: string;
+}
+
 /**
  * Costruisce l'URL firmato di checkout WooCommerce e reindirizza il browser.
  * L'URL viene generato al momento della chiamata sulla base dei prodotti attualmente
  * selezionati: qualsiasi modifica al carrello prima del click viene rispettata.
- *
- * Ritorna `false` se manca la mappatura `wcId` per uno o più prodotti (i wcId
- * vengono popolati dal team IT / job di sync catalogo Nosiam).
  */
 export async function redirectToWooCheckout(
   products: Product[],
   opts: WcCheckoutOptions = {},
-): Promise<{ ok: true } | { ok: false; reason: string }> {
+): Promise<WcCheckoutResult> {
   if (!products.length) return { ok: false, reason: "empty_cart" };
 
   const missing = products.filter((p) => !p.wcId);
@@ -39,5 +41,5 @@ export async function redirectToWooCheckout(
   }
 
   window.location.href = data.url as string;
-  return { ok: true };
+  return { ok: true, reason: "" };
 }
