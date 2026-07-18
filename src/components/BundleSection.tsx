@@ -1,5 +1,8 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
-import { ShoppingBag, Check, ChevronRight, Shield, Truck, Clock, Star } from "lucide-react";
+import { ShoppingBag, Check, ChevronRight, Shield, Truck, Clock, Star, Loader2 } from "lucide-react";
+import { toast } from "sonner";
+import { redirectToWooCheckout } from "@/lib/wcCheckout";
 import type { Product } from "@/data/products";
 import goldenEnvelopeImg from "@/assets/golden-envelope.jpg";
 
