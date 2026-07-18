@@ -65,14 +65,25 @@ const AnalysisScreen = ({ name, quizData, onComplete }: AnalysisScreenProps) => 
         });
 
         const selfiePromise: Promise<string | null> = quizData.selfie
-          ? import("@/lib/beautyFilter")
-              .then(({ applyBeautyFilter }) =>
-                applyBeautyFilter(quizData.selfie!, { strength: 0.42 }),
-              )
-              .catch((e) => {
+          ? (async () => {
+              try {
+                // 1. Mappa AI degli inestetismi (opzione D)
+                const mapRes = await supabase.functions.invoke("map-skin-concerns", {
+                  body: { selfie: quizData.selfie },
+                });
+                const concerns = mapRes.data?.success ? mapRes.data.map : null;
+                // 2. Rendering deterministico targeted sul selfie
+                const { applyBeautyFilter } = await import("@/lib/beautyFilter");
+                return await applyBeautyFilter(quizData.selfie!, {
+                  strength: 0.38,
+                  targetedStrength: 0.75,
+                  concerns,
+                });
+              } catch (e) {
                 console.warn("beauty filter failed:", e);
                 return null;
-              })
+              }
+            })()
           : Promise.resolve(null);
 
         const [routineRes, enhancedSelfie] = await Promise.all([
