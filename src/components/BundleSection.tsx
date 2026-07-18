@@ -33,6 +33,27 @@ const BundleSection = ({
   onCheckout,
 }: BundleSectionProps) => {
   const savings = totalPrice - bundlePrice;
+  const [loading, setLoading] = useState(false);
+
+  const handleCheckout = async (selected: Product[], isBundle: boolean) => {
+    if (loading || selected.length === 0) return;
+    setLoading(true);
+    const result = await redirectToWooCheckout(selected, {
+      coupon: isBundle ? "M22-BUNDLE10" : undefined,
+    });
+    if (result.ok) return; // redirect in corso
+    setLoading(false);
+    if (result.reason.startsWith("wcId_missing")) {
+      toast.error("Checkout non ancora configurato", {
+        description: "I codici prodotto WooCommerce non sono ancora stati collegati. Riprova tra poco.",
+      });
+    } else {
+      toast.error("Impossibile aprire il checkout", { description: result.reason });
+    }
+    // fallback: comportamento precedente (mostra thank you)
+    onCheckout(selected);
+  };
+
 
   return (
     <section className="border-t border-border bg-background">
