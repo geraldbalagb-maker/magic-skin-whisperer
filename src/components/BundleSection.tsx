@@ -43,12 +43,13 @@ const BundleSection = ({
     });
     if (result.ok) return; // redirect in corso
     setLoading(false);
-    if (result.reason.startsWith("wcId_missing")) {
+    const reason = result.reason;
+    if (reason.startsWith("wcId_missing")) {
       toast.error("Checkout non ancora configurato", {
         description: "I codici prodotto WooCommerce non sono ancora stati collegati. Riprova tra poco.",
       });
     } else {
-      toast.error("Impossibile aprire il checkout", { description: result.reason });
+      toast.error("Impossibile aprire il checkout", { description: reason });
     }
     // fallback: comportamento precedente (mostra thank you)
     onCheckout(selected);
