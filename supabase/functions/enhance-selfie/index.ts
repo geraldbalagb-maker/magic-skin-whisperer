@@ -6,6 +6,31 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
+const SYSTEM_PROMPT = `You are a photorealistic dermatology retoucher. You will receive a real selfie and must return the SAME photo edited to simulate the visible effect of a personalized skincare routine after 6–8 weeks of consistent use.
+
+ABSOLUTE RULES — DO NOT BREAK:
+1. IDENTITY: keep the exact same person. Same bone structure, eyes, nose, mouth, ears, eyebrows, hairline, jawline, chin, teeth, facial hair, moles, freckles, scars, beauty marks. No rejuvenation, no reshaping, no slimming, no makeup. If unsure, do LESS, never more.
+2. COMPOSITION: same framing, pose, perspective, expression, gaze direction, head angle. Background pixel-identical. Hair, clothing, accessories (glasses, earrings) unchanged.
+3. LIGHT & EXPOSURE: same white balance, same exposure, same shadow/highlight distribution, same light direction. NO global brightening. NO glow, bloom, HDR, or highlight boost. The histogram must stay essentially the same. Improvement must come from SKIN QUALITY, not from lighting.
+4. REALISM: match original sharpness and sensor grain. No airbrush, no porcelain, no plastic skin, no beauty-filter look. Pores and fine skin texture must remain visible.
+
+WHAT TO IMPROVE (localized on facial skin ONLY):
+- Reduce diffuse redness on cheeks, nose wings, chin by ~45–55%. Leave a natural warm undertone.
+- Attenuate visible blemishes, small pimples, post-acne marks, and dark spots by ~50–60%. Keep a few faint traces so it looks natural, not erased.
+- Improve overall skin tone evenness (reduce blotchiness, patchy discoloration).
+- Slightly attenuate under-eye darkness by ~35–45%. Never fully erase — a hint of shadow must remain.
+- Reduce visible pore congestion in the T-zone; keep individual pores.
+- Smooth the roughest texture irregularities WITHOUT losing pores, fine lines, or expression lines.
+- Very light softening of the deepest expression lines (~20% attenuation max). Keep every line the person owns — no anti-aging.
+
+QUALITY CHECK BEFORE RETURNING:
+- If the person would not recognize themselves instantly → you went too far.
+- If the photo looks brighter or "shinier" → you brightened globally. Redo the skin work locally instead.
+- If skin looks plastic or airbrushed → restore pores and texture.
+- The viewer must describe the difference as: "her skin looks calmer, clearer and more even" — never as "the photo is brighter" or "she looks younger".
+
+OUTPUT: one photorealistic image, same dimensions as the input, same person, same light, same background — with skin visibly healthier as after a real skincare routine.`;
+
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -24,7 +49,20 @@ serve(async (req) => {
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
 
-    // Retry con backoff esponenziale per errori transienti del gateway (502/503/504)
+    const body = {
+      model: "google/gemini-3-pro-image",
+      messages: [
+        {
+          role: "user",
+          content: [
+            { type: "text", text: SYSTEM_PROMPT },
+            { type: "image_url", image_url: { url: selfieBase64 } },
+          ],
+        },
+      ],
+      modalities: ["image", "text"],
+    };
+
     const callGateway = async (): Promise<Response> => {
       const maxAttempts = 3;
       let lastErr: Response | null = null;
@@ -35,63 +73,11 @@ serve(async (req) => {
             Authorization: `Bearer ${LOVABLE_API_KEY}`,
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({
-            model: "google/gemini-3.1-flash-image-preview",
-            messages: [
-              {
-                role: "user",
-                content: [
-                  {
-                    type: "text",
-                    text: `Use the provided image as the ONLY source of truth. Produce a REALISTIC "after skincare" version of the same photo where the skin looks VISIBLY MORE EVEN than the original, but the person, the light and the setting are unmistakably the same.
-
-CRITICAL — EXPOSURE & LIGHT (do NOT change):
-- DO NOT brighten the image globally. Keep the EXACT same exposure, white balance, and ambient lighting of the original.
-- DO NOT add any glow, bloom, highlight boost, HDR effect, or "luminosity".
-- DO NOT lift shadows or recover highlights. Keep the original light direction and contrast intact.
-- The overall brightness histogram must stay essentially the same as the input. The improvement must come from SKIN EVENNESS, not from light.
-
-MANDATORY RULES:
-1. Identity & composition — IDENTICAL to the original
-   - Same framing, proportions, perspective, pose, expression
-   - Same bone structure, eyes, nose, mouth, eyebrows, hairline, jawline — no rejuvenation, no reshaping
-   - Same background, hair, clothing, accessories (glasses included), every non-face element pixel-faithful
-   - No makeup, no filters, no stylization
-   - Preserve moles, freckles, beauty marks, scars, stubble, beard hair — they are part of the identity
-
-2. Skin work — VISIBLE but REALISTIC, local to the face only
-   - Reduce diffuse redness and blotchiness on cheeks, nose wings and chin by roughly 40–50% (not full removal — a natural undertone must remain)
-   - Even out patchy discoloration and small dark spots by ~40–50%
-   - Soften visible blemishes, small pimples and post-acne marks — leave the skin looking clean but still human
-   - Slightly attenuate under-eye darkness / mild dark circles (max ~40% lighter, never fully erased)
-   - Make skin texture MORE UNIFORM: reduce the most irregular bumps and rough patches, but PRESERVE pores, fine lines and natural skin grain — no smoothing, no airbrush, no porcelain / plastic look
-   - DO NOT add shine, highlights or glow to cheeks / forehead / nose
-   - Skin tone, saturation and warmth must match the original almost exactly
-
-3. Quality
-   - Match the original sharpness — do not over-sharpen
-   - Do not denoise aggressively; keep the natural sensor grain
-   - No color grading, no cinematic LUT, no warm/cool shift
-
-4. Realism check
-   - The "after" must show SKIN THAT IS VISIBLY MORE EVEN than the "before" — a viewer should recognize the difference immediately without a side-by-side comparison, and describe it as "her skin looks calmer and more uniform", NOT as "the photo is brighter".
-   - The result must look like the SAME photo taken on the SAME day in the SAME light, just with the skin in noticeably better condition after a skincare routine.
-   - If unsure between "more change" or "less change", prioritize EVENNESS OF SKIN TONE over global brightness, and always keep identity and light untouched.
-
-FINAL OUTPUT: a photorealistic, near-identical version of the original selfie in which the skin is visibly more even, calmer and more uniform — same exposure, same light, same identity, same background. No glow, no brightening, no overexposure, no smoothing to porcelain.`
-                  },
-                  { type: "image_url", image_url: { url: selfieBase64 } }
-                ]
-              }
-            ],
-            modalities: ["image", "text"]
-          }),
+          body: JSON.stringify(body),
         });
-
         if (r.ok) return r;
-        // Retry solo per errori transienti
         if ([502, 503, 504, 408, 429].includes(r.status) && attempt < maxAttempts) {
-          const delay = 600 * Math.pow(2, attempt - 1); // 600ms, 1.2s
+          const delay = 800 * Math.pow(2, attempt - 1);
           console.warn(`AI gateway ${r.status}, retry ${attempt}/${maxAttempts - 1} in ${delay}ms`);
           await new Promise((res) => setTimeout(res, delay));
           lastErr = r;
@@ -105,23 +91,16 @@ FINAL OUTPUT: a photorealistic, near-identical version of the original selfie in
     const response = await callGateway();
 
     if (!response.ok) {
-      if (response.status === 429) {
-        return new Response(
-          JSON.stringify({ success: false, error: "Troppe richieste, riprova tra qualche secondo." }),
-          { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-        );
-      }
-      if (response.status === 402) {
-        return new Response(
-          JSON.stringify({ success: false, error: "Crediti AI esauriti." }),
-          { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-        );
-      }
       const errorText = await response.text();
-      console.error("AI gateway error:", response.status, errorText.slice(0, 300));
-      // Fallback graceful: niente enhanced image, ma 200 così il client non crasha
+      console.error("AI gateway error:", response.status, errorText.slice(0, 500));
+      const userMsg =
+        response.status === 429
+          ? "Troppe richieste, riprova tra qualche secondo."
+          : response.status === 402
+          ? "Crediti AI esauriti."
+          : `AI gateway temporaneamente non disponibile (${response.status})`;
       return new Response(
-        JSON.stringify({ success: false, error: `AI gateway temporaneamente non disponibile (${response.status})` }),
+        JSON.stringify({ success: false, error: userMsg }),
         { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
@@ -130,7 +109,7 @@ FINAL OUTPUT: a photorealistic, near-identical version of the original selfie in
     const enhancedImageUrl = data.choices?.[0]?.message?.images?.[0]?.image_url?.url;
 
     if (!enhancedImageUrl) {
-      console.error("No image in AI response:", JSON.stringify(data).slice(0, 500));
+      console.error("No image in AI response:", JSON.stringify(data).slice(0, 800));
       return new Response(
         JSON.stringify({ success: false, error: "Nessuna immagine generata dall'AI" }),
         { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
@@ -148,10 +127,7 @@ FINAL OUTPUT: a photorealistic, near-identical version of the original selfie in
         success: false,
         error: e instanceof Error ? e.message : "Errore sconosciuto",
       }),
-      {
-        status: 500,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      }
+      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   }
 });
