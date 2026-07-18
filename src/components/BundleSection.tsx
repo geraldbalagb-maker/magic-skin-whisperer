@@ -41,7 +41,7 @@ const BundleSection = ({
     const result = await redirectToWooCheckout(selected, {
       coupon: isBundle ? "M22-BUNDLE10" : undefined,
     });
-    if (result.ok) return; // redirect in corso
+    if (result.ok === true) return; // redirect in corso
     setLoading(false);
     const reason = result.reason;
     if (reason.startsWith("wcId_missing")) {
