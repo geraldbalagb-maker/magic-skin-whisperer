@@ -136,24 +136,29 @@ const BundleSection = ({
               {/* CTA Buttons */}
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                 <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.97 }}
+                  whileHover={loading ? {} : { scale: 1.02 }}
+                  whileTap={loading ? {} : { scale: 0.97 }}
                   onClick={() => {
                     onAddAll();
-                    onCheckout(products);
+                    handleCheckout(products, true);
                   }}
-                  className="flex items-center justify-center gap-2.5 rounded-sm bg-gradient-cta px-10 py-4 font-body text-xs font-bold uppercase tracking-[0.15em] text-cta-foreground shadow-cta transition-opacity hover:opacity-90"
+                  disabled={loading}
+                  className="flex items-center justify-center gap-2.5 rounded-sm bg-gradient-cta px-10 py-4 font-body text-xs font-bold uppercase tracking-[0.15em] text-cta-foreground shadow-cta transition-opacity hover:opacity-90 disabled:opacity-60"
                 >
-                  <ShoppingBag className="h-4 w-4" />
-                  Aggiungi al Carrello
+                  {loading ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <ShoppingBag className="h-4 w-4" />
+                  )}
+                  {loading ? "Preparazione..." : "Aggiungi al Carrello"}
                 </motion.button>
 
                 {cart.size < products.length && (
                   <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.97 }}
-                    onClick={() => onCheckout(products.filter((p) => cart.has(p.id)))}
-                    disabled={cart.size === 0}
+                    whileHover={loading ? {} : { scale: 1.02 }}
+                    whileTap={loading ? {} : { scale: 0.97 }}
+                    onClick={() => handleCheckout(products.filter((p) => cart.has(p.id)), false)}
+                    disabled={cart.size === 0 || loading}
                     className="flex items-center justify-center gap-2 rounded-none border border-border px-8 py-4 font-body text-xs font-medium uppercase tracking-wider text-foreground transition-all hover:border-foreground disabled:opacity-40"
                   >
                     Acquista selezionati ({cart.size})
