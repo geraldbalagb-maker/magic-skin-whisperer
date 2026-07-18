@@ -67,20 +67,20 @@ const AnalysisScreen = ({ name, quizData, onComplete }: AnalysisScreenProps) => 
         const selfiePromise: Promise<string | null> = quizData.selfie
           ? (async () => {
               try {
-                // 1. Mappa AI degli inestetismi (opzione D)
-                const mapRes = await supabase.functions.invoke("map-skin-concerns", {
-                  body: { selfie: quizData.selfie },
+                const res = await supabase.functions.invoke("enhance-selfie", {
+                  body: { selfieBase64: quizData.selfie },
                 });
-                const concerns = mapRes.data?.success ? mapRes.data.map : null;
-                // 2. Rendering deterministico targeted sul selfie
-                const { applyBeautyFilter } = await import("@/lib/beautyFilter");
-                return await applyBeautyFilter(quizData.selfie!, {
-                  strength: 0.38,
-                  targetedStrength: 0.75,
-                  concerns,
-                });
+                if (res.error) {
+                  console.warn("enhance-selfie error:", res.error);
+                  return null;
+                }
+                if (res.data?.success && res.data.enhancedImage) {
+                  return res.data.enhancedImage as string;
+                }
+                console.warn("enhance-selfie unsuccessful:", res.data?.error);
+                return null;
               } catch (e) {
-                console.warn("beauty filter failed:", e);
+                console.warn("enhance-selfie failed:", e);
                 return null;
               }
             })()
