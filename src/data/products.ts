@@ -31,6 +31,8 @@ import creamImg from '@/assets/products/cream.jpg';
 
 export interface Product {
   id: string;
+  /** ID numerico del prodotto su WooCommerce (luxury-perfumes.net). Necessario per il checkout multi-item. */
+  wcId?: number;
   name: string;
   brand: string;
   description: string;
