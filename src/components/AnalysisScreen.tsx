@@ -64,26 +64,51 @@ const AnalysisScreen = ({ name, quizData, onComplete }: AnalysisScreenProps) => 
           },
         });
 
+        // Fallback: vecchio enhance-selfie (Gemini)
+        const legacyEnhance = async (): Promise<string | null> => {
+          try {
+            const res = await supabase.functions.invoke("enhance-selfie", {
+              body: { selfieBase64: quizData.selfie },
+            });
+            if (res.data?.success && res.data.enhancedImage) return res.data.enhancedImage as string;
+            return null;
+          } catch {
+            return null;
+          }
+        };
+
+        // Motore ME-22: analisi -> routine -> preview con polling (2s, max 180s)
+        const engineEnhance = async (): Promise<string | null> => {
+          const start = await supabase.functions.invoke("me22-preview", {
+            body: {
+              action: "start",
+              selfie: quizData.selfie,
+              skinGoals: quizData.skinGoals,
+              budget: quizData.budget,
+            },
+          });
+          const jobId = start.data?.ok ? (start.data.jobId as string) : null;
+          if (!jobId) {
+            console.warn("me22-preview start failed:", start.data?.error || start.error);
+            return null;
+          }
+          const deadline = Date.now() + 180_000;
+          while (Date.now() < deadline) {
+            await new Promise((r) => setTimeout(r, 2000));
+            const s = await supabase.functions.invoke("me22-preview", {
+              body: { action: "status", jobId },
+            });
+            if (s.data?.status === "done" && s.data.image) return s.data.image as string;
+            if (s.data?.status === "failed" || s.data?.ok === false) {
+              console.warn("me22-preview failed:", s.data?.error);
+              return null;
+            }
+          }
+          return null;
+        };
+
         const selfiePromise: Promise<string | null> = quizData.selfie
-          ? (async () => {
-              try {
-                const res = await supabase.functions.invoke("enhance-selfie", {
-                  body: { selfieBase64: quizData.selfie },
-                });
-                if (res.error) {
-                  console.warn("enhance-selfie error:", res.error);
-                  return null;
-                }
-                if (res.data?.success && res.data.enhancedImage) {
-                  return res.data.enhancedImage as string;
-                }
-                console.warn("enhance-selfie unsuccessful:", res.data?.error);
-                return null;
-              } catch (e) {
-                console.warn("enhance-selfie failed:", e);
-                return null;
-              }
-            })()
+          ? (async () => (await engineEnhance()) ?? (await legacyEnhance()))()
           : Promise.resolve(null);
 
         const [routineRes, enhancedSelfie] = await Promise.all([
