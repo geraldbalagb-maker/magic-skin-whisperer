@@ -14,6 +14,7 @@ import ReviewsSection from "./ReviewsSection";
 import FAQSection from "./FAQSection";
 import FounderIntro from "./results/FounderIntro";
 import { getRoutineProducts } from "@/lib/me22Routine";
+import { getRoutinePricing } from "../../supabase/functions/_shared/me22Budget";
 
 interface ResultsPageProps {
   name: string;
@@ -55,9 +56,7 @@ const ResultsPage = ({ name, quizData, aiResult, selfie, enhancedSelfie, onCheck
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [aiResult]);
 
-  const totalPrice = uniqueProducts.reduce((sum, p) => sum + p.price, 0);
-  // Sconto esclusivo dedicato a chi completa il funnel: -25%
-  const bundlePrice = totalPrice * 0.90;
+  const { totalPrice, bundlePrice } = getRoutinePricing(uniqueProducts);
 
   const toggleCart = (id: string) => {
     setCart((prev) => {
