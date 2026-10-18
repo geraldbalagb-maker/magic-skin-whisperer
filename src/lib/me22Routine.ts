@@ -6,6 +6,7 @@ const engineProduct = z.object({
   product_id: z.number().int().positive(), name: z.string().min(1), brand: z.string(),
   price: z.union([z.string(), z.number()]).transform(Number).refine(p => Number.isFinite(p) && p >= 0),
   sku: z.string().optional(), permalink: z.string().url(), image: z.string().url().optional(),
+  image_data: z.string().regex(/^data:image\/(jpeg|png|webp);base64,/).nullable().optional(),
   product_role: z.string().optional(),
 });
 const engineStep = z.object({
@@ -42,10 +43,10 @@ export function adaptME22Routine(raw: unknown, skinDescription: string): AIRouti
     }
     const link = validShopUrl(p.permalink);
     const local = products.find(local => local.wcId === p.product_id || normalize(local.link) === normalize(link) || normalize(`${local.brand}${local.name}`) === normalize(p.name));
-    if (!local && !p.image) throw new Error(`Immagine non disponibile per ${p.name}.`);
+    if (!local && !p.image_data) throw new Error(`Immagine non disponibile per ${p.name}. Riprova tra poco.`);
     catalog.set(id, {
       id, wcId: p.product_id, name: p.name, brand: p.brand, price: p.price,
-      description: local?.description || "", image: local?.image || validShopUrl(p.image || ""),
+      description: local?.description || "", image: local?.image || p.image_data || "",
       category: local?.category || roles[p.product_role || ""] || "trattamento",
       tags: local?.tags || [], rating: local?.rating || 0, link,
     });

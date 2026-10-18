@@ -120,6 +120,29 @@ Deno.serve(async (req) => {
     });
     const dr = await rr.json().catch(() => ({}));
     if (!rr.ok || !dr.ok) return json({ ok: false, error: dr?.error || `routines_${rr.status}` });
+    // Runtime catalog media is fetched server-side, never hotlinked by the browser.
+    const media = new Map<string, Promise<string | null>>();
+    const hydrate = async (product: Record<string, unknown> | null) => {
+      if (!product || typeof product.image !== "string") return;
+      const imageUrl = product.image;
+      if (!media.has(imageUrl)) media.set(imageUrl, (async () => {
+        try {
+          const url = new URL(imageUrl);
+          if (url.protocol !== "https:" || !["www.luxury-perfumes.net", "luxury-perfumes.net"].includes(url.hostname)) return null;
+          const response = await fetch(url, { signal: AbortSignal.timeout(15_000), redirect: "error" });
+          const mime = response.headers.get("content-type")?.split(";")[0] || "";
+          if (!response.ok || !["image/jpeg", "image/png", "image/webp"].includes(mime)) return null;
+          const bytes = new Uint8Array(await response.arrayBuffer());
+          if (bytes.length > 3_000_000) return null;
+          let binary = "";
+          for (let offset = 0; offset < bytes.length; offset += 8192) binary += String.fromCharCode(...bytes.subarray(offset, offset + 8192));
+          return `data:${mime};base64,${btoa(binary)}`;
+        } catch { return null; }
+      })());
+      product.image_data = await media.get(imageUrl);
+    };
+    const entries = [...Object.values(dr.recommendation?.routine || {}).flat(), ...(dr.recommendation?.extra_products || [])] as { product?: Record<string, unknown> | null }[];
+    await Promise.all(entries.map(entry => hydrate(entry.product || null)));
     const result = { ok: true, analysis, recommendation: dr.recommendation };
     if (start.data.action === "recommend" || !blob) return json(result);
 
