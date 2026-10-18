@@ -48,3 +48,7 @@ Lista master delle modifiche da implementare. Aggiornare lo stato man mano: `[ ]
 ---
 
 **Riferimenti screenshot:** stile bottoni neri pieni, header minimale, tipografia serif elegante per titoli (Maison 22 / Luxury Perfumes).
+
+## 7. Motore ME-22
+- [~] Collegare assegnazione prodotti ME-22 a risultati, carrello e bundle (mattina/sera/settimanale), verificando i prodotti non presenti nel catalogo.
+- [ ] Verificare checkout WooCommerce: richiede mappatura ID prodotti e conferma installazione del plugin sul sito del negozio.
