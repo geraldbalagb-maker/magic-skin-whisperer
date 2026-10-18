@@ -4,11 +4,16 @@ import { Check, Loader2 } from "lucide-react";
 import BrandLogo from "@/components/shared/BrandLogo";
 import type { QuizData } from "./BeautyQuiz";
 import { supabase } from "@/integrations/supabase/client";
+import { adaptME22Routine } from "@/lib/me22Routine";
+import type { Product } from "@/data/products";
+import { Button } from "@/components/ui/button";
 
 export interface AIRoutineResult {
+  resolved_products?: Product[];
   skin_analysis: string;
   personalized_tips: { title: string; text: string }[];
   steps: {
+    period?: string;
     step_name: string;
     step_order: number;
     icon: string;
@@ -44,6 +49,7 @@ const AnalysisScreen = ({ name, quizData, onComplete }: AnalysisScreenProps) => 
   const [readyToReveal, setReadyToReveal] = useState(false);
   const resultRef = useRef<AnalysisResult | null>(null);
   const hasCalledAI = useRef(false);
+  const [attempt, setAttempt] = useState(0);
 
   useEffect(() => {
     if (hasCalledAI.current) return;
@@ -51,78 +57,35 @@ const AnalysisScreen = ({ name, quizData, onComplete }: AnalysisScreenProps) => 
 
     const callAI = async () => {
       try {
-        const routinePromise = supabase.functions.invoke("analyze-skin", {
+        const start = await supabase.functions.invoke("me22-preview", {
           body: {
-            name: quizData.name,
-            age: quizData.age,
-            time: quizData.time,
-            skinDescription: quizData.skinDescription,
-            hasSelfie: !!quizData.selfie,
+            action: quizData.selfie ? "start" : "recommend",
+            selfie: quizData.selfie || undefined,
             skinGoals: quizData.skinGoals,
-            currentProducts: quizData.currentProducts,
+            skinDescription: quizData.skinDescription,
             budget: quizData.budget,
           },
         });
-
-        // Fallback: vecchio enhance-selfie (Gemini)
-        const legacyEnhance = async (): Promise<string | null> => {
-          try {
-            const res = await supabase.functions.invoke("enhance-selfie", {
-              body: { selfieBase64: quizData.selfie },
-            });
-            if (res.data?.success && res.data.enhancedImage) return res.data.enhancedImage as string;
-            return null;
-          } catch {
-            return null;
-          }
-        };
-
-        // Motore ME-22: analisi -> routine -> preview con polling (2s, max 180s)
-        const engineEnhance = async (): Promise<string | null> => {
-          const start = await supabase.functions.invoke("me22-preview", {
-            body: {
-              action: "start",
-              selfie: quizData.selfie,
-              skinGoals: quizData.skinGoals,
-              budget: quizData.budget,
-            },
-          });
-          const jobId = start.data?.ok ? (start.data.jobId as string) : null;
-          if (!jobId) {
-            console.warn("me22-preview start failed:", start.data?.error || start.error);
-            return null;
-          }
+        if (start.error || !start.data?.ok || !start.data.recommendation) {
+          throw new Error("Non riusciamo a creare la routine con il motore ME-22. Nessun prodotto è stato assegnato: riprova tra poco.");
+        }
+        const routine = adaptME22Routine(start.data.recommendation, quizData.skinDescription, quizData.budget);
+        let enhancedSelfie: string | null = null;
+        const jobId = typeof start.data.jobId === "string" ? start.data.jobId : null;
+        if (jobId) {
           const deadline = Date.now() + 180_000;
           while (Date.now() < deadline) {
-            await new Promise((r) => setTimeout(r, 2000));
-            const s = await supabase.functions.invoke("me22-preview", {
-              body: { action: "status", jobId },
-            });
-            if (s.data?.status === "done" && s.data.image) return s.data.image as string;
-            if (s.data?.status === "failed" || s.data?.ok === false) {
-              console.warn("me22-preview failed:", s.data?.error);
-              return null;
+            await new Promise(resolve => setTimeout(resolve, 3000));
+            const status = await supabase.functions.invoke("me22-preview", { body: { action: "status", jobId } });
+            if (status.data?.status === "done" && typeof status.data.image === "string") {
+              enhancedSelfie = status.data.image;
+              break;
             }
+            if (status.error || status.data?.status === "failed" || status.data?.ok === false) break;
           }
-          return null;
-        };
-
-        const selfiePromise: Promise<string | null> = quizData.selfie
-          ? (async () => (await engineEnhance()) ?? (await legacyEnhance()))()
-          : Promise.resolve(null);
-
-        const [routineRes, enhancedSelfie] = await Promise.all([
-          routinePromise,
-          selfiePromise,
-        ]);
-
-        if (routineRes.error) throw new Error(routineRes.error.message);
-        if (!routineRes.data?.success) throw new Error(routineRes.data?.error || "Errore nell'analisi");
-
-        resultRef.current = {
-          routine: routineRes.data.routine,
-          enhancedSelfie,
-        };
+        }
+        // Preview failure must never discard the successfully composed engine routine.
+        resultRef.current = { routine, enhancedSelfie };
       } catch (err) {
         console.error("AI analysis error:", err);
         setError(err instanceof Error ? err.message : "Errore nell'analisi");
@@ -130,7 +93,7 @@ const AnalysisScreen = ({ name, quizData, onComplete }: AnalysisScreenProps) => 
     };
 
     callAI();
-  }, [quizData]);
+  }, [quizData, attempt]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -139,7 +102,8 @@ const AnalysisScreen = ({ name, quizData, onComplete }: AnalysisScreenProps) => 
           if (p >= 100) {
             clearInterval(interval);
             setReadyToReveal(true);
-            setTimeout(() => onComplete(resultRef.current!), 1200);
+            const result = resultRef.current;
+            if (result) setTimeout(() => onComplete(result), 1200);
             return 100;
           }
           return p + 3;
@@ -168,12 +132,12 @@ const AnalysisScreen = ({ name, quizData, onComplete }: AnalysisScreenProps) => 
             Oops, qualcosa è andato storto
           </h2>
           <p className="font-body text-sm text-muted-foreground max-w-sm">{error}</p>
-          <button
-            onClick={() => window.location.reload()}
+          <Button
+            onClick={() => { hasCalledAI.current = false; setError(null); setAttempt(previous => previous + 1); }}
             className="bg-foreground px-8 py-3 font-body text-sm font-medium uppercase tracking-[0.2em] text-background"
           >
             Riprova
-          </button>
+          </Button>
         </div>
       </div>
     );

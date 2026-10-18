@@ -8,6 +8,7 @@ import goldenEnvelopeImg from "@/assets/golden-envelope.jpg";
 
 interface BundleSectionProps {
   products: Product[];
+  bundleProducts?: Product[];
   cart: Set<string>;
   totalPrice: number;
   bundlePrice: number;
@@ -25,6 +26,7 @@ const benefits = [
 
 const BundleSection = ({
   products,
+  bundleProducts = products,
   cart,
   totalPrice,
   bundlePrice,
@@ -34,6 +36,8 @@ const BundleSection = ({
 }: BundleSectionProps) => {
   const savings = totalPrice - bundlePrice;
   const [loading, setLoading] = useState(false);
+  const selectedProducts = products.filter(p => cart.has(p.id));
+  const isFullBundle = cart.size === bundleProducts.length && bundleProducts.every(p => cart.has(p.id));
 
   const handleCheckout = async (selected: Product[], isBundle: boolean) => {
     if (loading || selected.length === 0) return;
@@ -51,8 +55,7 @@ const BundleSection = ({
     } else {
       toast.error("Impossibile aprire il checkout", { description: reason });
     }
-    // fallback: comportamento precedente (mostra thank you)
-    onCheckout(selected);
+    // Keep the cart visible when checkout fails; no purchase has happened.
   };
 
 
@@ -82,7 +85,7 @@ const BundleSection = ({
 
               {/* Description */}
               <p className="mt-5 max-w-md font-body text-sm leading-relaxed text-muted-foreground md:text-base">
-                Abbiamo riunito i <strong className="text-foreground">{products.length} prodotti essenziali</strong> per
+                Abbiamo riunito i <strong className="text-foreground">{bundleProducts.length} prodotti essenziali</strong> per
                 la tua pelle in un unico cofanetto di lusso. Solo per chi completa l'analisi:{" "}
                 <strong className="text-foreground">-10% riservato</strong>, non disponibile sul sito.
               </p>
@@ -140,7 +143,7 @@ const BundleSection = ({
                   whileTap={loading ? {} : { scale: 0.97 }}
                   onClick={() => {
                     onAddAll();
-                    handleCheckout(products, true);
+                    handleCheckout(bundleProducts, true);
                   }}
                   disabled={loading}
                   className="flex items-center justify-center gap-2.5 rounded-sm bg-gradient-cta px-10 py-4 font-body text-xs font-bold uppercase tracking-[0.15em] text-cta-foreground shadow-cta transition-opacity hover:opacity-90 disabled:opacity-60"
@@ -153,15 +156,15 @@ const BundleSection = ({
                   {loading ? "Preparazione..." : "Aggiungi al Carrello"}
                 </motion.button>
 
-                {cart.size < products.length && (
+                {!isFullBundle && (
                   <motion.button
                     whileHover={loading ? {} : { scale: 1.02 }}
                     whileTap={loading ? {} : { scale: 0.97 }}
-                    onClick={() => handleCheckout(products.filter((p) => cart.has(p.id)), false)}
-                    disabled={cart.size === 0 || loading}
+                    onClick={() => handleCheckout(selectedProducts, false)}
+                    disabled={selectedProducts.length === 0 || loading}
                     className="flex items-center justify-center gap-2 rounded-none border border-border px-8 py-4 font-body text-xs font-medium uppercase tracking-wider text-foreground transition-all hover:border-foreground disabled:opacity-40"
                   >
-                    Acquista selezionati ({cart.size})
+                    Acquista selezionati ({selectedProducts.length})
                   </motion.button>
                 )}
               </div>
@@ -189,7 +192,7 @@ const BundleSection = ({
               <div className="absolute inset-0 -rotate-2 scale-[1.02] rounded-sm bg-gradient-cream" />
 
               <div className="relative grid grid-cols-2 gap-4 p-4">
-                {products.slice(0, 6).map((p, i) => (
+                {products.map((p, i) => (
                   <motion.div
                     key={p.id}
                     initial={{ opacity: 0, y: 20 }}
@@ -233,14 +236,6 @@ const BundleSection = ({
                 ))}
               </div>
 
-              {/* Show remaining products count */}
-              {products.length > 6 && (
-                <div className="relative mt-2 text-center">
-                  <span className="font-body text-xs text-muted-foreground">
-                    + altri {products.length - 6} prodotti inclusi nel bundle
-                  </span>
-                </div>
-              )}
             </motion.div>
           </div>
         </div>

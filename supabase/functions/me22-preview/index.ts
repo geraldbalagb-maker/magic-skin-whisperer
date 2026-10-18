@@ -20,10 +20,11 @@ const BUDGET_MAP: Record<string, string> = {
 };
 
 const StartSchema = z.object({
-  action: z.literal("start"),
-  selfie: z.string().min(50).max(12_000_000),
+  action: z.enum(["start", "recommend"]),
+  selfie: z.string().min(50).max(12_000_000).optional(),
   skinGoals: z.array(z.string().max(100)).max(10).default([]),
   budget: z.string().max(50).optional().default(""),
+  skinDescription: z.string().max(5000).default(""),
 });
 const StatusSchema = z.object({
   action: z.literal("status"),
@@ -73,24 +74,37 @@ Deno.serve(async (req) => {
 
     const start = StartSchema.safeParse(body);
     if (!start.success) return json({ ok: false, error: start.error.flatten().fieldErrors }, 400);
-    const { selfie, skinGoals, budget } = start.data;
-    const blob = dataUrlToBlob(selfie);
-    const ext = blob.type.split("/")[1];
+    const { selfie, skinGoals, budget, skinDescription } = start.data;
+    if (start.data.action === "start" && !selfie) return json({ ok: false, error: "selfie_required" }, 400);
+    const blob = selfie ? dataUrlToBlob(selfie) : null;
+    if (blob && blob.size > 8 * 1024 * 1024) return json({ ok: false, error: "selfie_too_large" }, 413);
+    const ext = blob?.type.split("/")[1];
 
     // 1. Analisi
-    const fa = new FormData();
-    fa.append("image", blob, `selfie.${ext}`);
-    const ra = await fetch(`${BASE}/v1/analyze`, { method: "POST", headers: auth, body: fa });
-    const da = await ra.json().catch(() => ({}));
-    if (!ra.ok || !da.ok) return json({ ok: false, error: da?.error || `analyze_${ra.status}` });
-    const analysis = da.analysis ?? null;
+    let analysis = null;
+    if (blob) {
+      const fa = new FormData();
+      fa.append("image", blob, `selfie.${ext}`);
+      const ra = await fetch(`${BASE}/v1/analyze`, { method: "POST", headers: auth, body: fa, signal: AbortSignal.timeout(90_000) });
+      const da = await ra.json().catch(() => ({}));
+      if (!ra.ok || !da.ok) return json({ ok: false, error: da?.error || `analyze_${ra.status}` });
+      analysis = da.analysis ?? null;
+    }
 
     // 2. Routine
     const fromGoals = skinGoals.map((g) => GOAL_MAP[g]).filter(Boolean);
     const fromImage: string[] = Array.isArray(analysis?.mapped_me22_concerns)
       ? analysis.mapped_me22_concerns.filter((c: unknown) => typeof c === "string")
       : [];
-    const concerns = Array.from(new Set([...fromGoals, ...fromImage]));
+    // Only the nine documented concern categories are accepted by the engine.
+    const descriptionConcerns = [
+      [/rugh|linee sottili/i, "rughe"], [/macchi|discrom/i, "pelle con macchie"],
+      [/rossor|rosacea/i, "rosacea/rossori visibili"], [/pori/i, "pori dilatati"],
+      [/pelle secca|disidrat/i, "pelle secca"], [/pelle grassa|untuos/i, "pelle grassa"],
+      [/acne|brufol/i, "acne"], [/spento|opac/i, "colorito spento"],
+    ] as const;
+    const allowed = new Set(["acne", "pelle con macchie", "pelle grassa", "pelle secca", "pori dilatati", "rosacea/rossori visibili", "rughe", "colorito spento", "pattern seborroico/eritema"]);
+    const concerns = Array.from(new Set([...fromGoals, ...fromImage, ...descriptionConcerns.filter(([pattern]) => pattern.test(skinDescription)).map(([, concern]) => concern)])).filter(c => allowed.has(c));
     if (!concerns.length) concerns.push("colorito spento");
 
     const rr = await fetch(`${BASE}/v1/routines`, {
@@ -106,17 +120,45 @@ Deno.serve(async (req) => {
     });
     const dr = await rr.json().catch(() => ({}));
     if (!rr.ok || !dr.ok) return json({ ok: false, error: dr?.error || `routines_${rr.status}` });
+    // Runtime catalog media is fetched server-side, never hotlinked by the browser.
+    const media = new Map<string, Promise<string | null>>();
+    const hydrate = async (product: Record<string, unknown> | null) => {
+      if (!product || typeof product.image !== "string") return;
+      const imageUrl = product.image;
+      if (!media.has(imageUrl)) media.set(imageUrl, (async () => {
+        try {
+          const url = new URL(imageUrl);
+          if (url.protocol !== "https:" || !["www.luxury-perfumes.net", "luxury-perfumes.net"].includes(url.hostname)) return null;
+          const response = await fetch(url, { signal: AbortSignal.timeout(15_000), redirect: "error" });
+          const mime = response.headers.get("content-type")?.split(";")[0] || "";
+          if (!response.ok || !["image/jpeg", "image/png", "image/webp"].includes(mime)) return null;
+          const bytes = new Uint8Array(await response.arrayBuffer());
+          if (bytes.length > 3_000_000) return null;
+          let binary = "";
+          for (let offset = 0; offset < bytes.length; offset += 8192) binary += String.fromCharCode(...bytes.subarray(offset, offset + 8192));
+          return `data:${mime};base64,${btoa(binary)}`;
+        } catch { return null; }
+      })());
+      product.image_data = await media.get(imageUrl);
+    };
+    const entries = [...Object.values(dr.recommendation?.routine || {}).flat(), ...(dr.recommendation?.extra_products || [])] as { product?: Record<string, unknown> | null }[];
+    await Promise.all(entries.map(entry => hydrate(entry.product || null)));
+    const result = { ok: true, analysis, recommendation: dr.recommendation };
+    if (start.data.action === "recommend" || !blob) return json(result);
 
     // 3. Preview (asincrona)
     const fp = new FormData();
     fp.append("image", blob, `selfie.${ext}`);
     fp.append("routine", JSON.stringify(dr.recommendation));
     fp.append("analysis", analysis ? JSON.stringify(analysis) : "");
-    const rp = await fetch(`${BASE}/v1/previews`, { method: "POST", headers: auth, body: fp });
-    const dp = await rp.json().catch(() => ({}));
-    if (!rp.ok || !dp.ok || !dp.job_id) return json({ ok: false, error: dp?.error || `previews_${rp.status}` });
-
-    return json({ ok: true, jobId: dp.job_id, status: dp.status });
+    try {
+      const rp = await fetch(`${BASE}/v1/previews`, { method: "POST", headers: auth, body: fp, signal: AbortSignal.timeout(30_000) });
+      const dp = await rp.json().catch(() => ({}));
+      if (!rp.ok || !dp.ok || !dp.job_id) return json({ ...result, previewError: dp?.error || `previews_${rp.status}` });
+      return json({ ...result, jobId: dp.job_id, status: dp.status });
+    } catch {
+      return json({ ...result, previewError: "preview_unavailable" });
+    }
   } catch (e) {
     console.error("me22-preview error:", e);
     return json({ ok: false, error: e instanceof Error ? e.message : "engine_unreachable" });
