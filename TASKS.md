@@ -50,5 +50,6 @@ Lista master delle modifiche da implementare. Aggiornare lo stato man mano: `[ ]
 **Riferimenti screenshot:** stile bottoni neri pieni, header minimale, tipografia serif elegante per titoli (Maison 22 / Luxury Perfumes).
 
 ## 7. Motore ME-22
-- [~] Collegare assegnazione prodotti ME-22 a risultati, carrello e bundle (mattina/sera/settimanale), verificando i prodotti non presenti nel catalogo.
+- [x] Collegare assegnazione prodotti ME-22 a risultati, carrello e bundle (mattina/sera/settimanale): ID WooCommerce e prezzi del motore, extra facoltativi, prodotti ripetuti conteggiati una volta. Test reale con foto e 6 test automatici superati.
+- [ ] Allineare budget del motore: “Fino a 100€” viene interpretato come fascia con base 200€ dal servizio esterno. Mostrato avviso esplicito; serve intervento del team ME-22.
 - [ ] Verificare checkout WooCommerce: richiede mappatura ID prodotti e conferma installazione del plugin sul sito del negozio.
