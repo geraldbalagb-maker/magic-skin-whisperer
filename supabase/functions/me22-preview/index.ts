@@ -1,5 +1,6 @@
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 import { z } from "npm:zod@3";
+import { getME22BudgetPolicy } from "../_shared/me22Budget.ts";
 
 // Proxy verso il motore ME-22 (FastAPI). Il token resta lato server.
 // action "start": analisi foto -> composizione routine -> accoda preview "dopo"
@@ -12,11 +13,6 @@ const GOAL_MAP: Record<string, string> = {
   "Pori meno visibili": "pori dilatati",
   "Meno rossori": "rosacea/rossori visibili",
   "Grana più fine": "pori dilatati",
-};
-const BUDGET_MAP: Record<string, string> = {
-  "Entro i 50€": "low",
-  "Fino a 100€": "medium",
-  "Oltre i 100€": "high",
 };
 
 const StartSchema = z.object({
@@ -75,6 +71,7 @@ Deno.serve(async (req) => {
     const start = StartSchema.safeParse(body);
     if (!start.success) return json({ ok: false, error: start.error.flatten().fieldErrors }, 400);
     const { selfie, skinGoals, budget, skinDescription } = start.data;
+    const budgetPolicy = getME22BudgetPolicy(budget);
     if (start.data.action === "start" && !selfie) return json({ ok: false, error: "selfie_required" }, 400);
     const blob = selfie ? dataUrlToBlob(selfie) : null;
     if (blob && blob.size > 8 * 1024 * 1024) return json({ ok: false, error: "selfie_too_large" }, 413);
@@ -113,7 +110,8 @@ Deno.serve(async (req) => {
       body: JSON.stringify({
         questionnaire: {
           concern_categories: concerns,
-          budget: BUDGET_MAP[budget] || "medium",
+          budget: budgetPolicy.engineBudget,
+          routine_tier_preference: budgetPolicy.tierPreference,
         },
         image_analysis: analysis ?? undefined,
       }),

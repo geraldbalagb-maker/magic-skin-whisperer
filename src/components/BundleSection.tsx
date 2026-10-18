@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { ShoppingBag, Check, ChevronRight, Shield, Truck, Clock, Star, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { redirectToWooCheckout } from "@/lib/wcCheckout";
+import { BUNDLE_COUPON } from "../../supabase/functions/_shared/me22Budget";
 import type { Product } from "@/data/products";
 import goldenEnvelopeImg from "@/assets/golden-envelope.jpg";
 
@@ -43,7 +44,7 @@ const BundleSection = ({
     if (loading || selected.length === 0) return;
     setLoading(true);
     const result = await redirectToWooCheckout(selected, {
-      coupon: isBundle ? "M22-BUNDLE10" : undefined,
+      coupon: isBundle ? BUNDLE_COUPON : undefined,
     });
     if (result.ok === true) return; // redirect in corso
     setLoading(false);
