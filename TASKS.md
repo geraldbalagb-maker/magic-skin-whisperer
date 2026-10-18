@@ -51,5 +51,6 @@ Lista master delle modifiche da implementare. Aggiornare lo stato man mano: `[ ]
 
 ## 7. Motore ME-22
 - [x] Collegare assegnazione prodotti ME-22 a risultati, carrello e bundle (mattina/sera/settimanale): ID WooCommerce e prezzi del motore, extra facoltativi, prodotti ripetuti conteggiati una volta. Test reale con foto e 6 test automatici superati.
-- [ ] Allineare budget del motore: “Fino a 100€” viene interpretato come fascia con base 200€ dal servizio esterno. Mostrato avviso esplicito; serve intervento del team ME-22.
+- [x] Correggere la mappatura “Fino a 100€” su low/low_end (base motore 100€, non 200€); controllo budget sul prezzo della routine completa con lo sconto attuale del 10%, prezzi prodotto originali e arrotondamento ai centesimi condiviso. 10 test superati; quiz reale con foto: 106,80€ → 96,12€, nessun falso sforamento.
+- [ ] Supportare il limite rigoroso di 50€ ed eliminare la tolleranza motore del 15% per limiti rigidi: richiede intervento del team ME-22, perché l'API esterna accetta solo low/medium/high e la fascia minima parte da 100€. Gli sforamenti reali non sono nascosti.
 - [ ] Verificare checkout WooCommerce: richiede mappatura ID prodotti e conferma installazione del plugin sul sito del negozio.
