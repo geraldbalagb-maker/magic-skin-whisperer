@@ -13,6 +13,7 @@ import BundleSection from "./BundleSection";
 import ReviewsSection from "./ReviewsSection";
 import FAQSection from "./FAQSection";
 import FounderIntro from "./results/FounderIntro";
+import { getRoutineProducts } from "@/lib/me22Routine";
 
 interface ResultsPageProps {
   name: string;
@@ -27,12 +28,14 @@ const productsMap = new Map(products.map(p => [p.id, p]));
 
 const ResultsPage = ({ name, quizData, aiResult, selfie, enhancedSelfie, onCheckout }: ResultsPageProps) => {
   const routine = useMemo(() => {
+    const productsMap = new Map((aiResult.resolved_products || products).map(p => [p.id, p]));
     return aiResult.steps.map((step, idx) => ({
       id: `step${idx + 1}`,
       name: step.step_name,
       description: step.description,
       order: step.step_order,
       icon: step.icon,
+      period: step.period,
       products: step.product_ids
         .map(id => productsMap.get(id))
         .filter((p): p is Product => !!p),
@@ -42,8 +45,8 @@ const ResultsPage = ({ name, quizData, aiResult, selfie, enhancedSelfie, onCheck
     }));
   }, [aiResult]);
 
-  const allProducts = routine.flatMap((s) => s.products);
-  const uniqueProducts = Array.from(new Map(allProducts.map(p => [p.id, p])).values());
+  const uniqueProducts = getRoutineProducts(aiResult);
+  const selectableProducts = Array.from(new Map(routine.flatMap(s => [...s.products, ...s.alternativeProducts]).map(p => [p.id, p])).values());
 
   // Auto-seleziona tutti i prodotti raccomandati di default
   const [cart, setCart] = useState<Set<string>>(() => new Set(uniqueProducts.map((p) => p.id)));
@@ -125,7 +128,8 @@ const ResultsPage = ({ name, quizData, aiResult, selfie, enhancedSelfie, onCheck
 
       <div id="bundle-section">
         <BundleSection
-          products={uniqueProducts}
+           products={selectableProducts}
+           bundleProducts={uniqueProducts}
           cart={cart}
           totalPrice={totalPrice}
           bundlePrice={bundlePrice}

@@ -30,7 +30,11 @@ export async function redirectToWooCheckout(
     };
   }
 
-  const items = products.map((p) => ({ id: p.wcId!, qty: 1 }));
+  const items: { id: number; qty: number }[] = [];
+  for (const product of products) {
+    if (typeof product.wcId !== "number") return { ok: false, reason: `wcId_missing:${product.id}` };
+    items.push({ id: product.wcId, qty: 1 });
+  }
 
   const { data, error } = await supabase.functions.invoke("build-checkout-url", {
     body: { items, coupon: opts.coupon },

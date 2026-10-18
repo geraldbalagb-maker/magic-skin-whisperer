@@ -16,6 +16,7 @@ const stepImages = [routineCleansingImg, routineTonerImg, routineTreatmentImg, r
 const productsMap = new Map(allProducts.map(p => [p.id, p]));
 
 interface RoutineStepWithAlts extends RoutineStep {
+  period?: string;
   alternativeProducts?: Product[];
 }
 
@@ -144,7 +145,7 @@ const RoutineSteps = ({ routine, cart, onToggleCart }: RoutineStepsProps) => {
                   <div className="mb-5">
                     <div className="mb-1 flex items-center gap-2">
                       <span className="font-body text-[11px] font-medium uppercase tracking-[0.2em] text-primary">
-                        Step {step.order}
+                        {step.period ? `${step.period} · ` : ""}Step {step.order}
                       </span>
                     </div>
                     <h3 className="font-display text-xl font-semibold text-foreground md:text-2xl">{step.name}</h3>
