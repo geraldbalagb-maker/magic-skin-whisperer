@@ -31,4 +31,10 @@ describe("ME-22 routine and cart", () => {
   it("rejects product links outside the store", () => {
     expect(() => adaptME22Routine({ routine: { morning: [step({ ...cleanser, permalink: "https://example.com/product" })], evening: [], weekly: [] } }, "")).toThrow();
   });
+  it("flags a recommendation above the user's 100 euro budget instead of hiding the mismatch", () => {
+    const result = adaptME22Routine(recommendation, "Pelle secca", "Fino a 100€");
+    expect(result.personalized_tips[0].text).toContain("184.80€");
+    expect(result.personalized_tips[0].text).toContain("100€");
+    expect(adaptME22Routine(recommendation, "Pelle secca", "Oltre i 100€").personalized_tips).toEqual([]);
+  });
 });

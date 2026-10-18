@@ -16,6 +16,8 @@ const engineStep = z.object({
 });
 const recommendationSchema = z.object({
   analysis_summary: z.string().optional(),
+  warnings: z.array(z.string()).optional(),
+  safety_notes: z.array(z.string()).optional(),
   routine: z.object({ morning: z.array(engineStep), evening: z.array(engineStep), weekly: z.array(engineStep) }),
   extra_products: z.array(engineStep.omit({ included: true }).extend({ period: z.string() })).optional(),
 });
@@ -29,7 +31,7 @@ const validShopUrl = (value: string) => {
 };
 const roles: Record<string, Product["category"]> = { cleanser: "detersione", toner: "tonico", cream: "crema", serum: "siero", exfoliant: "scrub", mask: "maschera", oil: "olio" };
 
-export function adaptME22Routine(raw: unknown, skinDescription: string): AIRoutineResult {
+export function adaptME22Routine(raw: unknown, skinDescription: string, budget = ""): AIRoutineResult {
   const parsed = recommendationSchema.safeParse(raw);
   if (!parsed.success) throw new Error("Il motore ME-22 ha restituito una routine incompleta. Riprova tra poco.");
   const recommendation = parsed.data;
@@ -74,7 +76,12 @@ export function adaptME22Routine(raw: unknown, skinDescription: string): AIRouti
     }
   }
   if (!steps.some(step => step.product_ids.length)) throw new Error("Il motore ME-22 non ha assegnato prodotti acquistabili alla routine.");
-  return { skin_analysis: skinDescription || recommendation.analysis_summary || "Analisi cosmetica non diagnostica.", personalized_tips: [], steps, resolved_products: Array.from(catalog.values()) };
+  const tips = (recommendation.safety_notes || []).map(text => ({ title: "Per la tua pelle", text }));
+  const baseIds = new Set(steps.flatMap(step => step.product_ids));
+  const total = Array.from(catalog.values()).filter(p => baseIds.has(p.id)).reduce((sum, p) => sum + p.price, 0);
+  const budgetCap = budget === "Entro i 50€" ? 50 : budget === "Fino a 100€" ? 100 : null;
+  if (budgetCap !== null && total > budgetCap) tips.unshift({ title: "Budget da verificare", text: `La routine proposta da ME-22 costa ${total.toFixed(2)}€ prima dello sconto, oltre il limite di ${budgetCap}€ che hai indicato. Puoi modificare i prodotti selezionati prima dell'acquisto.` });
+  return { skin_analysis: skinDescription || recommendation.analysis_summary || "Analisi cosmetica non diagnostica.", personalized_tips: tips, steps, resolved_products: Array.from(catalog.values()) };
 }
 
 export function getRoutineProducts(result: AIRoutineResult, selected?: Set<string>): Product[] {

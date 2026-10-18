@@ -49,6 +49,7 @@ const AnalysisScreen = ({ name, quizData, onComplete }: AnalysisScreenProps) => 
   const [readyToReveal, setReadyToReveal] = useState(false);
   const resultRef = useRef<AnalysisResult | null>(null);
   const hasCalledAI = useRef(false);
+  const [attempt, setAttempt] = useState(0);
 
   useEffect(() => {
     if (hasCalledAI.current) return;
@@ -68,7 +69,7 @@ const AnalysisScreen = ({ name, quizData, onComplete }: AnalysisScreenProps) => 
         if (start.error || !start.data?.ok || !start.data.recommendation) {
           throw new Error("Non riusciamo a creare la routine con il motore ME-22. Nessun prodotto è stato assegnato: riprova tra poco.");
         }
-        const routine = adaptME22Routine(start.data.recommendation, quizData.skinDescription);
+        const routine = adaptME22Routine(start.data.recommendation, quizData.skinDescription, quizData.budget);
         let enhancedSelfie: string | null = null;
         const jobId = typeof start.data.jobId === "string" ? start.data.jobId : null;
         if (jobId) {
@@ -92,7 +93,7 @@ const AnalysisScreen = ({ name, quizData, onComplete }: AnalysisScreenProps) => 
     };
 
     callAI();
-  }, [quizData]);
+  }, [quizData, attempt]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -132,7 +133,7 @@ const AnalysisScreen = ({ name, quizData, onComplete }: AnalysisScreenProps) => 
           </h2>
           <p className="font-body text-sm text-muted-foreground max-w-sm">{error}</p>
           <Button
-            onClick={() => window.location.reload()}
+            onClick={() => { hasCalledAI.current = false; setError(null); setAttempt(previous => previous + 1); }}
             className="bg-foreground px-8 py-3 font-body text-sm font-medium uppercase tracking-[0.2em] text-background"
           >
             Riprova
