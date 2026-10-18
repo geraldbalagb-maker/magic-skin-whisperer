@@ -236,14 +236,6 @@ const BundleSection = ({
                 ))}
               </div>
 
-              {/* Show remaining products count */}
-              {products.length > 6 && (
-                <div className="relative mt-2 text-center">
-                  <span className="font-body text-xs text-muted-foreground">
-                    + altri {products.length - 6} prodotti inclusi nel bundle
-                  </span>
-                </div>
-              )}
             </motion.div>
           </div>
         </div>
