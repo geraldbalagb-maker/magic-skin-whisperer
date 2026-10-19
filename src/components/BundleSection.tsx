@@ -2,7 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { ShoppingBag, Check, ChevronRight, Shield, Truck, Clock, Star, Loader2 } from "lucide-react";
 import { toast } from "sonner";
-import { redirectToWooCheckout } from "@/lib/wcCheckout";
+import { buildWooCheckout, type WcCheckoutResult } from "@/lib/wcCheckout";
 import { BUNDLE_COUPON } from "../../supabase/functions/_shared/me22Budget";
 import type { Product } from "@/data/products";
 import goldenEnvelopeImg from "@/assets/golden-envelope.jpg";
@@ -40,25 +40,21 @@ const BundleSection = ({
   const selectedProducts = products.filter(p => cart.has(p.id));
   const isFullBundle = cart.size === bundleProducts.length && bundleProducts.every(p => cart.has(p.id));
 
+  const [lastCall, setLastCall] = useState<WcCheckoutResult | null>(null);
   const handleCheckout = async (selected: Product[], isBundle: boolean) => {
     if (loading || selected.length === 0) return;
     setLoading(true);
-    const result = await redirectToWooCheckout(selected, {
-      coupon: isBundle ? BUNDLE_COUPON : undefined,
-    });
-    if (result.ok === true) return; // redirect in corso
+    const result = await buildWooCheckout(selected, { coupon: isBundle ? BUNDLE_COUPON : undefined });
     setLoading(false);
-    const reason = result.reason;
-    if (reason.startsWith("wcId_missing")) {
-      toast.error("Checkout non ancora configurato", {
-        description: "I codici prodotto WooCommerce non sono ancora stati collegati. Riprova tra poco.",
+    setLastCall(result);
+    if (!result.ok) {
+      toast.error("Impossibile creare il link al carrello", {
+        description: result.reason.startsWith("wcId_missing") ? "Alcuni prodotti non hanno il codice WooCommerce." : result.reason,
       });
-    } else {
-      toast.error("Impossibile aprire il checkout", { description: reason });
     }
-    // Keep the cart visible when checkout fails; no purchase has happened.
+    // Keep the cart visible; the call is shown below so the store team can test it.
+    setTimeout(() => document.getElementById("wc-call")?.scrollIntoView({ behavior: "smooth", block: "center" }), 50);
   };
-
 
   return (
     <section className="border-t border-border bg-background">
