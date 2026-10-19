@@ -1,18 +1,22 @@
 // Shared, dependency-free policy for the proxy, routine validation and checkout display.
 export const BUNDLE_DISCOUNT_PERCENT = 10;
 export const BUNDLE_COUPON = "M22-BUNDLE10";
+/** ME-22 tiers accept routines up to 15% above the nominal cap. */
+export const BUDGET_TOLERANCE_PERCENT = 15;
+
+export const BUDGET_OPTIONS = ["Fino a 100€", "Fino a 250€", "Fino a 350€"] as const;
 
 export function getME22BudgetPolicy(budget: string) {
+  const withTolerance = (cap: number) => Math.round(cap * (100 + BUDGET_TOLERANCE_PERCENT)) / 100;
   switch (budget) {
-    case "Entro i 50€":
-      // The engine has no tier below a €100 base. Preserve the actual €50 cap.
-      return { engineBudget: "low", tierPreference: "low_end", capEur: 50 } as const;
     case "Fino a 100€":
-      return { engineBudget: "low", tierPreference: "low_end", capEur: 100 } as const;
-    case "Oltre i 100€":
-      return { engineBudget: "high", tierPreference: "high_end", capEur: null } as const;
+      return { engineBudget: "low", capEur: 100, maxWithToleranceEur: withTolerance(100) } as const;
+    case "Fino a 250€":
+      return { engineBudget: "medium", capEur: 250, maxWithToleranceEur: withTolerance(250) } as const;
+    case "Fino a 350€":
+      return { engineBudget: "high", capEur: 350, maxWithToleranceEur: withTolerance(350) } as const;
     default:
-      return { engineBudget: "medium", tierPreference: "auto", capEur: null } as const;
+      return { engineBudget: "medium", capEur: null, maxWithToleranceEur: null } as const;
   }
 }
 
