@@ -110,7 +110,6 @@ const RoutineSteps = ({ routine, cart, onToggleCart }: RoutineStepsProps) => {
 
       <div className="mx-auto max-w-5xl px-4 py-8">
         {routine.map((step, idx) => {
-          const isEven = idx % 2 === 0;
           const alts = step.alternativeProducts || [];
           const showAlts = expandedAlts.has(step.id);
 
@@ -123,9 +122,6 @@ const RoutineSteps = ({ routine, cart, onToggleCart }: RoutineStepsProps) => {
               transition={{ delay: idx * 0.08, duration: 0.6 }}
               className="relative mb-8 border-b border-border pb-8 last:mb-4 last:border-b-0"
             >
-              {false && (
-                <div className="absolute left-1/2 -bottom-10 hidden h-12 w-px -translate-x-1/2 bg-gradient-to-b from-primary/20 to-transparent md:block" />
-              )}
 
               <div className="flex flex-row items-start gap-4 md:gap-6">
                 {/* Step Image */}
