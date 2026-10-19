@@ -157,7 +157,6 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
   useEffect(() => {
     if (data.selfie && !selfieAnalysisDone && !isAnalyzingSelfie) {
       analyzeSelfie();
-      // Pre-carica il modello del beauty filter mentre l'utente continua il quiz
     }
   }, [data.selfie, selfieAnalysisDone, isAnalyzingSelfie, analyzeSelfie]);
 
