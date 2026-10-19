@@ -236,6 +236,22 @@ const BundleSection = ({
             </motion.div>
           </div>
         </div>
+        {lastCall && (
+          <div id="wc-call" className="mt-12 border border-border bg-secondary p-5 text-left">
+            <p className="font-body text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">Chiamata carrello WooCommerce</p>
+            <p className="mt-3 font-body text-xs text-foreground">1. Richiesta alla funzione di firma <code>build-checkout-url</code>:</p>
+            <pre className="mt-1 overflow-x-auto bg-background p-3 font-mono text-[11px] text-foreground">{JSON.stringify(lastCall.request ?? null, null, 2)}</pre>
+            {lastCall.url ? (
+              <>
+                <p className="mt-3 font-body text-xs text-foreground">2. Link firmato generato (valido 15 minuti) verso il gestore carrello del negozio:</p>
+                <pre className="mt-1 overflow-x-auto whitespace-pre-wrap break-all bg-background p-3 font-mono text-[11px] text-foreground">{lastCall.url}</pre>
+                <a href={lastCall.url} className="mt-3 inline-block bg-foreground px-5 py-2.5 font-body text-[11px] font-semibold uppercase tracking-[0.15em] text-background">Apri il carrello sul negozio</a>
+              </>
+            ) : (
+              <p className="mt-3 font-body text-xs text-destructive">Errore: {lastCall.reason}</p>
+            )}
+          </div>
+        )}
       </div>
     </section>
   );
