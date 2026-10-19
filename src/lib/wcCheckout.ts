@@ -9,14 +9,18 @@ export interface WcCheckoutOptions {
 export interface WcCheckoutResult {
   ok: boolean;
   reason: string;
+  /** Payload sent to the signing function (shown so the store team can test the cart handler). */
+  request?: { items: { id: number; qty: number }[]; coupon?: string };
+  url?: string;
+  expiresAt?: number;
 }
 
 /**
- * Costruisce l'URL firmato di checkout WooCommerce e reindirizza il browser.
+ * Costruisce l'URL firmato di checkout WooCommerce (senza reindirizzare: la chiamata viene mostrata).
  * L'URL viene generato al momento della chiamata sulla base dei prodotti attualmente
  * selezionati: qualsiasi modifica al carrello prima del click viene rispettata.
  */
-export async function redirectToWooCheckout(
+export async function buildWooCheckout(
   products: Product[],
   opts: WcCheckoutOptions = {},
 ): Promise<WcCheckoutResult> {
@@ -36,14 +40,10 @@ export async function redirectToWooCheckout(
     items.push({ id: product.wcId, qty: 1 });
   }
 
-  const { data, error } = await supabase.functions.invoke("build-checkout-url", {
-    body: { items, coupon: opts.coupon },
-  });
-
+  const request = { items, coupon: opts.coupon };
+  const { data, error } = await supabase.functions.invoke("build-checkout-url", { body: request });
   if (error || !data?.url) {
-    return { ok: false, reason: error?.message || "no_url_returned" };
+    return { ok: false, reason: error?.message || "no_url_returned", request };
   }
-
-  window.location.href = data.url as string;
-  return { ok: true, reason: "" };
+  return { ok: true, reason: "", request, url: data.url as string, expiresAt: data.expiresAt as number };
 }

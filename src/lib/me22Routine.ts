@@ -77,11 +77,15 @@ export function adaptME22Routine(raw: unknown, skinDescription: string, budget =
     }
   }
   if (!steps.some(step => step.product_ids.length)) throw new Error("Il motore ME-22 non ha assegnato prodotti acquistabili alla routine.");
-  const tips = (recommendation.safety_notes || []).map(text => ({ title: "Per la tua pelle", text }));
+  // Tips are only what ME-22 returned, labelled by their source field.
+  const tips = [
+    ...(recommendation.warnings || []).map(text => ({ title: "Avviso sulla routine", text })),
+    ...(recommendation.safety_notes || []).map(text => ({ title: "Nota di sicurezza", text })),
+  ].filter((tip, i, all) => all.findIndex(t => t.text === tip.text) === i);
   const baseIds = new Set(steps.flatMap(step => step.product_ids));
   const { bundlePrice } = getRoutinePricing(Array.from(catalog.values()).filter(p => baseIds.has(p.id)));
-  const { capEur: budgetCap } = getME22BudgetPolicy(budget);
-  if (budgetCap !== null && bundlePrice > budgetCap) tips.unshift({ title: "Budget da verificare", text: `La routine completa proposta da ME-22 costa ${bundlePrice.toFixed(2)}€ con lo sconto riservato, oltre il limite di ${budgetCap}€ che hai indicato. Puoi modificare i prodotti selezionati prima dell'acquisto; lo sconto è riservato alla routine completa.` });
+  const { capEur, maxWithToleranceEur } = getME22BudgetPolicy(budget);
+  if (capEur !== null && maxWithToleranceEur !== null && bundlePrice > maxWithToleranceEur) tips.unshift({ title: "Budget da verificare", text: `La routine completa costa ${bundlePrice.toFixed(2)}€ con lo sconto riservato, oltre il budget di ${capEur}€ anche considerando la tolleranza del 15% (${maxWithToleranceEur.toFixed(2)}€). Puoi togliere prodotti prima dell'acquisto.` });
   return { skin_analysis: skinDescription || recommendation.analysis_summary || "Analisi cosmetica non diagnostica.", personalized_tips: tips, steps, resolved_products: Array.from(catalog.values()) };
 }
 

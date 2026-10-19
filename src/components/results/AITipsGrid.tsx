@@ -26,8 +26,9 @@ const AITipsGrid = ({ tips }: AITipsGridProps) => {
     <div className="border-b border-border bg-gradient-cream">
       <div className="mx-auto max-w-5xl px-4 py-14 md:py-20">
         <SectionHeader
-          label="Consigli personalizzati"
-          title="I segreti per la tua pelle"
+          label="Note dal motore ME-22"
+          title="Avvisi e note di sicurezza"
+          subtitle="Indicazioni restituite dal motore insieme alla tua routine"
           className="mb-10"
         />
 

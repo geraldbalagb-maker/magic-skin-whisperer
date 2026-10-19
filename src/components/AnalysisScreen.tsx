@@ -61,9 +61,13 @@ const AnalysisScreen = ({ name, quizData, onComplete }: AnalysisScreenProps) => 
           body: {
             action: quizData.selfie ? "start" : "recommend",
             selfie: quizData.selfie || undefined,
-            skinGoals: quizData.skinGoals,
-            skinDescription: quizData.skinDescription,
+            analysis: quizData.me22Analysis ?? undefined,
+            user: { name: quizData.name, age: Number.parseInt(quizData.age, 10) || null },
+            concerns: quizData.skinGoals,
             budget: quizData.budget,
+            routineTimeMinutes: Number.parseInt(quizData.time, 10) || null,
+            currentProducts: quizData.currentProducts,
+            desiredSkinGoal: quizData.skinDescription,
           },
         });
         if (start.error || !start.data?.ok || !start.data.recommendation) {

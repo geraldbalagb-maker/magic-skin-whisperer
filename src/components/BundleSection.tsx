@@ -2,7 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { ShoppingBag, Check, ChevronRight, Shield, Truck, Clock, Star, Loader2 } from "lucide-react";
 import { toast } from "sonner";
-import { redirectToWooCheckout } from "@/lib/wcCheckout";
+import { buildWooCheckout, type WcCheckoutResult } from "@/lib/wcCheckout";
 import { BUNDLE_COUPON } from "../../supabase/functions/_shared/me22Budget";
 import type { Product } from "@/data/products";
 import goldenEnvelopeImg from "@/assets/golden-envelope.jpg";
@@ -40,25 +40,21 @@ const BundleSection = ({
   const selectedProducts = products.filter(p => cart.has(p.id));
   const isFullBundle = cart.size === bundleProducts.length && bundleProducts.every(p => cart.has(p.id));
 
+  const [lastCall, setLastCall] = useState<WcCheckoutResult | null>(null);
   const handleCheckout = async (selected: Product[], isBundle: boolean) => {
     if (loading || selected.length === 0) return;
     setLoading(true);
-    const result = await redirectToWooCheckout(selected, {
-      coupon: isBundle ? BUNDLE_COUPON : undefined,
-    });
-    if (result.ok === true) return; // redirect in corso
+    const result = await buildWooCheckout(selected, { coupon: isBundle ? BUNDLE_COUPON : undefined });
     setLoading(false);
-    const reason = result.reason;
-    if (reason.startsWith("wcId_missing")) {
-      toast.error("Checkout non ancora configurato", {
-        description: "I codici prodotto WooCommerce non sono ancora stati collegati. Riprova tra poco.",
+    setLastCall(result);
+    if (!result.ok) {
+      toast.error("Impossibile creare il link al carrello", {
+        description: result.reason.startsWith("wcId_missing") ? "Alcuni prodotti non hanno il codice WooCommerce." : result.reason,
       });
-    } else {
-      toast.error("Impossibile aprire il checkout", { description: reason });
     }
-    // Keep the cart visible when checkout fails; no purchase has happened.
+    // Keep the cart visible; the call is shown below so the store team can test it.
+    setTimeout(() => document.getElementById("wc-call")?.scrollIntoView({ behavior: "smooth", block: "center" }), 50);
   };
-
 
   return (
     <section className="border-t border-border bg-background">
@@ -240,6 +236,22 @@ const BundleSection = ({
             </motion.div>
           </div>
         </div>
+        {lastCall && (
+          <div id="wc-call" className="mt-12 border border-border bg-secondary p-5 text-left">
+            <p className="font-body text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">Chiamata carrello WooCommerce</p>
+            <p className="mt-3 font-body text-xs text-foreground">1. Richiesta alla funzione di firma <code>build-checkout-url</code>:</p>
+            <pre className="mt-1 overflow-x-auto bg-background p-3 font-mono text-[11px] text-foreground">{JSON.stringify(lastCall.request ?? null, null, 2)}</pre>
+            {lastCall.url ? (
+              <>
+                <p className="mt-3 font-body text-xs text-foreground">2. Link firmato generato (valido 15 minuti) verso il gestore carrello del negozio:</p>
+                <pre className="mt-1 overflow-x-auto whitespace-pre-wrap break-all bg-background p-3 font-mono text-[11px] text-foreground">{lastCall.url}</pre>
+                <a href={lastCall.url} className="mt-3 inline-block bg-foreground px-5 py-2.5 font-body text-[11px] font-semibold uppercase tracking-[0.15em] text-background">Apri il carrello sul negozio</a>
+              </>
+            ) : (
+              <p className="mt-3 font-body text-xs text-destructive">Errore: {lastCall.reason}</p>
+            )}
+          </div>
+        )}
       </div>
     </section>
   );
