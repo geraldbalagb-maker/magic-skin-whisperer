@@ -121,27 +121,27 @@ const RoutineSteps = ({ routine, cart, onToggleCart }: RoutineStepsProps) => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ delay: idx * 0.08, duration: 0.6 }}
-              className="relative mb-16 last:mb-8"
+              className="relative mb-8 border-b border-border pb-8 last:mb-4 last:border-b-0"
             >
-              {idx < routine.length - 1 && (
+              {false && (
                 <div className="absolute left-1/2 -bottom-10 hidden h-12 w-px -translate-x-1/2 bg-gradient-to-b from-primary/20 to-transparent md:block" />
               )}
 
-              <div className={`flex flex-col items-center gap-8 md:flex-row ${!isEven ? "md:flex-row-reverse" : ""}`}>
+              <div className="flex flex-row items-start gap-4 md:gap-6">
                 {/* Step Image */}
-                <motion.div whileHover={{ scale: 1.01 }} className="relative w-full md:w-5/12">
+                <motion.div whileHover={{ scale: 1.01 }} className="relative w-20 flex-shrink-0 md:w-32">
                   <div className="relative overflow-hidden bg-foreground">
-                    <div className="absolute top-4 left-4 z-10 flex h-10 w-10 items-center justify-center bg-background font-display text-sm font-semibold text-foreground">
+                    <div className="absolute top-1 left-1 z-10 flex h-5 w-5 items-center justify-center bg-background font-display text-[10px] font-semibold text-foreground">
                       {step.order}
                     </div>
-                    <div className="aspect-square p-6">
+                    <div className="aspect-square p-2">
                       <img src={stepImages[idx % stepImages.length]} alt={step.name} className="h-full w-full object-contain" />
                     </div>
                   </div>
                 </motion.div>
 
                 {/* Step Content + Products */}
-                <div className="w-full md:w-7/12">
+                <div className="min-w-0 flex-1">
                   <div className="mb-5">
                     <div className="mb-1 flex items-center gap-2">
                       <span className="font-body text-[11px] font-medium uppercase tracking-[0.2em] text-primary">

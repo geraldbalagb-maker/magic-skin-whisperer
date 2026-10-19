@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import { motion } from "framer-motion";
 
 
@@ -12,6 +12,13 @@ const BeforeAfterSection = ({ beforeImage, afterImage, name }: BeforeAfterSectio
   const [sliderPos, setSliderPos] = useState(50);
   const containerRef = useRef<HTMLDivElement>(null);
   const isDragging = useRef(false);
+  // Frame follows the original photo's proportions instead of forcing a square.
+  const [ratio, setRatio] = useState<number | null>(null);
+  useEffect(() => {
+    const img = new Image();
+    img.onload = () => img.naturalWidth && img.naturalHeight && setRatio(img.naturalWidth / img.naturalHeight);
+    img.src = beforeImage;
+  }, [beforeImage]);
 
   const updateSlider = useCallback((clientX: number) => {
     if (!containerRef.current) return;
@@ -58,18 +65,17 @@ const BeforeAfterSection = ({ beforeImage, afterImage, name }: BeforeAfterSectio
       {/* Before/After Slider */}
       <div
         ref={containerRef}
-        className="relative mx-auto aspect-square max-w-md cursor-col-resize select-none overflow-hidden rounded-3xl border-2 border-gold/20 shadow-gold-lg"
+        className="relative mx-auto max-w-md cursor-col-resize select-none overflow-hidden rounded-3xl border-2 border-gold/20 shadow-gold-lg"
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
-        style={{ touchAction: "none" }}
+        style={{ touchAction: "none", aspectRatio: ratio ? String(ratio) : "4 / 5" }}
       >
         {/* After image (full background) — filtro per accentuare l'effetto AI */}
         <img
           src={afterImage}
           alt="Dopo la routine"
           className="absolute inset-0 h-full w-full object-cover"
-          style={{ filter: "brightness(1.08) contrast(1.12) saturate(1.18)" }}
           draggable={false}
         />
 
@@ -81,7 +87,7 @@ const BeforeAfterSection = ({ beforeImage, afterImage, name }: BeforeAfterSectio
           <img
             src={beforeImage}
             alt="Prima della routine"
-            className="absolute inset-0 h-full w-full object-cover"
+            className="absolute inset-y-0 left-0 h-full object-cover"
             style={{ width: `${(100 / sliderPos) * 100}%`, maxWidth: "none" }}
             draggable={false}
           />
