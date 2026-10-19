@@ -4,6 +4,8 @@ import { ChevronRight, ChevronLeft, Sparkles, Loader2, Pencil } from "lucide-rea
 import BrandLogo from "@/components/shared/BrandLogo";
 import CameraCapture from "@/components/shared/CameraCapture";
 import { supabase } from "@/integrations/supabase/client";
+import { ME22_CONCERNS, CONCERN_LABELS, concernsFromAnalysis, describeAnalysis } from "@/lib/me22Analysis";
+import { BUDGET_OPTIONS } from "../../supabase/functions/_shared/me22Budget";
 
 export interface QuizData {
   name: string;
@@ -14,6 +16,8 @@ export interface QuizData {
   skinGoals: string[];
   currentProducts: string[];
   budget: string;
+  /** Raw ME-22 /v1/analyze output, produced right after the photo upload. */
+  me22Analysis: Record<string, unknown> | null;
 }
 
 interface BeautyQuizProps {
@@ -27,14 +31,8 @@ const stepVariants = {
 };
 
 
-const skinGoalsOptions = [
-  "Più distesa e rilassata",
-  "Meno macchie e discromie",
-  "Più luminosa e uniforme",
-  "Pori meno visibili",
-  "Meno rossori",
-  "Grana più fine",
-];
+// skinGoals holds ME-22 concern categories, pre-filled from the photo analysis.
+const skinGoalsOptions: readonly string[] = ME22_CONCERNS;
 
 const productOptions = [
   "Detergente",
@@ -47,7 +45,7 @@ const productOptions = [
   "Protezione solare (SPF)",
 ];
 
-const budgetOptions = ["Entro i 50€", "Fino a 100€", "Oltre i 100€"];
+const budgetOptions: readonly string[] = BUDGET_OPTIONS;
 const timeOptions = ["5 minuti", "10 minuti", "20 minuti", "30+ minuti"];
 
 const TOTAL_STEPS = 8; // 0..7
@@ -87,7 +85,9 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
     skinGoals: [],
     currentProducts: [],
     budget: "",
+    me22Analysis: null,
   });
+  const goalsTouched = useRef(false);
   const [isEnhancing, setIsEnhancing] = useState(false);
   const [cameraOpen, setCameraOpen] = useState(false);
   const [isAnalyzingSelfie, setIsAnalyzingSelfie] = useState(false);
@@ -132,32 +132,32 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
 
   const analyzeSelfie = useCallback(async () => {
     if (!data.selfie || isAnalyzingSelfie) return;
+    const photo = data.selfie;
     setIsAnalyzingSelfie(true);
     try {
-      const res = await supabase.functions.invoke("analyze-selfie", {
-        body: { selfie: data.selfie, name: data.name, age: data.age },
-      });
-      if (res.data?.analysis) {
-        setData((prev) => ({ ...prev, skinDescription: String(res.data.analysis) }));
-        setSelfieAnalysisDone(true);
-      } else if (res.error) {
-        console.warn("Selfie analysis failed:", res.error);
-        setSelfieAnalysisDone(true);
-      }
+      const res = await supabase.functions.invoke("me22-preview", { body: { action: "analyze", selfie: photo } });
+      const analysis = res.data?.ok ? (res.data.analysis as Record<string, unknown> | null) : null;
+      if (!analysis) console.warn("ME-22 analysis failed:", res.error || res.data?.error);
+      setData((prev) => prev.selfie !== photo ? prev : ({
+        ...prev,
+        me22Analysis: analysis,
+        // Fill only fields the user has not edited; leave empty what the engine cannot infer.
+        skinDescription: prev.skinDescription.trim() ? prev.skinDescription : describeAnalysis(analysis),
+        skinGoals: goalsTouched.current ? prev.skinGoals : concernsFromAnalysis(analysis),
+      }));
     } catch (err) {
-      console.warn("Selfie analysis failed:", err);
-      setSelfieAnalysisDone(true);
+      console.warn("ME-22 analysis failed:", err);
     } finally {
+      setSelfieAnalysisDone(true);
       setIsAnalyzingSelfie(false);
     }
-  }, [data.selfie, data.name, data.age, isAnalyzingSelfie]);
+  }, [data.selfie, isAnalyzingSelfie]);
 
   // Trigger AI analysis appena viene caricato il selfie (in background)
   useEffect(() => {
     if (data.selfie && !selfieAnalysisDone && !isAnalyzingSelfie) {
       analyzeSelfie();
       // Pre-carica il modello del beauty filter mentre l'utente continua il quiz
-      void import("@/lib/beautyFilter").then((m) => m.warmUpBeautyFilter());
     }
   }, [data.selfie, selfieAnalysisDone, isAnalyzingSelfie, analyzeSelfie]);
 
@@ -233,7 +233,7 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
                   <div className="flex w-full flex-col items-center gap-4">
                     <button
                       type="button"
-                      onClick={() => { setData((p) => ({ ...p, selfie: null, skinDescription: "" })); setSelfieAnalysisDone(false); }}
+                      onClick={() => { setData((p) => ({ ...p, selfie: null, skinDescription: "", me22Analysis: null, skinGoals: goalsTouched.current ? p.skinGoals : [] })); setSelfieAnalysisDone(false); }}
                       title="Tocca per rifare/ricaricare"
                       className="relative w-full max-w-sm overflow-hidden border border-border bg-[hsl(var(--cream))] p-2 transition hover:border-primary/40"
                     >
@@ -365,9 +365,9 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
                 <StepBadge n={5} />
                 <div className="max-w-xs">
                   <h2 className="font-display text-2xl font-bold leading-tight tracking-tight text-foreground md:text-3xl">
-                    Come vorresti vedere la tua pelle?
+                    Su cosa vuoi lavorare?
                   </h2>
-                  <p className="mt-3 font-body text-sm text-muted-foreground">Seleziona uno o più obiettivi (puoi sceglierne anche più di uno)</p>
+                  <p className="mt-3 font-body text-sm text-muted-foreground">{isAnalyzingSelfie ? "Stiamo leggendo la tua foto per suggerirti le aree…" : data.me22Analysis ? "Abbiamo preselezionato le aree emerse dalla foto: puoi aggiungerne o toglierne." : "Seleziona una o più aree."}</p>
                 </div>
                 <div className="grid w-full max-w-sm grid-cols-2 gap-3">
                   {skinGoalsOptions.map((opt) => {
@@ -375,14 +375,14 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
                     return (
                       <button
                         key={opt}
-                        onClick={() => toggleArray("skinGoals", opt)}
+                        onClick={() => { goalsTouched.current = true; toggleArray("skinGoals", opt); }}
                         className={`border px-4 py-4 font-body text-sm font-medium transition ${
                           active
                             ? "border-primary bg-primary text-primary-foreground"
                             : "border-border bg-background text-foreground hover:border-primary/40"
                         }`}
                       >
-                        {opt}
+                        {CONCERN_LABELS[opt] || opt}
                       </button>
                     );
                   })}
@@ -519,7 +519,7 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
                   <div className="w-full max-w-md">
                     <div className="mb-2 flex items-center justify-between">
                       <span className="inline-flex items-center gap-1.5 bg-foreground px-2.5 py-1 font-body text-[10px] font-semibold uppercase tracking-[0.18em] text-background">
-                        <Sparkles className="h-3 w-3" /> Analisi AI
+                        <Sparkles className="h-3 w-3" /> Analisi foto ME-22
                       </span>
                       <button
                         onClick={() => setIsEditingDescription(true)}
@@ -535,7 +535,7 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
                       </div>
                     </div>
                     <p className="mt-2 text-left font-body text-[11px] text-muted-foreground">
-                      Questa è una prima impressione automatica. Se vuoi, modificala per aggiungere dettagli.
+                      Generata dall'analisi della tua foto. Modificala per aggiungere ciò che senti o cosa vorresti ottenere.
                     </p>
                   </div>
                 )}
