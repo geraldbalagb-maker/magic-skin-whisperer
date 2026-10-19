@@ -32,29 +32,19 @@ describe("ME-22 routine and cart", () => {
   it("rejects product links outside the store", () => {
     expect(() => adaptME22Routine({ routine: { morning: [step({ ...cleanser, permalink: "https://example.com/product" })], evening: [], weekly: [] } }, "")).toThrow();
   });
-  it("flags a recommendation above the user's 100 euro budget instead of hiding the mismatch", () => {
-    const result = adaptME22Routine(recommendation, "Pelle secca", "Fino a 100€");
-    expect(result.personalized_tips[0].text).toContain("166.32€");
-    expect(result.personalized_tips[0].text).toContain("100€");
-    expect(adaptME22Routine(recommendation, "Pelle secca", "Oltre i 100€").personalized_tips).toEqual([]);
+  it("maps the three quiz budgets to ME-22 low/medium/high with 100/250/350 euro caps", () => {
+    expect(getME22BudgetPolicy("Fino a 100€")).toMatchObject({ engineBudget: "low", capEur: 100, maxWithToleranceEur: 115 });
+    expect(getME22BudgetPolicy("Fino a 250€")).toMatchObject({ engineBudget: "medium", capEur: 250, maxWithToleranceEur: 287.5 });
+    expect(getME22BudgetPolicy("Fino a 350€")).toMatchObject({ engineBudget: "high", capEur: 350, maxWithToleranceEur: 402.5 });
   });
-  it("maps the 100 euro quiz limit to the engine's 100 euro low tier, not its 200 euro medium tier", () => {
-    expect(getME22BudgetPolicy("Fino a 100€")).toEqual({ engineBudget: "low", tierPreference: "low_end", capEur: 100 });
+  it("accepts a routine within the 15% tolerance and flags one above it", () => {
+    const within = { routine: { morning: [step({ ...cleanser, price: "127.70" })], evening: [], weekly: [] } }; // 114.93 after discount
+    expect(adaptME22Routine(within, "", "Fino a 100€").personalized_tips).toEqual([]);
+    const over = { routine: { morning: [step({ ...cleanser, price: "127.80" })], evening: [], weekly: [] } }; // 115.02 after discount
+    expect(adaptME22Routine(over, "", "Fino a 100€").personalized_tips[0].title).toBe("Budget da verificare");
   });
-  it("preserves the 50 euro cap even though the engine has no matching tier", () => {
-    expect(getME22BudgetPolicy("Entro i 50€").capEur).toBe(50);
-    expect(adaptME22Routine(recommendation, "", "Entro i 50€").personalized_tips[0].text).toContain("50€");
-  });
-  it("checks the budget against the same final full-bundle price shown in results", () => {
-    const affordable = { routine: { morning: [step({ ...cleanser, price: "36.90" }), step({ ...serum, price: "69.90" }, "serum")], evening: [step({ ...cleanser, price: "36.90" })], weekly: [] } };
-    const result = adaptME22Routine(affordable, "", "Fino a 100€");
-    expect(getRoutinePricing(getRoutineProducts(result))).toEqual({ totalPrice: 106.8, bundlePrice: 96.12 });
-    expect(result.personalized_tips).toEqual([]);
-    expect(result.resolved_products?.find(p => p.wcId === 23127)?.price).toBe(69.9);
-  });
-  it("still flags a genuine overrun after discount", () => {
-    const over = { routine: { morning: [step({ ...cleanser, price: "111.12" })], evening: [], weekly: [] } };
-    expect(getRoutinePricing([{ id: "wc-4359", price: 111.12 }]).bundlePrice).toBe(100.01);
-    expect(adaptME22Routine(over, "", "Fino a 100€").personalized_tips[0].text).toContain("100.01€");
+  it("labels tips by their engine source instead of a generic title", () => {
+    const result = adaptME22Routine({ ...recommendation, warnings: ["Introdurre un prodotto alla volta."], safety_notes: ["Patch test consigliato."] }, "", "Fino a 350€");
+    expect(result.personalized_tips).toEqual([{ title: "Avviso sulla routine", text: "Introdurre un prodotto alla volta." }, { title: "Nota di sicurezza", text: "Patch test consigliato." }]);
   });
 });
