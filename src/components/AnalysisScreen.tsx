@@ -71,7 +71,8 @@ const AnalysisScreen = ({ name, quizData, onComplete }: AnalysisScreenProps) => 
           },
         });
         if (start.error || !start.data?.ok || !start.data.recommendation) {
-          throw new Error("Non riusciamo a creare la routine con il motore ME-22. Nessun prodotto è stato assegnato: riprova tra poco.");
+          console.error("ME-22 engine error:", start.error?.message || start.data?.error, { budget: quizData.budget, concerns: quizData.skinGoals });
+          throw new Error("Il motore ME-22 non è riuscito a creare la routine per questa combinazione di aree e budget. Prova a cambiare budget o aree selezionate.");
         }
         const routine = adaptME22Routine(start.data.recommendation, quizData.skinDescription, quizData.budget);
         let enhancedSelfie: string | null = null;
