@@ -87,6 +87,7 @@ const ResultsHero = ({ name, quizData, aiResult }: ResultsHeroProps) => (
         {[
           { label: `${quizData.age} anni` },
           { label: quizData.time },
+          ...(quizData.budget ? [{ label: `Budget ${quizData.budget.toLowerCase()}` }] : []),
         ].map((chip, i) => (
           <motion.span
             key={i}

@@ -32,6 +32,10 @@ const validShopUrl = (value: string) => {
 };
 const roles: Record<string, Product["category"]> = { cleanser: "detersione", toner: "tonico", cream: "crema", serum: "siero", exfoliant: "scrub", mask: "maschera", oil: "olio" };
 
+// Boilerplate notes repeated on every routine are hidden; only meaningful ones are shown (max 3).
+const GENERIC_NOTE = /non diagnostic|un prodotto alla volta|patch test/i;
+const MAX_TIPS = 3;
+
 export function adaptME22Routine(raw: unknown, skinDescription: string, budget = ""): AIRoutineResult {
   const parsed = recommendationSchema.safeParse(raw);
   if (!parsed.success) throw new Error("Il motore ME-22 ha restituito una routine incompleta. Riprova tra poco.");
@@ -81,12 +85,12 @@ export function adaptME22Routine(raw: unknown, skinDescription: string, budget =
   const tips = [
     ...(recommendation.warnings || []).map(text => ({ title: "Avviso sulla routine", text })),
     ...(recommendation.safety_notes || []).map(text => ({ title: "Nota di sicurezza", text })),
-  ].filter((tip, i, all) => all.findIndex(t => t.text === tip.text) === i);
+  ].filter((tip, i, all) => all.findIndex(t => t.text === tip.text) === i && !GENERIC_NOTE.test(tip.text));
   const baseIds = new Set(steps.flatMap(step => step.product_ids));
   const { bundlePrice } = getRoutinePricing(Array.from(catalog.values()).filter(p => baseIds.has(p.id)));
   const { capEur, maxWithToleranceEur } = getME22BudgetPolicy(budget);
   if (capEur !== null && maxWithToleranceEur !== null && bundlePrice > maxWithToleranceEur) tips.unshift({ title: "Budget da verificare", text: `La routine completa costa ${bundlePrice.toFixed(2)}€ con lo sconto riservato, oltre il budget di ${capEur}€ anche considerando la tolleranza del 15% (${maxWithToleranceEur.toFixed(2)}€). Puoi togliere prodotti prima dell'acquisto.` });
-  return { skin_analysis: skinDescription || recommendation.analysis_summary || "Analisi cosmetica non diagnostica.", personalized_tips: tips, steps, resolved_products: Array.from(catalog.values()) };
+  return { skin_analysis: skinDescription || recommendation.analysis_summary || "Analisi cosmetica non diagnostica.", personalized_tips: tips.slice(0, MAX_TIPS), steps, resolved_products: Array.from(catalog.values()) };
 }
 
 export function getRoutineProducts(result: AIRoutineResult, selected?: Set<string>): Product[] {
