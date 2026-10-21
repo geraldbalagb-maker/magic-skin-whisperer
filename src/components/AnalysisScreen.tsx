@@ -57,9 +57,15 @@ const AnalysisScreen = ({ name, quizData, onComplete }: AnalysisScreenProps) => 
 
     const callAI = async () => {
       try {
+        // The "Dopo" photo comes from enhance-selfie (identity-preserving); the engine's own preview alters the face and is not used.
+        const enhancePromise = quizData.selfie
+          ? supabase.functions.invoke("enhance-selfie", { body: { selfieBase64: quizData.selfie } })
+              .then(r => (r.data?.success && typeof r.data.enhancedImage === "string" ? r.data.enhancedImage as string : null))
+              .catch(() => null)
+          : Promise.resolve(null);
         const start = await supabase.functions.invoke("me22-preview", {
           body: {
-            action: quizData.selfie ? "start" : "recommend",
+            action: quizData.me22Analysis || !quizData.selfie ? "recommend" : "start",
             selfie: quizData.selfie || undefined,
             analysis: quizData.me22Analysis ?? undefined,
             user: { name: quizData.name, age: Number.parseInt(quizData.age, 10) || null },
@@ -75,20 +81,7 @@ const AnalysisScreen = ({ name, quizData, onComplete }: AnalysisScreenProps) => 
           throw new Error("Il motore ME-22 non è riuscito a creare la routine per questa combinazione di aree e budget. Prova a cambiare budget o aree selezionate.");
         }
         const routine = adaptME22Routine(start.data.recommendation, quizData.skinDescription, quizData.budget);
-        let enhancedSelfie: string | null = null;
-        const jobId = typeof start.data.jobId === "string" ? start.data.jobId : null;
-        if (jobId) {
-          const deadline = Date.now() + 180_000;
-          while (Date.now() < deadline) {
-            await new Promise(resolve => setTimeout(resolve, 3000));
-            const status = await supabase.functions.invoke("me22-preview", { body: { action: "status", jobId } });
-            if (status.data?.status === "done" && typeof status.data.image === "string") {
-              enhancedSelfie = status.data.image;
-              break;
-            }
-            if (status.error || status.data?.status === "failed" || status.data?.ok === false) break;
-          }
-        }
+        const enhancedSelfie = await enhancePromise;
         // Preview failure must never discard the successfully composed engine routine.
         resultRef.current = { routine, enhancedSelfie };
       } catch (err) {
