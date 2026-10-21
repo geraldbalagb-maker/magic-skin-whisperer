@@ -43,8 +43,12 @@ describe("ME-22 routine and cart", () => {
     const over = { routine: { morning: [step({ ...cleanser, price: "127.80" })], evening: [], weekly: [] } }; // 115.02 after discount
     expect(adaptME22Routine(over, "", "Fino a 100€").personalized_tips[0].title).toBe("Budget da verificare");
   });
-  it("labels tips by their engine source instead of a generic title", () => {
-    const result = adaptME22Routine({ ...recommendation, warnings: ["Introdurre un prodotto alla volta."], safety_notes: ["Patch test consigliato."] }, "", "Fino a 350€");
-    expect(result.personalized_tips).toEqual([{ title: "Avviso sulla routine", text: "Introdurre un prodotto alla volta." }, { title: "Nota di sicurezza", text: "Patch test consigliato." }]);
+  it("labels meaningful tips by source and hides generic boilerplate", () => {
+    const result = adaptME22Routine({ ...recommendation, warnings: ["Evita retinolo in gravidanza.", "Introdurre un prodotto alla volta."], safety_notes: ["Patch test consigliato.", "Ambito cosmetico non diagnostico."] }, "", "Fino a 350€");
+    expect(result.personalized_tips).toEqual([{ title: "Avviso sulla routine", text: "Evita retinolo in gravidanza." }]);
+  });
+  it("shows at most 3 notes", () => {
+    const result = adaptME22Routine({ ...recommendation, warnings: ["A1.", "A2.", "A3.", "A4."] }, "", "Fino a 350€");
+    expect(result.personalized_tips).toHaveLength(3);
   });
 });

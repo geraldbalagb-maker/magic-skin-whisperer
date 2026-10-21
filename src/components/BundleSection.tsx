@@ -123,11 +123,7 @@ const BundleSection = ({
                   </p>
                 </div>
                 <span
-                  className="mb-2 rounded-sm px-3 py-1.5 font-body text-xs font-extrabold uppercase tracking-wider text-white shadow-sm"
-                  style={{
-                    backgroundImage:
-                      "linear-gradient(90deg, hsl(280 70% 75%) 0%, hsl(350 85% 65%) 50%, hsl(25 95% 65%) 100%)",
-                  }}
+                  className="mb-2 rounded-sm px-3 py-1.5 font-body text-xs font-extrabold uppercase tracking-wider text-primary-foreground shadow-sm bg-gradient-gold"
                 >
                   -10% OFF
                 </span>

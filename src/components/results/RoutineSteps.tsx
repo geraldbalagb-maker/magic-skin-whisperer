@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ShoppingBag, Star, Check, ChevronDown } from "lucide-react";
+import { ShoppingCart, Star, Check, ChevronDown } from "lucide-react";
 import { toast } from "sonner";
 import type { Product, RoutineStep } from "@/data/products";
 import { products as allProducts } from "@/data/products";
@@ -82,7 +82,7 @@ const ProductCard = ({ product, cart, onToggleCart, isAlternative = false }: {
           : "border border-border bg-background text-muted-foreground hover:border-foreground hover:text-foreground"
       }`}
     >
-      {cart.has(product.id) ? <Check className="h-4 w-4" /> : <ShoppingBag className="h-4 w-4" />}
+      {cart.has(product.id) ? <Check className="h-4 w-4" /> : <ShoppingCart className="h-4 w-4" />}
     </motion.button>
   </motion.div>
 );
