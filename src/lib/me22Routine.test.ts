@@ -51,4 +51,19 @@ describe("ME-22 routine and cart", () => {
     const result = adaptME22Routine({ ...recommendation, warnings: ["A1.", "A2.", "A3.", "A4."] }, "", "Fino a 350€");
     expect(result.personalized_tips).toHaveLength(3);
   });
+  it("uses the primary kit WooCommerce ID and price when individual routines are empty", () => {
+    const { product_id: _id, ...product } = cleanser;
+    const result = adaptME22Routine({ routine: { morning: [], evening: [], weekly: [] }, primary_kit: {
+      status: "primary_proposal", requires_supervision: true, review_only: false,
+      product: { ...product, id: 99680, name: "Rigenera Kit Pelle Normale", price: "519.40" },
+    } }, "", "Fino a 350€");
+    expect(getRoutineProducts(result).map(p => [p.wcId, p.price])).toEqual([[99680, 519.4]]);
+    expect(getRoutinePricing(getRoutineProducts(result)).bundlePrice).toBe(467.46);
+    expect(result.personalized_tips.map(t => t.title)).toEqual(["Budget da verificare", "Nota di sicurezza"]);
+  });
+  it("does not make a review-only kit purchasable", () => {
+    expect(() => adaptME22Routine({ routine: { morning: [], evening: [], weekly: [] }, primary_kit: {
+      status: "primary_proposal", review_only: true, product: cleanser,
+    } }, "")).toThrow();
+  });
 });

@@ -4,12 +4,12 @@ import type { AIRoutineResult } from "@/components/AnalysisScreen";
 import { getME22BudgetPolicy, getRoutinePricing } from "../../supabase/functions/_shared/me22Budget";
 
 const engineProduct = z.object({
-  product_id: z.number().int().positive(), name: z.string().min(1), brand: z.string(),
+  product_id: z.number().int().positive().optional(), id: z.number().int().positive().optional(), name: z.string().min(1), brand: z.string(),
   price: z.union([z.string(), z.number()]).transform(Number).refine(p => Number.isFinite(p) && p >= 0),
   sku: z.string().optional(), permalink: z.string().url(), image: z.string().url().optional(),
   image_data: z.string().regex(/^data:image\/(jpeg|png|webp);base64,/).nullable().optional(),
   product_role: z.string().optional(),
-});
+}).refine(p => p.product_id !== undefined || p.id !== undefined).transform(p => ({ ...p, product_id: p.product_id ?? p.id ?? 0 }));
 const engineStep = z.object({
   label: z.string(), slot: z.string(), included: z.boolean(),
   inclusion_reason: z.string().optional(), warnings: z.array(z.string()).optional(),
@@ -21,6 +21,10 @@ const recommendationSchema = z.object({
   safety_notes: z.array(z.string()).optional(),
   routine: z.object({ morning: z.array(engineStep), evening: z.array(engineStep), weekly: z.array(engineStep) }),
   extra_products: z.array(engineStep.omit({ included: true }).extend({ period: z.string() })).optional(),
+  primary_kit: z.object({
+    status: z.string(), reason: z.string().optional(), requires_supervision: z.boolean().optional(),
+    review_only: z.boolean().optional(), installment_payment_note: z.string().optional(), product: engineProduct,
+  }).nullable().optional(),
 });
 const normalize = (value: string) => value.toLowerCase().replace(/[^a-z0-9]/g, "");
 const validShopUrl = (value: string) => {
@@ -61,6 +65,14 @@ export function adaptME22Routine(raw: unknown, skinDescription: string, budget =
   };
   const periods = [{ key: "morning", title: "Mattina" }, { key: "evening", title: "Sera" }, { key: "weekly", title: "Settimanale" }] as const;
   const steps: AIRoutineResult["steps"] = [];
+  const kit = recommendation.primary_kit;
+  if (kit?.status === "primary_proposal" && !kit.review_only) {
+    steps.push({
+      step_name: kit.product.name, step_order: 1, icon: "kit", period: "Kit principale",
+      description: [kit.reason, kit.requires_supervision ? "Richiede la supervisione di un professionista." : "", kit.installment_payment_note].filter(Boolean).join(" "),
+      product_ids: [resolve(kit.product)], alternative_product_ids: [],
+    });
+  }
   for (const period of periods) {
     for (const step of recommendation.routine[period.key]) {
       if (!step.included || !step.product) continue;
@@ -83,6 +95,7 @@ export function adaptME22Routine(raw: unknown, skinDescription: string, budget =
   if (!steps.some(step => step.product_ids.length)) throw new Error("Il motore ME-22 non ha assegnato prodotti acquistabili alla routine.");
   // Tips are only what ME-22 returned, labelled by their source field.
   const tips = [
+    ...(kit?.requires_supervision && !kit.review_only ? [{ title: "Nota di sicurezza", text: "Il kit proposto richiede la supervisione di un professionista." }] : []),
     ...(recommendation.warnings || []).map(text => ({ title: "Avviso sulla routine", text })),
     ...(recommendation.safety_notes || []).map(text => ({ title: "Nota di sicurezza", text })),
   ].filter((tip, i, all) => all.findIndex(t => t.text === tip.text) === i && !GENERIC_NOTE.test(tip.text));

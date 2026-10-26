@@ -146,6 +146,7 @@ Deno.serve(async (req) => {
       product.image_data = await media.get(imageUrl);
     };
     const entries = [...Object.values(dr.recommendation?.routine || {}).flat(), ...(dr.recommendation?.extra_products || [])] as { product?: Record<string, unknown> | null }[];
+    if (dr.recommendation?.primary_kit?.product) entries.push(dr.recommendation.primary_kit);
     await Promise.all(entries.map(entry => hydrate(entry.product || null)));
     const { image_analysis: _omit, ...payloadSummary } = payload;
     const result = { ok: true, analysis, recommendation: dr.recommendation, request: payloadSummary };
