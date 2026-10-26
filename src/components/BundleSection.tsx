@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { ShoppingBag, Check, ChevronRight, Shield, Truck, Clock, Star, Loader2 } from "lucide-react";
+import { ShoppingCart, Check, ChevronRight, Shield, Truck, Clock, Star, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { buildWooCheckout, type WcCheckoutResult } from "@/lib/wcCheckout";
 import { BUNDLE_COUPON } from "../../supabase/functions/_shared/me22Budget";
@@ -123,7 +123,7 @@ const BundleSection = ({
                   </p>
                 </div>
                 <span
-                  className="mb-2 rounded-sm px-3 py-1.5 font-body text-xs font-extrabold uppercase tracking-wider text-primary-foreground shadow-sm bg-gradient-gold"
+                  className="discount-badge mb-2 rounded-sm px-3 py-1.5 font-body text-xs font-extrabold uppercase tracking-wider shadow-sm"
                 >
                   -10% OFF
                 </span>
@@ -144,7 +144,7 @@ const BundleSection = ({
                   {loading ? (
                     <Loader2 className="h-4 w-4 animate-spin" />
                   ) : (
-                    <ShoppingBag className="h-4 w-4" />
+                    <ShoppingCart className="h-4 w-4" />
                   )}
                   {loading ? "Preparazione..." : "Aggiungi al Carrello"}
                 </motion.button>

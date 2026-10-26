@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ShoppingBag } from "lucide-react";
+import { ShoppingCart } from "lucide-react";
 import type { Product, RoutineStep } from "@/data/products";
 import { products } from "@/data/products";
 import type { QuizData } from "./BeautyQuiz";
@@ -151,7 +151,7 @@ const ResultsPage = ({ name, quizData, aiResult, selfie, enhancedSelfie, onCheck
             className="fixed bottom-5 right-5 z-50 flex items-center gap-2 rounded-sm bg-foreground px-5 py-3 font-body text-[11px] font-bold uppercase tracking-[0.15em] text-background shadow-elevated transition-opacity hover:opacity-90 md:bottom-8 md:right-8"
             aria-label="Torna al carrello"
           >
-            <ShoppingBag className="h-4 w-4" />
+            <ShoppingCart className="h-4 w-4" />
             Torna al carrello
           </motion.button>
         )}

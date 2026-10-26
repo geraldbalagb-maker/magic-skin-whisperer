@@ -103,7 +103,7 @@ const RoutineSteps = ({ routine, cart, onToggleCart }: RoutineStepsProps) => {
       <div className="mx-auto max-w-5xl px-4 pt-16 pb-6 text-center">
         <SectionHeader
           label="Step by step"
-          title={`La tua routine in ${routine.length} passaggi`}
+          title={routine.length === 1 && routine[0]?.icon === "kit" ? "Il tuo kit personalizzato" : `La tua routine in ${routine.length} passaggi`}
           subtitle="Ogni step è stato selezionato dall'AI per le esigenze uniche della tua pelle"
         />
       </div>
@@ -131,7 +131,7 @@ const RoutineSteps = ({ routine, cart, onToggleCart }: RoutineStepsProps) => {
                       {step.order}
                     </div>
                     <div className="aspect-square p-2">
-                      <img src={stepImages[idx % stepImages.length]} alt={step.name} className="h-full w-full object-contain" />
+                      <img src={step.icon === "kit" ? step.products[0]?.image : stepImages[idx % stepImages.length]} alt={step.name} className="h-full w-full object-contain" />
                     </div>
                   </div>
                 </motion.div>

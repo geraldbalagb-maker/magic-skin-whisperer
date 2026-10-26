@@ -1,4 +1,6 @@
 # Current work
+- [x] Complete Aureliano's annotated results changes (cart icons and actual gold badge); test updated concern pre-fills and high/dullness with a real photo. Support the new primary-kit response and preserve supervision/budget warnings; 16 tests passed and build OK. Prepare factual reply; store checkout remains deferred to Ivan.
+- [ ] Ask Aureliano to confirm high/dullness primary-kit pricing: authoritative €519.40 (€467.46 after bundle discount) exceeds the €402.50 tolerance; no automatic budget downgrade or hidden overrun.
 - [x] Connect ME-22 recommendations to results, preserving morning/evening/weekly steps.
 - [x] Keep selected products, bundle totals and checkout payload aligned using engine WooCommerce IDs.
 - [x] Test real selfie → engine → results and selection flow; six adapter tests passed.

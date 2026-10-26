@@ -50,6 +50,9 @@ Lista master delle modifiche da implementare. Aggiornare lo stato man mano: `[ ]
 **Riferimenti screenshot:** stile bottoni neri pieni, header minimale, tipografia serif elegante per titoli (Maison 22 / Luxury Perfumes).
 
 ## 7. Motore ME-22
+- [x] Completare il disegno di Aureliano: budget visibile, avvisi pertinenti massimo 3, icone carrello anche nel pulsante principale e flottante, badge sconto realmente oro.
+- [x] Supportare il nuovo kit principale ME-22 con ID/prezzo originali, immagine tramite Cloud e avvisi di supervisione/sforamento; nuove regole coperte da test.
+- [ ] Confermare con Aureliano il prezzo del kit principale high/colorito spento: 519,40€ (467,46€ dopo sconto), oltre il margine 402,50€.
 - [x] Collegare assegnazione prodotti ME-22 a risultati, carrello e bundle (mattina/sera/settimanale): ID WooCommerce e prezzi del motore, extra facoltativi, prodotti ripetuti conteggiati una volta. Test reale con foto e 6 test automatici superati.
 - [x] Correggere la mappatura “Fino a 100€” su low/low_end (base motore 100€, non 200€); controllo budget sul prezzo della routine completa con lo sconto attuale del 10%, prezzi prodotto originali e arrotondamento ai centesimi condiviso. 10 test superati; quiz reale con foto: 106,80€ → 96,12€, nessun falso sforamento.
 - [ ] Supportare il limite rigoroso di 50€ ed eliminare la tolleranza motore del 15% per limiti rigidi: richiede intervento del team ME-22, perché l'API esterna accetta solo low/medium/high e la fascia minima parte da 100€. Gli sforamenti reali non sono nascosti.
