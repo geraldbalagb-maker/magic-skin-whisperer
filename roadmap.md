@@ -1,4 +1,5 @@
 # Current work
+- [ ] Complete Aureliano's annotated results changes (cart icons and actual gold badge), verify updated ME-22 concern pre-fills with a real photo, and prepare a factual reply. Store checkout remains deferred to Ivan.
 - [x] Connect ME-22 recommendations to results, preserving morning/evening/weekly steps.
 - [x] Keep selected products, bundle totals and checkout payload aligned using engine WooCommerce IDs.
 - [x] Test real selfie → engine → results and selection flow; six adapter tests passed.

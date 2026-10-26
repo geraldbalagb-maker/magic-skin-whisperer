@@ -30,7 +30,8 @@ const LEVEL: Record<string, string> = { low: "lievi", moderate: "moderati", medi
 const SKIN_TYPE: Record<string, string> = { normal: "normale", dry: "secca", oily: "grassa", combination: "mista", sensitive: "sensibile" };
 
 export function concernsFromAnalysis(analysis: Analysis): string[] {
-  const mapped = Array.isArray(analysis?.mapped_me22_concerns) ? analysis!.mapped_me22_concerns as unknown[] : [];
+  const value = analysis?.mapped_me22_concerns;
+  const mapped: unknown[] = Array.isArray(value) ? value : [];
   const allowed = new Set<string>(ME22_CONCERNS);
   return Array.from(new Set(mapped.filter((c): c is string => typeof c === "string" && allowed.has(c))));
 }

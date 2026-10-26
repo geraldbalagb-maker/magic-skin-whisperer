@@ -11,6 +11,19 @@ describe("ME-22 photo analysis pre-fill", () => {
     expect(concernsFromAnalysis(null)).toEqual([]);
     expect(describeAnalysis(null)).toBe("");
   });
+  it("preserves mild concerns explicitly mapped by ME-22 with profile support", () => {
+    expect(concernsFromAnalysis({
+      mapped_me22_concerns: ["pelle secca", "colorito spento"],
+      mapped_me22_concern_intensities: { "pelle secca": "low", "colorito spento": "low" },
+    })).toEqual(["pelle secca", "colorito spento"]);
+  });
+  it("does not infer wrinkles from moderate fine lines omitted by ME-22", () => {
+    expect(concernsFromAnalysis({
+      likely_skin_profile: { perceived_age: 40 },
+      visible_observations: { fine_lines: "moderate" },
+      mapped_me22_concerns: ["pelle secca"],
+    })).toEqual(["pelle secca"]);
+  });
   it("describes only what the engine observed", () => {
     const text = describeAnalysis(analysis);
     expect(text).toContain("grassa");

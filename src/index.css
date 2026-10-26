@@ -40,6 +40,8 @@
     --gold: 40 45% 50%;
     --gold-light: 42 50% 68%;
     --gold-dark: 38 42% 38%;
+    --discount-background: var(--gold-light);
+    --discount-foreground: var(--foreground);
     --cream: 0 0% 98%;
     --cream-dark: 0 0% 95%;
     --charcoal: 0 0% 8%;
@@ -86,6 +88,11 @@
 }
 
 @layer utilities {
+  .discount-badge {
+    background-color: hsl(var(--discount-background));
+    color: hsl(var(--discount-foreground));
+  }
+
   .text-gradient-gold {
     color: hsl(0 0% 0%);
   }
