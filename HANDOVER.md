@@ -27,7 +27,6 @@ supabase functions deploy
 | `ME22_ENGINE_TOKEN` | Bearer token motore ME-22 | Aureliano |
 | `WC_CHECKOUT_HMAC_SECRET` | Firma link carrello WooCommerce (**non ancora generato**) | da concordare con Ivan (deve coincidere col plugin WP) |
 | `LOVABLE_API_KEY` | AI Gateway di Lovable – **non funziona fuori da Lovable** | vedi sezione 4 |
-| `NOSIAM_API_KEY_NAME` / `_VALUE` | Solo funzione di test `nosiam-probe` (eliminabile) | IT negozio |
 
 I token non devono mai finire nel frontend.
 
@@ -38,8 +37,7 @@ I token non devono mai finire nel frontend.
 | `enhance-selfie` | Foto "Dopo" (modello immagine Gemini) | **in uso** |
 | `build-checkout-url` | Link carrello firmato HMAC (valido 15 min) | in uso, bloccato dal segreto |
 | `_shared/me22Budget.ts` | Fasce budget 100/250/350€ → low/medium/high, +15%, sconto bundle 10% (`M22-BUNDLE10`) | condiviso con il client |
-| `analyze-skin`, `analyze-selfie`, `map-skin-concerns`, `enhance-text` | Logica precedente / fallback | non essenziali |
-| `nosiam-probe` | Test credenziali catalogo | eliminabile |
+| `enhance-text` | Riscrittura della descrizione pelle | non essenziale |
 
 ## 4. AI Gateway (da sostituire)
 Le funzioni AI chiamano `https://ai.gateway.lovable.dev/v1/chat/completions` con `LOVABLE_API_KEY`. Fuori da Lovable va sostituito con un provider diretto (API compatibile OpenAI), es. Google Gemini (`https://generativelanguage.googleapis.com/v1beta/openai/chat/completions`) o OpenRouter, cambiando URL, chiave e nome modello (`google/gemini-3-pro-image` in `enhance-selfie`).
