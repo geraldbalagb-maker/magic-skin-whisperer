@@ -7,7 +7,7 @@ export const MinimalCard = ({ children, className = "" }: { children: React.Reac
 );
 
 export const StepBadge = ({ n }: { n: number }) => (
-  <div className="flex h-10 w-10 items-center justify-center border border-primary/20 bg-cream font-display text-sm font-bold text-primary">
+  <div className="flex h-10 w-10 items-center justify-center border border-primary/20 bg-[hsl(var(--cream))] font-display text-sm font-bold text-primary">
     {n}
   </div>
 );
