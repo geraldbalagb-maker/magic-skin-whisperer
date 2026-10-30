@@ -49,6 +49,7 @@ Plugin WP `maison22-wc-cart-handler.php` (route `/m22-cart`) da installare sul n
 - Segreto HMAC + plugin da attivare con Ivan.
 - Kit principale ME-22 (budget high) oltre la tolleranza: conferma di Aureliano.
 - Conservazione dati lato motore ME-22: da chiarire con Aureliano.
+- **Rate limiting assente**: le funzioni rifiutano chiamate da origini esterne (`_shared/origin.ts`), ma non c'è un limite di chiamate per IP/utente. Su Lovable Cloud non esiste una primitiva standard e non l'abbiamo implementata per non introdurre tabelle nel database. Se il backend cambia (o se si accetta una tabella di conteggio), valutare un rate limit sulle funzioni pubbliche, in particolare `me22-preview` ed `enhance-selfie` (chiamate AI a pagamento).
 
 ## 7. Dove leggere
 `AGENTS.md` (regole architetturali), `TASKS.md` / `roadmap.md` (stato lavori), `src/lib/me22Routine.ts` (adattamento routine), `src/components/AnalysisScreen.tsx` (flusso analisi).
