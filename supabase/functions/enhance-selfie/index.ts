@@ -36,7 +36,7 @@ Deno.serve(async (req) => {
   try {
     const { selfieBase64 } = await req.json();
 
-    if (!selfieBase64) {
+    if (typeof selfieBase64 !== "string" || !selfieBase64.startsWith("data:image/") || selfieBase64.length > 12_000_000) {
       return new Response(
         JSON.stringify({ success: false, error: "No selfie provided" }),
         { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }

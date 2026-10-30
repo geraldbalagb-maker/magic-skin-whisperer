@@ -11,7 +11,10 @@ Deno.serve(async (req) => {
   try {
     const { text, name } = await req.json();
 
-    if (!text || text.trim().length < 5) {
+    if (typeof text !== "string" || text.length > 4000 || (name !== undefined && typeof name !== "string")) {
+      return new Response(JSON.stringify({ error: "invalid_input" }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    }
+    if (text.trim().length < 5) {
       return new Response(
         JSON.stringify({ enhanced: text }),
         { headers: { ...corsHeaders, "Content-Type": "application/json" } }
