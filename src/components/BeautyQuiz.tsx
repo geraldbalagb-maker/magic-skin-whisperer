@@ -1,99 +1,31 @@
-import { useState, useCallback, useRef, useEffect } from "react";
+import { useState, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronRight, ChevronLeft, Sparkles, Loader2, Pencil } from "lucide-react";
 import BrandLogo from "@/components/shared/BrandLogo";
 import CameraCapture from "@/components/shared/CameraCapture";
 import { supabase } from "@/integrations/supabase/client";
-import { ME22_CONCERNS, CONCERN_LABELS, concernsFromAnalysis, describeAnalysis } from "@/lib/me22Analysis";
-import { BUDGET_OPTIONS } from "../../supabase/functions/_shared/me22Budget";
+import { CONCERN_LABELS } from "@/lib/me22Analysis";
+import { MinimalCard, StepBadge, PrimaryButton } from "./quiz/QuizUI";
+import { useSelfieAnalysis } from "./quiz/useSelfieAnalysis";
+import {
+  EMPTY_QUIZ, TOTAL_STEPS, budgetOptions, productOptions, skinGoalsOptions, stepVariants, timeOptions,
+  type QuizData,
+} from "./quiz/quizConfig";
 
-export interface QuizData {
-  name: string;
-  selfie: string | null;
-  age: string;
-  time: string;
-  skinDescription: string;
-  skinGoals: string[];
-  currentProducts: string[];
-  budget: string;
-  /** Raw ME-22 /v1/analyze output, produced right after the photo upload. */
-  me22Analysis: Record<string, unknown> | null;
-}
+export type { QuizData };
 
 interface BeautyQuizProps {
   onComplete: (data: QuizData) => void;
 }
 
-const stepVariants = {
-  enter: { opacity: 0, y: 30, filter: "blur(6px)" },
-  center: { opacity: 1, y: 0, filter: "blur(0px)" },
-  exit: { opacity: 0, y: -30, filter: "blur(6px)" },
-};
-
-
-// skinGoals holds ME-22 concern categories, pre-filled from the photo analysis.
-const skinGoalsOptions: readonly string[] = ME22_CONCERNS;
-
-const productOptions = [
-  "Detergente",
-  "Tonico",
-  "Siero",
-  "Crema viso",
-  "Crema contorno occhi",
-  "Maschera",
-  "Scrub / Esfoliante",
-  "Protezione solare (SPF)",
-];
-
-const budgetOptions: readonly string[] = BUDGET_OPTIONS;
-const timeOptions = ["5 minuti", "10 minuti", "20 minuti", "30+ minuti"];
-
-const TOTAL_STEPS = 8; // 0..7
-
-const MinimalCard = ({ children, className = "" }: { children: React.ReactNode; className?: string }) => (
-  <div className={`border border-border bg-background p-8 shadow-elegant md:p-10 ${className}`}>
-    {children}
-  </div>
-);
-
-const StepBadge = ({ n }: { n: number }) => (
-  <div className="flex h-10 w-10 items-center justify-center border border-primary/20 bg-[hsl(var(--cream))] font-display text-sm font-bold text-primary">
-    {n}
-  </div>
-);
-
-const PrimaryButton = ({ children, disabled, onClick }: { children: React.ReactNode; disabled?: boolean; onClick: () => void }) => (
-  <motion.button
-    whileHover={{ scale: 1.03, y: -1 }}
-    whileTap={{ scale: 0.97 }}
-    onClick={onClick}
-    disabled={disabled}
-    className="bg-primary px-10 py-3.5 font-body text-xs font-semibold uppercase tracking-[0.2em] text-primary-foreground transition-all hover:bg-primary/90 disabled:opacity-30"
-  >
-    {children}
-  </motion.button>
-);
-
 const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
   const [step, setStep] = useState(0);
-  const [data, setData] = useState<QuizData>({
-    name: "",
-    selfie: null,
-    age: "",
-    time: "",
-    skinDescription: "",
-    skinGoals: [],
-    currentProducts: [],
-    budget: "",
-    me22Analysis: null,
-  });
-  const goalsTouched = useRef(false);
+  const [data, setData] = useState<QuizData>(EMPTY_QUIZ);
   const [isEnhancing, setIsEnhancing] = useState(false);
   const [cameraOpen, setCameraOpen] = useState(false);
-  const [isAnalyzingSelfie, setIsAnalyzingSelfie] = useState(false);
-  const [selfieAnalysisDone, setSelfieAnalysisDone] = useState(false);
   const [isEditingDescription, setIsEditingDescription] = useState(false);
   const galleryInputRef = useRef<HTMLInputElement>(null);
+  const { goalsTouched, isAnalyzingSelfie, selfieAnalysisDone, setSelfieAnalysisDone } = useSelfieAnalysis(data, setData);
 
   const prevStep = () => step > 0 && setStep(step - 1);
 
@@ -130,35 +62,6 @@ const BeautyQuiz = ({ onComplete }: BeautyQuizProps) => {
     }));
   };
 
-  const analyzeSelfie = useCallback(async () => {
-    if (!data.selfie || isAnalyzingSelfie) return;
-    const photo = data.selfie;
-    setIsAnalyzingSelfie(true);
-    try {
-      const res = await supabase.functions.invoke("me22-preview", { body: { action: "analyze", selfie: photo } });
-      const analysis = res.data?.ok ? (res.data.analysis as Record<string, unknown> | null) : null;
-      if (!analysis) console.warn("ME-22 analysis failed:", res.error || res.data?.error);
-      setData((prev) => prev.selfie !== photo ? prev : ({
-        ...prev,
-        me22Analysis: analysis,
-        // Fill only fields the user has not edited; leave empty what the engine cannot infer.
-        skinDescription: prev.skinDescription.trim() ? prev.skinDescription : describeAnalysis(analysis),
-        skinGoals: goalsTouched.current ? prev.skinGoals : concernsFromAnalysis(analysis),
-      }));
-    } catch (err) {
-      console.warn("ME-22 analysis failed:", err);
-    } finally {
-      setSelfieAnalysisDone(true);
-      setIsAnalyzingSelfie(false);
-    }
-  }, [data.selfie, isAnalyzingSelfie]);
-
-  // Trigger AI analysis appena viene caricato il selfie (in background)
-  useEffect(() => {
-    if (data.selfie && !selfieAnalysisDone && !isAnalyzingSelfie) {
-      analyzeSelfie();
-    }
-  }, [data.selfie, selfieAnalysisDone, isAnalyzingSelfie, analyzeSelfie]);
 
 
   const enhanceWithAI = useCallback(async () => {

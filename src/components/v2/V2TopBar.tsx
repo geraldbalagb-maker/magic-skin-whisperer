@@ -3,7 +3,7 @@ import { Truck } from "lucide-react";
 const V2TopBar = () => (
   <div className="bg-[hsl(0_0%_12%)] px-4 py-2">
     <div className="mx-auto flex max-w-7xl items-center justify-between">
-      <div className="flex items-center gap-1.5 text-[hsl(0_0%_90%)]">
+      <div className="flex items-center gap-1.5 text-primary-foreground/90">
         <Truck className="h-3.5 w-3.5" />
         <a
           href="https://www.luxury-perfumes.net/spedizioni"
@@ -19,7 +19,7 @@ const V2TopBar = () => (
           href="https://www.luxury-perfumes.net/mio-account/"
           target="_blank"
           rel="noopener noreferrer"
-          className="font-body text-[11px] text-[hsl(0_0%_90%)] transition-colors hover:text-white"
+          className="font-body text-[11px] text-primary-foreground/90 transition-colors hover:text-primary-foreground"
         >
           MIO ACCOUNT
         </a>
@@ -27,7 +27,7 @@ const V2TopBar = () => (
           href="https://www.luxury-perfumes.net/contatti/"
           target="_blank"
           rel="noopener noreferrer"
-          className="font-body text-[11px] text-[hsl(0_0%_90%)] transition-colors hover:text-white"
+          className="font-body text-[11px] text-primary-foreground/90 transition-colors hover:text-primary-foreground"
         >
           CONTATTI
         </a>
@@ -35,7 +35,7 @@ const V2TopBar = () => (
           href="https://www.luxury-perfumes.net/spedizioni"
           target="_blank"
           rel="noopener noreferrer"
-          className="font-body text-[11px] text-[hsl(0_0%_90%)] transition-colors hover:text-white"
+          className="font-body text-[11px] text-primary-foreground/90 transition-colors hover:text-primary-foreground"
         >
           SPEDIZIONI
         </a>

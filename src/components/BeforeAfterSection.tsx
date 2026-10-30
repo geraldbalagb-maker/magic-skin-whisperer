@@ -98,9 +98,9 @@ const BeforeAfterSection = ({ beforeImage, afterImage, name }: BeforeAfterSectio
           className="absolute top-0 bottom-0 z-10"
           style={{ left: `${sliderPos}%`, transform: "translateX(-50%)" }}
         >
-          <div className="h-full w-0.5 bg-white/80 shadow-lg" />
+          <div className="h-full w-0.5 bg-primary-foreground/80 shadow-lg" />
           {/* Handle */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full border-2 border-white/90 bg-gradient-gold shadow-gold">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full border-2 border-primary-foreground/90 bg-gradient-gold shadow-gold">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
               <path d="M5 3L2 8L5 13" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
               <path d="M11 3L14 8L11 13" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
