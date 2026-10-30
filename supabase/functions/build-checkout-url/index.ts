@@ -5,6 +5,7 @@
 // Risposta:   { url: string, expiresAt: number }
 
 import { corsHeaders } from 'npm:@supabase/supabase-js@2/cors';
+import { forbidden, isAllowedOrigin } from "../_shared/origin.ts";
 
 const STORE_BASE = 'https://www.luxury-perfumes.net';
 const HANDLER_PATH = '/m22-cart'; // endpoint pubblico gestito dal plugin PHP (vedi istruzioni IT)
@@ -30,6 +31,7 @@ async function hmacSha256(secret: string, message: string): Promise<string> {
 
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders });
+  if (!isAllowedOrigin(req)) return forbidden(corsHeaders);
 
   try {
     const secret = Deno.env.get('WC_CHECKOUT_HMAC_SECRET');

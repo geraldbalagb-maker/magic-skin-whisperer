@@ -1,10 +1,6 @@
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
+import { forbidden, isAllowedOrigin } from "../_shared/origin.ts";
 
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers":
-    "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
-};
 
 const SYSTEM_PROMPT = `You are a photorealistic dermatology retoucher. You will receive a real selfie and must return the SAME photo edited to simulate the visible effect of a personalized skincare routine after 6–8 weeks of consistent use.
 
@@ -31,10 +27,11 @@ QUALITY CHECK BEFORE RETURNING:
 
 OUTPUT: one photorealistic image, same dimensions as the input, same person, same light, same background — with skin visibly healthier as after a real skincare routine.`;
 
-serve(async (req) => {
+Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
+  if (!isAllowedOrigin(req)) return forbidden(corsHeaders);
 
   try {
     const { selfieBase64 } = await req.json();

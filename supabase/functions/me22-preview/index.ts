@@ -1,4 +1,5 @@
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
+import { forbidden, isAllowedOrigin } from "../_shared/origin.ts";
 import { z } from "npm:zod@3";
 import { getME22BudgetPolicy } from "../_shared/me22Budget.ts";
 
@@ -48,6 +49,7 @@ const ageRange = (age: number | null) => {
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
+  if (!isAllowedOrigin(req)) return forbidden(corsHeaders);
 
   const BASE = Deno.env.get("ME22_ENGINE_URL")?.replace(/\/+$/, "");
   const TOKEN = Deno.env.get("ME22_ENGINE_TOKEN");
