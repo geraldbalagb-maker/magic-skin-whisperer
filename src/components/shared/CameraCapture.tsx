@@ -97,23 +97,23 @@ const CameraCapture = ({ open, onClose, onCapture }: CameraCaptureProps) => {
   if (!open) return null;
 
   return createPortal(
-    <div className="fixed inset-0 z-[9999] flex flex-col bg-black overflow-hidden" style={{ height: "100dvh", width: "100vw" }}>
+    <div className="fixed inset-0 z-[9999] flex flex-col bg-primary overflow-hidden" style={{ height: "100dvh", width: "100vw" }}>
       <div className="flex items-center justify-end p-3 shrink-0">
         <button
           type="button"
           onClick={onClose}
           aria-label="Chiudi"
-          className="text-white/80 hover:text-white"
+          className="text-primary-foreground/80 hover:text-primary-foreground"
         >
           <X className="h-6 w-6" />
         </button>
       </div>
 
-      <div className="relative flex-1 min-h-0 w-full overflow-hidden bg-black px-3">
-        <div className="relative h-full w-full overflow-hidden border border-white/20 bg-black">
+      <div className="relative flex-1 min-h-0 w-full overflow-hidden bg-primary px-3">
+        <div className="relative h-full w-full overflow-hidden border border-primary-foreground/20 bg-primary">
           {error ? (
             <div className="flex h-full w-full items-center justify-center p-6 text-center">
-              <p className="font-body text-sm text-white/80">{error}</p>
+              <p className="font-body text-sm text-primary-foreground/80">{error}</p>
             </div>
           ) : (
             <video
@@ -132,7 +132,7 @@ const CameraCapture = ({ open, onClose, onCapture }: CameraCaptureProps) => {
           type="button"
           onClick={() => setFacingMode((m) => (m === "user" ? "environment" : "user"))}
           disabled={!!error}
-          className="flex items-center gap-2 border border-white/30 px-4 py-3 font-body text-[10px] uppercase tracking-[0.2em] text-white transition hover:bg-white/10 disabled:opacity-40"
+          className="flex items-center gap-2 border border-primary-foreground/30 px-4 py-3 font-body text-[10px] uppercase tracking-[0.2em] text-primary-foreground transition hover:bg-primary-foreground/10 disabled:opacity-40"
         >
           <RefreshCw className="h-4 w-4" /> Cambia
         </button>
@@ -140,7 +140,7 @@ const CameraCapture = ({ open, onClose, onCapture }: CameraCaptureProps) => {
           type="button"
           onClick={handleCapture}
           disabled={!ready || !!error}
-          className="flex flex-1 items-center justify-center gap-2 bg-white px-6 py-3 font-body text-xs font-semibold uppercase tracking-[0.2em] text-black transition hover:bg-white/90 disabled:opacity-40"
+          className="flex flex-1 items-center justify-center gap-2 bg-primary-foreground px-6 py-3 font-body text-xs font-semibold uppercase tracking-[0.2em] text-primary transition hover:bg-primary-foreground/90 disabled:opacity-40"
         >
           <CameraIcon className="h-4 w-4" /> Scatta
         </button>

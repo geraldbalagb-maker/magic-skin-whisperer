@@ -154,7 +154,7 @@ const ReferralForm = ({
               whileTap={{ scale: canSubmit ? 0.95 : 1 }}
               onClick={onSubmit}
               disabled={!canSubmit}
-              className="mt-6 w-full bg-[hsl(var(--v2-amber))] px-8 py-4 font-body text-xs font-semibold uppercase tracking-widest text-white transition-all hover:bg-[hsl(var(--v2-amber-dark))] disabled:opacity-40"
+              className="mt-6 w-full bg-[hsl(var(--v2-amber))] px-8 py-4 font-body text-xs font-semibold uppercase tracking-widest text-primary-foreground transition-all hover:bg-[hsl(var(--v2-amber-dark))] disabled:opacity-40"
             >
               <Send className="mr-2 inline h-4 w-4" /> Invia gli inviti e ricevi il regalo
             </motion.button>

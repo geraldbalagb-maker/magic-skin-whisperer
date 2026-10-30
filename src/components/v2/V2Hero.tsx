@@ -59,7 +59,7 @@ const V2Hero = ({ onStartQuiz }: V2HeroProps) => (
         >
           <button
             onClick={onStartQuiz}
-            className="group flex items-center justify-center gap-2 bg-[hsl(var(--v2-amber))] px-8 py-3.5 font-body text-xs font-semibold uppercase tracking-widest text-white transition-all hover:bg-[hsl(var(--v2-amber-dark))]"
+            className="group flex items-center justify-center gap-2 bg-[hsl(var(--v2-amber))] px-8 py-3.5 font-body text-xs font-semibold uppercase tracking-widest text-primary-foreground transition-all hover:bg-[hsl(var(--v2-amber-dark))]"
           >
             Scopri la tua routine
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
